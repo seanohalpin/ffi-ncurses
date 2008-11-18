@@ -87,7 +87,7 @@ end
 
 # discard sigs of functions we can't handle
 unmapped, sigs = signatures.partition{ |s| s.flatten.include?(:unmapped)}
-pp sigs
+pp sigs.sort_by { |x| x.to_s }
 
 puts "# #{sigs.size}"
 puts "# #{unmapped.size}"
