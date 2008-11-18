@@ -394,18 +394,6 @@ module NCurses
     end
   end
   
-  # find all methods added to NCurses and generate vectors - I should
-  # do this in the module NCurses and so not incur the double method
-  # call penalty when using the direct module method calls
-  singleton_methods.reject{ |x| x =~ /ffi_/ }.each do |m|
-    eval <<-EOD
-    def #{m}(*a, &b)
-      NCurses.#{m}(*a, &b)
-    end
-    EOD
-  end
-  extend self
-  
   module Colour
     BLACK   = 0
     RED     = 1
@@ -420,7 +408,7 @@ module NCurses
 
   # following definitions have been copied (almost verbatim) from ncurses.h
   NCURSES_ATTR_SHIFT = 8
-  def NCURSES_BITS(mask, shift)
+  def self.NCURSES_BITS(mask, shift)
     ((mask) << ((shift) + NCURSES_ATTR_SHIFT))
   end
 
