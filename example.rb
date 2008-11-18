@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby -w
 require 'ffi-ncurses'
 begin	
   # the methods can be called as module methods
@@ -42,10 +43,10 @@ begin
   
   1.upto(16) do |i|
     attr_set NCurses::A_NORMAL, i, 0
-    addch (?A - 1 + i)
+    addch(?A - 1 + i)
   end
   attr_set NCurses::A_HORIZONTAL, 0, 0
-  addch (?Z | COLOR_PAIR(3))
+  addch(?Z | COLOR_PAIR(3))
   attr_set A_BOLD, 2, 0
   addch ?S
 
