@@ -2,7 +2,8 @@
 # ruby-ffi wrapper for ncurses
 # Sean O'Halpin
 # version 0.0.1 - 2008-11-18
-# using latest ruby-ffi from kenai (fixes missing :short typedef)
+# tested with ruby-ffi-0.0.2 from kenai
+# - fixes missing :short typedef and adds varargs support)
 
 require 'rubygems'
 require 'ffi'
