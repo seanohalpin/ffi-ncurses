@@ -9,7 +9,16 @@ require 'dlfcn'
 require 'ffi-ncurses'
 
 begin
-  dl_handle = DL.dlopen("libncurses.dylib", DL::RTLD_NOLOAD)
+  lib = 'ncurses'
+  # copied from FFI.attach_function
+  if lib && File.basename(lib) == lib
+    ext = ".#{FFI::Platform::LIBSUFFIX}"
+    lib = FFI::Platform::LIBPREFIX + lib unless lib =~ /^#{FFI::Platform::LIBPREFIX}/
+      lib += ext unless lib =~ /#{ext}/
+  end
+  puts [:lib, lib]
+  dl_handle = DL.dlopen(lib, DL::RTLD_NOLOAD)
+  
   p [:dl_handle, dl_handle]
   # clear error
   rv = DL.dlerror

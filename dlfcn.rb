@@ -1,4 +1,5 @@
 # ruby-ffi wrapper for dlfcn.h - dynamic load functions
+require 'rubygems'
 require 'ffi'
 module DL
   extend FFI::Library
@@ -29,4 +30,6 @@ module DL
 
 end
 
-
+if __FILE__ == $0
+  p DL.dlopen('ncurses.so', DL::RTLD_GLOBAL)
+end
