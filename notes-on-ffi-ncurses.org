@@ -210,3 +210,13 @@ libffi and dl functions?
 Note - need to unpack attr_t *attrs and short *pairs
 
 
+= Compile on Ubuntu 8.10
+
+$ sudo apt-get install libffi-dev
+
+
+= Compile ruby-ffi from source on Mac OS X
+
+$ sudo port install mercurial
+$ hg clone https://kenai.com/hg/ruby-ffi~mercurial 
+
