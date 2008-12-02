@@ -42,12 +42,12 @@ begin
   init_pair(16, NCurses::Colour::BLACK, NCurses::Colour::WHITE)
   
   1.upto(16) do |i|
-    attr_set NCurses::A_NORMAL, i, 0
+    attr_set NCurses::A_NORMAL, i, nil
     addch(?A - 1 + i)
   end
-  attr_set NCurses::A_HORIZONTAL, 0, 0
+  attr_set NCurses::A_HORIZONTAL, 0, nil
   addch(?Z | COLOR_PAIR(3))
-  attr_set A_BOLD, 2, 0
+  attr_set A_BOLD, 2, nil
   addch ?S
 
   refresh
@@ -69,7 +69,7 @@ begin
 
 rescue Object => e
   NCurses.endwin
-  puts e
+  puts e.backtrace.join("\n")
 ensure
   NCurses.endwin
   NCurses.class_eval {
