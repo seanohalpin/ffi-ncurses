@@ -18,4 +18,4 @@ end
 def argv
   [$0] + ARGV
 end
-load "examples/eg1.src"
+load "testdsl/eg1.src"
