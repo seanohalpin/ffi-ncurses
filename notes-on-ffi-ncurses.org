@@ -220,3 +220,18 @@ $ sudo apt-get install libffi-dev
 $ sudo port install mercurial
 $ hg clone https://kenai.com/hg/ruby-ffi~mercurial 
 
+= Testing
+
+- I don't want to test ncurses
+- I want to test that my Ruby wrapper produces equivalent results to
+  the same program written using the C API
+- I need to test output to a terminal
+- This can be different depending on which terminal is actually used
+- So...
+- ...the only way I can think of is to compare the output from a
+  program written in C and the equivalent program written in Ruby
+- but how do I ensure that both programs really are equivalent
+- generate from common source
+- how?
+- by using a DSL that can be used to generate both programs
+
