@@ -1,0 +1,112 @@
+= ffi-ncurses 
+
+Author: Sean O'Halpin
+
+A wrapper for ncurses 5.x using ruby-ffi (>= 0.2.0). Tested on Mac OS
+X 10.4 (Tiger) and Ubuntu 8.04 with ruby 1.8.6.
+
+The API is very much a transliteration of the C API rather than an
+attempt to provide an idiomatic Ruby object-oriented API. The intent
+is to provide a 'close to the metal' wrapper around the ncurses
+library upon which you can build your own abstractions.
+
+This is still very much a work-in-progress, so expect some rough
+edges. Having said that, you can do quite a lot with it as it is. The
+main things left to be done (apart from tests) are the keyboard
+constants and mouse event handling.
+
+Below are some very preliminary notes on usage. See the examples
+directory for real working examples.
+
+== Usage
+
+NCurses methods can be called as module methods:
+
+  require 'ffi-ncurses'
+
+  begin
+    stdscr = NCurses.initscr
+    NCurses.clear
+    NCurses.addstr("Hello world!")
+    NCurses.refresh
+    NCurses.getch
+  ensure
+    NCurses.endwin
+  end
+
+or as included methods:
+
+  include NCurses
+  begin
+    stdscr = initscr
+    start_color
+    curs_set 0
+    raw
+    cbreak
+    noecho
+    clear
+    move 10, 10
+    standout
+    addstr("Hi!")
+    standend
+  ensure
+    endwin
+  end
+
+== Set up screen
+
+  require 'ffi-ncurses'
+  
+  NCurses.initscr
+  begin	
+    ...
+  ensure
+    NCurses.endwin
+  end
+
+== Typical initialization
+
+  stdscr = NCurses.initscr
+  NCurses.start_color
+  NCurses.curs_set 0
+  NCurses.raw
+  NCurses.cbreak
+  NCurses.noecho
+  NCurses.keypad(stdscr, true)
+
+== Colours
+  
+  start_color
+  init_pair(1, NCurses::Colour::BLACK, NCurses::Colour::RED)
+  attr_set NCurses::A_NORMAL, 1, nil
+  addch(?A)
+  addch(?Z | COLOR_PAIR(1))
+
+== Cursor
+
+=== Turn cursor off
+
+  NCurses.curs_set 0
+
+=== Turn cursor on
+
+  NCurses.curs_set 1
+
+== Windows
+
+  require 'ffi-ncurses'
+  begin
+    win = newwin(6, 12, 15, 15)
+    box(win, 0, 0)
+    inner_win = newwin(4, 10, 16, 16)
+    waddstr(inner_win, (["Hello window!"] * 5).join(' '))
+    wrefresh(win)
+    wrefresh(inner_win)
+    ch = wgetch(inner_win)
+
+  rescue Object => e
+    NCurses.endwin
+    puts e
+  ensure
+    NCurses.endwin
+  end
