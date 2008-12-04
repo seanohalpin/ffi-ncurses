@@ -1,11 +1,10 @@
-#!/usr/bin/env ruby
 # ruby-ffi wrapper for ncurses
 # Sean O'Halpin
-# version 0.0.1 - 2008-11-18
-# tested with ruby-ffi-0.0.2 from kenai
-# - fixes missing :short typedef and adds varargs support)
-
+# version 0.1.0 - 2008-12-04
+# requires ruby-ffi-0.2.0
+# tested with ruby 1.8, jruby 1.1.6 on Ubuntu 8.04, Mac OS X 10.4
 require 'rubygems'
+gem 'ffi', '>= 0.2.0'
 require 'ffi'
 
 module NCurses
@@ -375,9 +374,8 @@ module NCurses
     begin
       attach_function(*func)
     rescue Object => e
-      #STDERR.puts "error attaching function: #{func[0]} #{$!}"
+      # for debugging
       @unattached_functions << func[0]
-      #raise
     end
   end
   
