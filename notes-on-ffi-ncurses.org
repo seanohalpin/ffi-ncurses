@@ -107,7 +107,7 @@ only one value (but called attrs because it specifies both the
 foreground and background attributes).
 
 BTW, that final argument (*opts) is never used - you should always
-pass 0 (which is a NULL pointer in C) both here and in the
+pass nil in Ruby (NULL in C) both here and in the
 corresponding attr_set function (and everywhere *opts is
 specified). It is 'reserved for future use'.  I'm sure it seemed like
 a good idea at the time... A good example of YAGNI.
@@ -118,50 +118,159 @@ To work with these, we need FFI's MemoryPointer.
 
 == MEVENT
 
-Mouse event. If we want to support mice, we need to get to grips with
-how to set up and receive structures.
+Mouse event. If we want to support mice, we need to set up and receive
+the MEVENT struct.
+
+ffi makes this easy. Just define the struct:
+
+  class MEVENT < FFI::Struct
+    layout :id, :short,
+    :x, :int,
+    :y, :int,
+    :z, :int,
+    :bstate, :ulong
+  end
+
+specify which functions require a pointer to it:
+
+  attach_function :getmouse, [MEVENT], :int
+  attach_function :ungetmouse, [MEVENT], :int
+
+allocate it before use:
+
+  mouse_event = MEVENT.new
+
+call the function:
+
+  if getmouse(mouse_event) == NCurses::OK
+
+and check the results:
+
+  if mouse_event[:bstate] & NCurses::BUTTON1_PRESSED
 
 == cchar_t
 There is only one other non-opaque data structure, cchar_t which is only
 used in ncurses debugging with XOPEN_SOURCE_EXTENDED, so we won't
 worry about it just now.
 
+= Comments
+
+C-style comments
+
+  /* this is a comment */
+
+  /* 
+   *  this is a multi-line
+   *  comment 
+   */
+
+get translated to Ruby-style:
+
+  # this is a comment
+
+  # this is a multi-line
+  # comment 
+  
 = Constants and macros (#defines)
 
-= Notes on ncurses
+Most constants can be mechanically translated, e.g.
 
-- doesn't surprise me 00000001 that ncurses 5.7 fails to compile on Ubuntu 8.10
+  #define KEY_DOWN  0402   /* down-arrow key */
 
-== naming is dreadful 
-- there is attron and attr_on (taking different args)
-- mixture of object_verb, objectverb, verbobject and verb_object (curs_set,
-  bkgdset, copywin, init_color)
-- insnstr, insstr, instr
-- addch, waddch, mvaddch, mvwaddch - there is a certain logic to this,
-  but it's completely unnecessary - addch is either a macro or
-  function that calls waddch with stdscr as the first parameter and
-  there is little or nothing gained in terms of program efficiency
-  from combining move and addch and way too much cognitive
-  overload. IMHO an example of a very poor API design.
+becomes
 
-- A more modern API (i.e. circa 1985) would probably look something like this:
+  KEY_DOWN = 0402 # down-arrow key
 
-    ncurses_window_move(window, row, col);
-    ncurses_window_putc(window, char);
-    ncurses_window_move_putc(window, row, col, char);
-    etc.
+This is so trivial I did it in emacs. However, it might be worthwhile
+to knock up a simple 80/20 util to automate it.
 
-  completely eschewing the functions operating on stdscr.
+I have transliterated macros as closely as possible to the
+original. So this means very unrubyish code (e.g. method names in
+ALL_CAPS and C-like bit twiddling). The reason is to stay as close as
+possible to the source. It's a lot easier to track down problems if
+the mapping is almost one-to-one.
 
-== historical baggage
+Some definitions are dependent on macros. In that case, I have defined
+the macros as module methods.
 
-== Old-school C coding style
+Conditional compilation like this:
+
+  #if NCURSES_MOUSE_VERSION > 1
+  #define NCURSES_MOUSE_MASK(b,m) ((m) << (((b) - 1) * 5))
+  #else
+  #define NCURSES_MOUSE_MASK(b,m) ((m) << (((b) - 1) * 6))
+  #endif
+
+does not exist in the same way in Ruby. Instead, we can check at
+runtime.
+
+Here is an excerpt from the mouse handling code that shows these
+transliterations.
+
+  #if NCURSES_MOUSE_VERSION > 1
+  #define NCURSES_MOUSE_MASK(b,m) ((m) << (((b) - 1) * 5))
+  #else
+  #define NCURSES_MOUSE_MASK(b,m) ((m) << (((b) - 1) * 6))
+  #endif
+
+  #define	NCURSES_BUTTON_RELEASED	001L
+  /* [snip] */
+
+  /* event masks */
+  #define	BUTTON1_RELEASED	NCURSES_MOUSE_MASK(1, NCURSES_BUTTON_RELEASED)
+
+becomes this:
+
+  if NCURSES_MOUSE_VERSION > 1
+    def self.NCURSES_MOUSE_MASK(b,m)
+      ((m) << (((b) - 1) * 5))
+    end
+  else
+    def self.NCURSES_MOUSE_MASK(b,m)
+      ((m) << (((b) - 1) * 6))
+    end
+  end
+
+  NCURSES_BUTTON_RELEASED	= 001
+  # [snip]
+
+  # event masks 
+  BUTTON1_RELEASED        = NCURSES_MOUSE_MASK(1, NCURSES_BUTTON_RELEASED)
 
 = Variadic functions
 
 Variadic functions are those taking an variable number of arguments
 (monadic = 1, dyadic = 2, triadic = 3, variadic = variable). In C,
 they are implemented using the varargs protocol.
+
+The C function declaration:
+
+  extern NCURSES_EXPORT(int) printw (const char *,...)
+		GCC_PRINTFLIKE(1,2);
+
+reduced to its essentials looks like this
+
+  int printw (const char *,...);
+
+That '...', called an ellipsis, denotes that this function takes a
+variable number of arguments.
+
+Declaring this function in ffi is easy:
+
+  attach_function :printw, [:string, :varargs], :int
+
+Using it is slightly more involved.
+
+The main thing to remember with variadic functions is that Ruby has no
+way of automatically figuring out which C-type any particular argument
+should be translated to. This means you have to specify the C-types
+when you pass in the optional args.
+
+For example:
+
+  NCurses.printw("Hello %s! There are %d arguments to this variadic function!", :string, "world", :int, 2)
+
+(TODO: Where are the possible types defined in ffi?).
 
 = Typedefs
 
@@ -172,6 +281,8 @@ definition are too great and all too likely.
 
 Instead, define your own type aliases as constants and refer to those,
 e.g. NCURSES_ATTR_T = :uint.
+
+= 32 vs 64 bits
 
 TODO: address 32 vs 64 bit.
 
@@ -209,12 +320,6 @@ libffi and dl functions?
 
 Note - need to unpack attr_t *attrs and short *pairs
 
-
-= Compile on Ubuntu 8.10
-
-$ sudo apt-get install libffi-dev
-
-
 = Compile ruby-ffi from source on Mac OS X
 
 $ sudo port install mercurial
@@ -234,4 +339,22 @@ $ hg clone https://kenai.com/hg/ruby-ffi~mercurial
 - generate from common source
 - how?
 - by using a DSL that can be used to generate both programs
+
+- see testdsl branch (in directory testdsl/) for a start on this idea
+
+= NCurses Versions
+- these are the ncurses versions I know about
+  - Mac OS X 10.4
+  - Ubuntu 8.04
+  - PDcurses-3.3 (XCurses) 
+
+= Mouse handling
+
+- different under Linux console and, say, gnome-terminal or xterm
+  - under X you need to specify keypad(stdscr, 1) to get KEY_MOUSE
+    code reported
+- BUTTON_PRESS1 is not reported unless you hold down the mouse button
+- a normal click is reported as a BUTTON_CLICK
+
+
 
