@@ -1,0 +1,48 @@
+
+
+module NCurses
+  # mixin FFI
+  extend FFI::Library
+  # specify shared lib
+  # this becomes libncurse.dylib on Mac OS X
+  # and libncurses.so on Linux
+  ffi_lib 'ncurses'
+
+  # extern NCURSES_EXPORT(WINDOW *) initscr (void)
+
+  attach_function :initscr, [], :pointer
+  # extern NCURSES_EXPORT(int) addch (const chtype);
+  attach_function :addch, [:uint], :int
+  # extern NCURSES_EXPORT(int) endwin (void);
+  attach_function :endwin, [], :int
+end
+
+This is what the +initscr+ function declaration looks like in +ncurses.h+:
+
+  extern NCURSES_EXPORT(WINDOW *) initscr (void)
+
+after passing through the preprocessor, this becomes:
+
+  extern WINDOW * initscr (void);
+
+This function returns a _pointer to a WINDOW structure_ (that's what
++WINDOW*+ means). C libraries are often present this kind of
+interface, where you pass around pointers to structures but
+effectively treat them as handles on opaque data types. In other
+words, you are expected to operate on the data structures only through
+the API defined via the functions presented by the library, not by
+accessing structure members directly. A familiar example of this is
+the +FILE*+ handle you use when using C stream IO.
+
+What this means to us is that we can ignore any details of what
+exactly a WINDOW structure looks like and treat the pointer as an
+identifier. C has a generic "I can point at anything but don't know
+what it is" pointer data type: the void* pointer. This is exactly what
+we want and we specify it to FFI using the :pointer datatype.
+
+  attach_function :initscr, [], :pointer
+
+initscr takes no arguments (that's what +(void)+ means). You specify
+this to FFI by passing an empty array (not by passing +[:void]+!).
+
+
