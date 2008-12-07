@@ -1,9 +1,0 @@
-  initscr();
-  nloop(3) { 
-    addstr("Hello World\n");
-  }
-  refresh();
-  c_if(argc > 1) {
-    getch();
-  }
-  endwin();
