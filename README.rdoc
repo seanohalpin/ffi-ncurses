@@ -169,6 +169,11 @@ yet.
 
 == TO DO
 
+=== Turn into a gem
+
+Time to publish as a gem. Need to move files around and make sure it
+works as a gem.
+
 === Complete translation of core functions to Darwin (Mac OS X)
 
 There are many macros in darwin ncurses.h which I haven't
