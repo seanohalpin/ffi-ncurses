@@ -155,7 +155,7 @@ and TRIPLE_CLICK.
 
 = Experimental stuff
 
-== Speciyfing which curses library to use
+== Specifying which curses library to use
 
 You can specify which variant of curses you want to use by setting the
 environment variable +RUBY_FFI_NCURSES_LIB+ to the one you want. For
@@ -166,3 +166,32 @@ example, to use PDCurses X11 curses lib, use:
 You can use this to specify +ncursesw+ for example. Please note that
 only the bog standard ncurses lib has been in any way tested as of
 yet.
+
+== TO DO
+
+=== Complete translation of core functions to Darwin (Mac OS X)
+
+There are many macros in darwin ncurses.h which I haven't
+implemented yet.
+
+=== Tests
+
+This is tricky - I'm not sure exactly how to properly test a wrapper
+for a library like ncurses. I don't want to test ncurses! Instead, I
+want to test that my wrapper faithfully reproduces the functionality
+of the platform's ncurses lib. To that end, I'm experimenting with a
+simple DSL to generate both C and Ruby versions of a test. With that I
+can generate equivalent programs and compare the output. However, this
+is not really ready for prime time yet.
+
+=== Tidy up internals and examples
+
+Things got a bit messy as I switched between the Linux and Mac
+versions. The examples should be more focussed.
+
+=== Scope implementation of Menu and Form interface wrappers
+
+I'm not particularly interested in the ncurses extension libraries for
+forms and menus. I would rather spend time implementing similar
+functionality on top of a portable text console library. However, in
+the interests of completeness, I suppose I ought to at least scope it out.
