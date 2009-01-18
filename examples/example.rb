@@ -1,4 +1,9 @@
 #!/usr/bin/env ruby -w
+#
+# This file exercises a mish-mash of different features.
+#
+# Sean O'Halpin, 2009-01-18
+#
 require 'ffi-ncurses'
 begin	
   # the methods can be called as module methods
@@ -20,7 +25,11 @@ begin
   clear
   move 10, 10
   standout
-  printw("Hi!")
+  # hmmm.. you have to jump through some hoops to avoid temporary variables
+  # 
+  printw("Hi! maxyx %d %d\n", *([:int, :int].zip(getmaxyx(NCurses.stdscr)).flatten))
+  # easier to do this
+  #addstr(sprintf("paryx %d %d\n", *getparyx(NCurses.stdscr)))
   standend
 
   init_pair(1, NCurses::Colour::BLACK, NCurses::Colour::BLACK)
@@ -59,22 +68,41 @@ begin
   raw
   cbreak
   noecho
-  win = newwin(6, 12, 15, 15)
+  win = newwin(12, 22, 15, 15)
   box(win, 0, 0)
-  inner_win = newwin(4, 10, 16, 16)
+
+  # inner_win = newwin(10, 20, 16, 16)
+
+  # note: you can cause a bus error if subwindow parameters exceed
+  # parent boundaries
+
+  # inner_win = subwin(win, 8, 18, 18, 18)
+  inner_win = derwin(win, 8, 18, 1, 2)
+  waddstr(inner_win, sprintf("begyx %d %d\n", *getbegyx(inner_win)))
+  waddstr(inner_win, sprintf("maxyx %d %d\n", *getmaxyx(inner_win)))
+  waddstr(inner_win, sprintf("paryx %d %d\n", *getparyx(inner_win)))
   waddstr(inner_win, (["Hello window!"] * 5).join(' '))
+
   wrefresh(win)
   wrefresh(inner_win)
-  ch = wgetch(inner_win)
-
+  ch = wgetch(win)
+  wclear(inner_win)
+  # note: you must clear up subwindows in reverse order
+  delwin(inner_win)
+  wmove(win, 1, 2)
+  waddstr(win, "Bye bye!")
+  wrefresh(win)
+  ch = wgetch(win)
+  delwin(win)
+  
 rescue Object => e
   NCurses.endwin
   puts e.backtrace.join("\n")
 ensure
   NCurses.endwin
-  NCurses.class_eval {
-    require 'pp'
-    pp @unattached_functions
+#   NCurses.class_eval {
+#     require 'pp'
+#     pp @unattached_functions
 
-  }
+#   }
 end

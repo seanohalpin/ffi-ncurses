@@ -1,6 +1,7 @@
 # ruby-ffi wrapper for ncurses
 # Sean O'Halpin
 # version 0.1.0 - 2008-12-04
+# version 0.2.0 - 2009-01-18
 # requires ruby-ffi-0.2.0
 # tested with ruby 1.8, jruby 1.1.6 on Ubuntu 8.04, Mac OS X 10.4
 require 'rubygems'
@@ -106,7 +107,8 @@ module NCurses
      [:getmaxy, [:pointer], :int],
      [:getparx, [:pointer], :int],
      [:getpary, [:pointer], :int],
-     
+
+     # this is defined in mouse.rb
      #      [:getmouse, [:pointer], :int],
      [:getnstr, [:string, :int], :int],
      [:getstr, [:string], :int],
@@ -469,15 +471,18 @@ module NCurses
     def getyx(win)
       [NCurses.getcury(win), NCurses.getcurx(win)]
     end
-    def getmaxyx(win)
-      [NCurses.getmaxy(win), NCurses.getmaxx(win)]
+    def getbegyx(win)
+      [NCurses.getbegy(win), NCurses.getbegx(win)]
     end
     def getparyx(win)
       [NCurses.getpary(win), NCurses.getparx(win)]
     end
+    def getmaxyx(win)
+      [NCurses.getmaxy(win), NCurses.getmaxx(win)]
+    end
 
     def self.fixup(function, &block)
-      if NCurses.unattached_functions.include?(:getch)
+      if NCurses.unattached_functions.include?(function)
         block.call
       end
     end
@@ -492,5 +497,10 @@ module NCurses
   include EmulatedFunctions
   extend EmulatedFunctions
 
+  if RUBY_PLATFORM =~ /darwin/
+    require 'ffi-ncurses-darwin'
+    include NCurses::Darwin
+  end
+  
 end
 
