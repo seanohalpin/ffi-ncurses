@@ -12,17 +12,19 @@ library upon which you can build your own abstractions.
 
 This is still very much a work-in-progress, so expect some rough
 edges. Having said that, you can do quite a lot with it as it is. The
-main things left to be done (apart from tests) are the keyboard
-constants and mouse event handling.
+main things left to be done are tests, access to global variables and
+various macros.
 
 Below are some very preliminary notes on usage. See the examples
 directory for real working examples.
 
 == Usage
 
-NCurses methods can be called as module methods:
+Load the library with:
 
   require 'ffi-ncurses'
+
+NCurses methods can be called as module methods:
 
   begin
     stdscr = NCurses.initscr
