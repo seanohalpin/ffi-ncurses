@@ -167,34 +167,39 @@ You can use this to specify +ncursesw+ for example. Please note that
 only the bog standard ncurses lib has been in any way tested as of
 yet.
 
-== TO DO
+= TO DO
 
-=== Turn into a gem
+== Turn into a gem
 
 Time to publish as a gem. Need to move files around and make sure it
 works as a gem.
 
-=== Complete translation of core functions to Darwin (Mac OS X)
+== Complete translation of core functions to Darwin (Mac OS X)
 
 There are many macros in darwin ncurses.h which I haven't
 implemented yet.
 
-=== Tests
+== Work out how to get hold of curscr global variable
+
+There's no way (so far) to access (per process) global variables in
+DLLs (hence the hack to stash +stdscr+).
+
+== Tests
 
 This is tricky - I'm not sure exactly how to properly test a wrapper
-for a library like ncurses. I don't want to test ncurses! Instead, I
-want to test that my wrapper faithfully reproduces the functionality
-of the platform's ncurses lib. To that end, I'm experimenting with a
-simple DSL to generate both C and Ruby versions of a test. With that I
-can generate equivalent programs and compare the output. However, this
-is not really ready for prime time yet.
+for a library like ncurses. I certainly don't want to test ncurses!
+Instead, I want to ensure my wrapper faithfully reproduces the
+functionality of the platform's ncurses lib. To that end, I'm
+experimenting with a simple DSL to generate both C and Ruby versions
+of a test. With that I can generate equivalent programs and compare
+the output. However, this is not really ready for prime time yet.
 
-=== Tidy up internals and examples
+== Tidy up internals and examples
 
 Things got a bit messy as I switched between the Linux and Mac
 versions. The examples should be more focussed.
 
-=== Scope implementation of Menu and Form interface wrappers
+== Scope implementation of Menu and Form interface wrappers
 
 I'm not particularly interested in the ncurses extension libraries for
 forms and menus. I would rather spend time implementing similar
