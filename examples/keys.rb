@@ -1,7 +1,7 @@
 require 'ffi-ncurses'
-include NCurses
+include FFI::NCurses
 begin
-  stdscr = initscr
+  initscr
   raw
   keypad stdscr, 1
   noecho
@@ -10,7 +10,7 @@ begin
   while ch != 27
     clear
     addstr "Press any key (Escape to exit): "
-    printw "%d", :int, ch
+    printw "%d %c", :int, ch, :int, ch
     refresh
     ch = getch
   end

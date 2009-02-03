@@ -1,5 +1,5 @@
 require 'ffi-ncurses'
-include NCurses
+include FFI::NCurses
 begin
   greeting = ARGV.shift || "World"
   stdscr = initscr
