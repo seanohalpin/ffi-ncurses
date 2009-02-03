@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = "ffi-ncurses"
-  s.version     = "0.1.0"
-  s.date        = "2009-01-18"
+  s.version     = "0.2.0"
+  s.date        = "2009-02-03"
   s.summary     = "FFI wrapper for ncurses"
   s.email       = "sean.ohalpin@gmail.com"
   s.homepage    = "http://github.com/seanohalpin/ffi-ncurses"
@@ -11,10 +11,12 @@ Gem::Specification.new do |s|
   s.files       =
     [
      "History.txt", 
-     "README.txt", 
-     "Rakefile", 
+     "README.rdoc",
      "ffi-ncurses.gemspec", 
-     "lib/ffi/ffi-ncurses.rb", 
+     "ffi-ncurses.rb",
+     "ffi-ncurses-darwin.rb",
+     "ffi-ncurses-mouse.rb",
+     *Dir["examples/example*.rb"],
     ]
 #   s.test_files  =
 #     [
