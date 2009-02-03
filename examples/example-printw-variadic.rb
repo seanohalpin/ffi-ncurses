@@ -2,11 +2,11 @@
 # shows how to call variadic functions
 require 'ffi-ncurses'
 begin	
-  NCurses.initscr
-  NCurses.clear
-  NCurses.printw("Hello %s! There are %d arguments to this variadic function!", :string, "world", :int, 2)
-  NCurses.refresh
-  NCurses.getch
+  FFI::NCurses.initscr
+  FFI::NCurses.clear
+  FFI::NCurses.printw("Hello %s! There are %d arguments to this variadic function!", :string, "world", :int, 2)
+  FFI::NCurses.refresh
+  FFI::NCurses.getch
 ensure
-  NCurses.endwin
+  FFI::NCurses.endwin
 end

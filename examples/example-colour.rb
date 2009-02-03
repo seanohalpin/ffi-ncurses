@@ -1,5 +1,5 @@
 require 'ffi-ncurses'
-include NCurses
+include FFI::NCurses
 
 initscr
 begin

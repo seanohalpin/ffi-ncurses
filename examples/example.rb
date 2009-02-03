@@ -7,15 +7,15 @@
 require 'ffi-ncurses'
 begin	
   # the methods can be called as module methods
-  NCurses.initscr
-  NCurses.clear
-  NCurses.printw("Hello world!")
-  NCurses.refresh
-  NCurses.getch
-  NCurses.endwin
+  FFI::NCurses.initscr
+  FFI::NCurses.clear
+  FFI::NCurses.printw("Hello world!")
+  FFI::NCurses.refresh
+  FFI::NCurses.getch
+  FFI::NCurses.endwin
 
   # or as included methods
-  include NCurses
+  include FFI::NCurses
   initscr
   start_color
   curs_set 0
@@ -27,34 +27,34 @@ begin
   standout
   # hmmm.. you have to jump through some hoops to avoid temporary variables
   # 
-  printw("Hi! maxyx %d %d\n", *([:int, :int].zip(getmaxyx(NCurses.stdscr)).flatten))
+  printw("Hi! maxyx %d %d\n", *([:int, :int].zip(getmaxyx(FFI::NCurses.stdscr)).flatten))
   # easier to do this
-  #addstr(sprintf("paryx %d %d\n", *getparyx(NCurses.stdscr)))
+  #addstr(sprintf("paryx %d %d\n", *getparyx(FFI::NCurses.stdscr)))
   standend
 
-  init_pair(1, NCurses::Colour::BLACK, NCurses::Colour::BLACK)
-  init_pair(2, NCurses::Colour::RED, NCurses::Colour::BLACK)
-  init_pair(3, NCurses::Colour::GREEN, NCurses::Colour::BLACK)
-  init_pair(4, NCurses::Colour::YELLOW, NCurses::Colour::BLACK)
-  init_pair(5, NCurses::Colour::BLUE, NCurses::Colour::BLACK)
-  init_pair(6, NCurses::Colour::MAGENTA, NCurses::Colour::BLACK)
-  init_pair(7, NCurses::Colour::CYAN, NCurses::Colour::BLACK)
-  init_pair(8, NCurses::Colour::WHITE, NCurses::Colour::BLACK)
+  init_pair(1, FFI::NCurses::Colour::BLACK, FFI::NCurses::Colour::BLACK)
+  init_pair(2, FFI::NCurses::Colour::RED, FFI::NCurses::Colour::BLACK)
+  init_pair(3, FFI::NCurses::Colour::GREEN, FFI::NCurses::Colour::BLACK)
+  init_pair(4, FFI::NCurses::Colour::YELLOW, FFI::NCurses::Colour::BLACK)
+  init_pair(5, FFI::NCurses::Colour::BLUE, FFI::NCurses::Colour::BLACK)
+  init_pair(6, FFI::NCurses::Colour::MAGENTA, FFI::NCurses::Colour::BLACK)
+  init_pair(7, FFI::NCurses::Colour::CYAN, FFI::NCurses::Colour::BLACK)
+  init_pair(8, FFI::NCurses::Colour::WHITE, FFI::NCurses::Colour::BLACK)
 
-  init_pair(9, NCurses::Colour::BLACK, NCurses::Colour::BLACK)
-  init_pair(10, NCurses::Colour::BLACK, NCurses::Colour::RED)
-  init_pair(11, NCurses::Colour::BLACK, NCurses::Colour::GREEN)
-  init_pair(12, NCurses::Colour::BLACK, NCurses::Colour::YELLOW)
-  init_pair(13, NCurses::Colour::BLACK, NCurses::Colour::BLUE)
-  init_pair(14, NCurses::Colour::BLACK, NCurses::Colour::MAGENTA)
-  init_pair(15, NCurses::Colour::BLACK, NCurses::Colour::CYAN)
-  init_pair(16, NCurses::Colour::BLACK, NCurses::Colour::WHITE)
+  init_pair(9, FFI::NCurses::Colour::BLACK, FFI::NCurses::Colour::BLACK)
+  init_pair(10, FFI::NCurses::Colour::BLACK, FFI::NCurses::Colour::RED)
+  init_pair(11, FFI::NCurses::Colour::BLACK, FFI::NCurses::Colour::GREEN)
+  init_pair(12, FFI::NCurses::Colour::BLACK, FFI::NCurses::Colour::YELLOW)
+  init_pair(13, FFI::NCurses::Colour::BLACK, FFI::NCurses::Colour::BLUE)
+  init_pair(14, FFI::NCurses::Colour::BLACK, FFI::NCurses::Colour::MAGENTA)
+  init_pair(15, FFI::NCurses::Colour::BLACK, FFI::NCurses::Colour::CYAN)
+  init_pair(16, FFI::NCurses::Colour::BLACK, FFI::NCurses::Colour::WHITE)
   
   1.upto(16) do |i|
-    attr_set NCurses::A_NORMAL, i, nil
+    attr_set FFI::NCurses::A_NORMAL, i, nil
     addch(?A - 1 + i)
   end
-  attr_set NCurses::A_HORIZONTAL, 0, nil
+  attr_set FFI::NCurses::A_HORIZONTAL, 0, nil
   addch(?Z | COLOR_PAIR(3))
   attr_set A_BOLD, 2, nil
   addch ?S
@@ -96,11 +96,11 @@ begin
   delwin(win)
   
 rescue Object => e
-  NCurses.endwin
-  puts e.backtrace.join("\n")
+  FFI::NCurses.endwin
+  raise
 ensure
-  NCurses.endwin
-#   NCurses.class_eval {
+  FFI::NCurses.endwin
+#   FFI::NCurses.class_eval {
 #     require 'pp'
 #     pp @unattached_functions
 

@@ -1,42 +1,45 @@
 require 'ffi-ncurses'
 require 'ffi-ncurses-mouse'
 
-include NCurses
+include FFI::NCurses
 
-  begin
-    initscr
-    clear
-    noecho
-    cbreak
-    keypad stdscr, NCurses::TRUE
+begin
+  initscr
+  clear
+  noecho
+  cbreak
+  keypad stdscr, FFI::NCurses::TRUE
 
-    # Get all the mouse events
-    mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, nil)
-    mouse_event = NCurses::MEVENT.new
-    ch = 0
-    until ch == 113 do
-      ch = getch
-      case ch
-      when NCurses::KEY_MOUSE
-        if getmouse(mouse_event) == NCurses::OK
-          if mouse_event[:bstate] & NCurses::BUTTON1_PRESSED
-#          if NCurses.BUTTON_PRESS(mouse_event[:bstate], 1)
-            addstr "Button 1 pressed (%d, %d)" % [mouse_event[:y], mouse_event[:x]]
-          else
-            addstr "Other button pressed"
-          end
-          row = getcury(stdscr) + 1
-          move row, 0
-          move mouse_event[:y], mouse_event[:x]
-          addch " "[0] | NCurses::WA_STANDOUT
-          move row, 0
+  # Get all the mouse events
+  mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, nil)
+  mouse_event = MEVENT.new
+  ch = 0
+  until ch == ?q do
+    ch = getch
+    case ch
+    when KEY_MOUSE
+      if getmouse(mouse_event) == OK
+        if FFI::NCurses::BUTTON_CLICK(mouse_event[:bstate], 1) > 0
+          addstr "Button 1 pressed (%d, %d, %x)" % [mouse_event[:y], mouse_event[:x], mouse_event[:bstate]]
+        elsif FFI::NCurses::BUTTON_CLICK(mouse_event[:bstate], 2) > 0
+          addstr "Button 2 pressed (%d, %d, %x)" % [mouse_event[:y], mouse_event[:x], mouse_event[:bstate]]
+        elsif FFI::NCurses::BUTTON_CLICK(mouse_event[:bstate], 3) > 0
+          addstr "Button 3 pressed (%d, %d, %x)" % [mouse_event[:y], mouse_event[:x], mouse_event[:bstate]]
+        else
+          addstr "Other mouse event %x" % mouse_event[:bstate]
         end
-      else
-        printw "other event (%lu)", :ulong, ch
-        addstr "\n"
+        row = getcury(stdscr) + 1
+        move row, 0
+        move mouse_event[:y], mouse_event[:x]
+        addch " "[0] | WA_STANDOUT
+        move row, 0
       end
-      refresh
+    else
+      printw "other event (%lu)", :ulong, ch
+      addstr "\n"
     end
-  ensure
-    endwin
+    refresh
   end
+ensure
+  endwin
+end

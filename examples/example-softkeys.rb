@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby -w
 require 'ffi-ncurses'
-include NCurses
+include FFI::NCurses
 begin
   slk_init(0)
   initscr
@@ -15,5 +15,5 @@ begin
   slk_refresh
   getch
 ensure
-  NCurses.endwin
+  endwin
 end

@@ -1,5 +1,5 @@
 require 'ffi-ncurses'
-include NCurses
+include FFI::NCurses
 
 begin
   initscr
@@ -13,8 +13,8 @@ begin
   ch = wgetch(inner_win)
 
 rescue Object => e
-  NCurses.endwin
+  endwin
   puts e
 ensure
-  NCurses.endwin
+  endwin
 end

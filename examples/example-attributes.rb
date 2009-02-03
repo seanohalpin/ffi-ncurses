@@ -1,5 +1,5 @@
 require 'ffi-ncurses'
-include NCurses
+include FFI::NCurses
 initscr
 begin
   attributes = %w[
@@ -24,7 +24,7 @@ begin
   ]
 
   attributes.each do |attr|
-    attr_const = NCurses.const_get(attr)
+    attr_const = FFI::NCurses.const_get(attr)
     attr_set attr_const, 0, nil
     addstr "THIS IS #{attr}\n"
   end
