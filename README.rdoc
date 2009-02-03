@@ -207,3 +207,9 @@ I'm not particularly interested in the ncurses extension libraries for
 forms and menus. I would rather spend time implementing similar
 functionality on top of a portable text console library. However, in
 the interests of completeness, I suppose I ought to at least scope it out.
+
+= Trivia
+
+While researching ncurses on Google, I innocently entered "curses
+getsx" as a search term. Not one for "I'm Feeling Lucky".
+
