@@ -1,0 +1,7 @@
+/pkg/ffi-ncurses-0.2.0.gem
+/pkg/
+/tools/host-os.rb
+/tools/test-button-press.rb
+/dlfcn.rb
+/errors
+/ffi-ncurses-jruby.rb

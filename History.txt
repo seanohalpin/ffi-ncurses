@@ -1,0 +1,4 @@
+== 0.2.0 / 2009-02-03
+
+* Features
+  * Initial gem release
