@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby -w
+#!/usr/bin/env ruby
 # shows how to call variadic functions
 #
 # Sean O'Halpin, 2009-02-15
