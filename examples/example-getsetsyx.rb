@@ -1,3 +1,7 @@
+#!/usr/bin/env ruby -w
+#
+# Sean O'Halpin, 2009-02-15
+#
 require 'ffi-ncurses'
 
 # translated from "Programmer's Guide to NCurses", Gookin, p. 292

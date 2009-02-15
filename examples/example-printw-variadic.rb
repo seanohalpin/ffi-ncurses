@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby -w
 # shows how to call variadic functions
+#
+# Sean O'Halpin, 2009-02-15
+#
 require 'ffi-ncurses'
 begin	
   FFI::NCurses.initscr
