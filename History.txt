@@ -1,10 +1,16 @@
+== 0.3.0 / 2009-02-15
+
+* Features
+  * Use FFI::NCurses rather than NCurses
+  * Removed dependency on rubygems
+  * Reorganised library layout
+
 == 0.2.0 / 2009-02-03
 
 * Features
   * Initial gem release
   * Most features of ncurses wrapped for Linux, Mac, ruby 1.8.6
     and JRuby 1.1.6
-  * Removed dependency on rubygems
 
 * Bugs
   * +newscr+ and +curscr+ cannot be implemented in JRuby until
