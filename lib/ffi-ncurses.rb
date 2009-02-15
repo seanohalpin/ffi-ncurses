@@ -513,6 +513,9 @@ module FFI
     end
     include Constants
 
+    require 'ffi-ncurses/winstruct'
+    include WinStruct
+    
     module EmulatedFunctions
       
       # these 'functions' are implemented as macros in ncurses
