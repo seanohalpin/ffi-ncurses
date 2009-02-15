@@ -10,5 +10,26 @@ components:
   name: mac
 - !ditz.rubyforge.org,2008-03-06/component 
   name: linux
-releases: []
-
+- !ditz.rubyforge.org,2008-03-06/component 
+  name: docs
+- !ditz.rubyforge.org,2008-03-06/component 
+  name: jruby
+releases: 
+- !ditz.rubyforge.org,2008-03-06/release 
+  name: 0.2.0
+  status: :unreleased
+  release_time: 
+  log_events: 
+  - - 2009-02-15 14:45:23.949378 Z
+    - Sean O'Halpin <sean.ohalpin@gmail.com>
+    - created
+    - first gem version
+- !ditz.rubyforge.org,2008-03-06/release 
+  name: 0.3.0
+  status: :unreleased
+  release_time: 
+  log_events: 
+  - - 2009-02-15 14:46:52.716797 Z
+    - Sean O'Halpin <sean.ohalpin@gmail.com>
+    - created
+    - update to use JRuby 1.1.7 features

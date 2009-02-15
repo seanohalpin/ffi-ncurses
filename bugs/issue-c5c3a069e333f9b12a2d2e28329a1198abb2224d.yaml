@@ -1,22 +1,22 @@
 --- !ditz.rubyforge.org,2008-03-06/issue 
-title: Convert to gem
-desc: Reorganize project into gemmable form
+title: Update docs to use FFI::NCurses instead of NCurses
+desc: ""
 type: :task
-component: ffi-ncurses
+component: docs
 release: 0.2.0
 reporter: Sean O'Halpin <sean.ohalpin@gmail.com>
 status: :unstarted
 disposition: 
-creation_time: 2009-02-15 14:01:48.350769 Z
+creation_time: 2009-02-15 14:40:35.292996 Z
 references: []
 
-id: 0d39c00f35e4089369fef943f5fb6d2ab7b9a54e
+id: c5c3a069e333f9b12a2d2e28329a1198abb2224d
 log_events: 
-- - 2009-02-15 14:01:58.279209 Z
+- - 2009-02-15 14:40:36.700857 Z
   - Sean O'Halpin <sean.ohalpin@gmail.com>
   - created
   - ""
-- - 2009-02-15 14:46:04.468917 Z
+- - 2009-02-15 14:47:30.236981 Z
   - Sean O'Halpin <sean.ohalpin@gmail.com>
   - assigned to release 0.2.0 from unassigned
   - ""

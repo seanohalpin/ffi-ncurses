@@ -1,0 +1,22 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Add curscr and newscr for Mac OSX
+desc: depends on find_sym being implemented in JRuby 1.1.7
+type: :bugfix
+component: ffi-ncurses
+release: 0.3.0
+reporter: Sean O'Halpin <sean.ohalpin@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-15 14:43:28.780995 Z
+references: []
+
+id: 81e275637d654bab4ee3054fe247d0930a941269
+log_events: 
+- - 2009-02-15 14:43:31.421114 Z
+  - Sean O'Halpin <sean.ohalpin@gmail.com>
+  - created
+  - ""
+- - 2009-02-15 14:47:11.940814 Z
+  - Sean O'Halpin <sean.ohalpin@gmail.com>
+  - assigned to release 0.3.0 from unassigned
+  - ""
