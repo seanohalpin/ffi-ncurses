@@ -11,12 +11,14 @@ begin
   noecho
   curs_set 0
   ch = 0
+  name = "none"
   while ch != 27
     clear
     addstr "Press any key (Escape to exit): "
-    printw "%d %c", :int, ch, :int, ch
+    printw "name: %s dec: %d char: [%c]", :string, name, :int, ch, :int, ch
     refresh
     ch = getch
+    name = keyname(ch)
   end
 ensure
   endwin
