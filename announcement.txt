@@ -1,0 +1,23 @@
+ffi-ncurses version 0.3.0
+    by Sean O'Halpin
+    http://github.com/seanohalpin/ffi-ncurses
+
+== DESCRIPTION
+
+An FFI wrapper for ncurses 5.x. Tested on Mac OS X 10.4 (Tiger) and
+Ubuntu 8.04 with ruby 1.8.6 using ruby-ffi (>= 0.2.0) and JRuby 1.1.6.
+
+The API is very much a transliteration of the C API rather than an
+attempt to provide an idiomatic Ruby object-oriented API. The intent
+is to provide a 'close to the metal' wrapper around the ncurses
+library upon which you can build your own abstractions.
+
+See the examples directory for real working examples.
+
+== CHANGES
+
+* Features
+  * Use FFI::NCurses rather than NCurses
+  * Removed dependency on rubygems
+  * Reorganised library layout
+
