@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Convert to gem
+desc: Reorganize project into gemmable form
+type: :task
+component: ffi-ncurses
+release: 
+reporter: Sean O'Halpin <sean.ohalpin@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-15 14:01:48.350769 Z
+references: []
+
+id: 0d39c00f35e4089369fef943f5fb6d2ab7b9a54e
+log_events: 
+- - 2009-02-15 14:01:58.279209 Z
+  - Sean O'Halpin <sean.ohalpin@gmail.com>
+  - created
+  - ""
