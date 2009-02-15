@@ -18,5 +18,5 @@ begin
   curs_set 2
   getch
 ensure
-  endwin
+  FFI::NCurses.endwin
 end
