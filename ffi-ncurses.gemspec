@@ -10,12 +10,7 @@ Gem::Specification.new do |s|
   s.description = %q{}
   s.email = %q{sean.ohalpin@gmail.com}
   s.extra_rdoc_files = ["History.txt", "README.rdoc"]
-  s.files = [
-             "History.txt",
-             "README.rdoc",
-             "Rakefile",
-             "examples/doc-eg1.rb",
-             "examples/doc-eg2.rb", "examples/example-attributes.rb", "examples/example-colour.rb", "examples/example-cursor.rb", "examples/example-getsetsyx.rb", "examples/example-hello.rb", "examples/example-jruby.rb", "examples/example-keys.rb", "examples/example-mouse.rb", "examples/example-printw-variadic.rb", "examples/example-softkeys.rb", "examples/example-stdscr.rb", "examples/example-windows.rb", "examples/example.rb", "ffi-ncurses.gemspec", "lib/ffi-ncurses.rb", "lib/ffi-ncurses/darwin.rb", "lib/ffi-ncurses/keydefs.rb", "lib/ffi-ncurses/mouse.rb"]
+  s.files = ["History.txt", "README.rdoc", "Rakefile", "examples/doc-eg1.rb", "examples/doc-eg2.rb", "examples/example-attributes.rb", "examples/example-colour.rb", "examples/example-cursor.rb", "examples/example-getsetsyx.rb", "examples/example-hello.rb", "examples/example-jruby.rb", "examples/example-keys.rb", "examples/example-mouse.rb", "examples/example-printw-variadic.rb", "examples/example-softkeys.rb", "examples/example-stdscr.rb", "examples/example-windows.rb", "examples/example.rb", "ffi-ncurses.gemspec", "lib/ffi-ncurses.rb", "lib/ffi-ncurses/darwin.rb", "lib/ffi-ncurses/keydefs.rb", "lib/ffi-ncurses/mouse.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/seanohalpin/ffi-ncurses}
   s.rdoc_options = ["--main", "README.rdoc"]
