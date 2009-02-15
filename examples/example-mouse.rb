@@ -1,5 +1,5 @@
 require 'ffi-ncurses'
-require 'ffi-ncurses-mouse'
+require 'ffi-ncurses/mouse'
 
 include FFI::NCurses
 
@@ -14,6 +14,7 @@ begin
   mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, nil)
   mouse_event = MEVENT.new
   ch = 0
+  addstr "Click mouse buttons anyway on the screen\n"
   until ch == ?q do
     ch = getch
     case ch

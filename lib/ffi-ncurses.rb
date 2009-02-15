@@ -569,7 +569,7 @@ module FFI
 
     # fixes for Mac OS X (mostly macros directly referencing the WINDOW struct)
     if ::FFI::Platform::OS == "darwin"
-      require 'ffi-ncurses-darwin'
+      require 'ffi-ncurses/darwin'
       include NCurses::Darwin
     end
 
