@@ -18,7 +18,7 @@ begin
   mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, nil)
   mouse_event = MEVENT.new
   ch = 0
-  addstr "Click mouse buttons anywhere on the screen\n"
+  addstr "Click mouse buttons anywhere on the screen. q to quit\n"
   until ch == ?q do
     ch = getch
     case ch
