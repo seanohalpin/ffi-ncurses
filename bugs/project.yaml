@@ -1,0 +1,14 @@
+--- !ditz.rubyforge.org,2008-03-06/project 
+name: ffi-ncurses
+version: "0.5"
+components: 
+- !ditz.rubyforge.org,2008-03-06/component 
+  name: ffi-ncurses
+- !ditz.rubyforge.org,2008-03-06/component 
+  name: core
+- !ditz.rubyforge.org,2008-03-06/component 
+  name: mac
+- !ditz.rubyforge.org,2008-03-06/component 
+  name: linux
+releases: []
+
