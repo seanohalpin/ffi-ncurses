@@ -8,15 +8,10 @@
 # tested with ruby 1.8.6, jruby 1.1.6 on Ubuntu 8.04, Mac OS X 10.4
 # ncurses 5.x
 
-# if RUBY_PLATFORM !~ /java/
-#   # jruby has ffi as part of standard lib
-#   require 'rubygems'
-#   gem 'ffi', '>= 0.2.0'
-# end
-
 require 'ffi'
 
-# check FFI version here rather than use gem
+# would like to check FFI version here rather than use gem but there
+# doesn't appear to be a version specified in the ffi lib
 
 module FFI
   module NCurses

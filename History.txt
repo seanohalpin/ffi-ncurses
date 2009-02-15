@@ -2,3 +2,15 @@
 
 * Features
   * Initial gem release
+  * Most features of ncurses wrapped for Linux, Mac, ruby 1.8.6
+    and JRuby 1.1.6
+  * Removed dependency on rubygems
+
+* Bugs
+  * +newscr+ and +curscr+ cannot be implemented in JRuby until
+    find_sym implemented in ffi (expected in JRuby 1.1.7)
+
+== 0.1.0 / 2009-01-19
+
+* Features
+  * Initial release
