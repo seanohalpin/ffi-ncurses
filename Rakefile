@@ -28,11 +28,12 @@ PROJ.summary = "FFI wrapper for ncurses"
 PROJ.version = "0.3.0"
 PROJ.rubyforge.name = 'ffi-ncurses'
 
+# gem
+PROJ.gem.dependencies << ["ffi", ">= 0.2.0"]
+
 # rdoc
 PROJ.rdoc.exclude << "^notes"
 PROJ.readme_file = 'README.rdoc'
-
-PROJ.rdoc.include << /ffi-.*\.rb/
 
 # spec
 PROJ.spec.opts << '--color'
