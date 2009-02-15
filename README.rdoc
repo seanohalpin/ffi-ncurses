@@ -2,8 +2,8 @@
 
 Author: Sean O'Halpin
 
-A wrapper for ncurses 5.x using ruby-ffi (>= 0.2.0). Tested on Mac OS
-X 10.4 (Tiger) and Ubuntu 8.04 with ruby 1.8.6.
+A wrapper for ncurses 5.x. Tested on Mac OS X 10.4 (Tiger) and Ubuntu
+8.04 with ruby 1.8.6 using ruby-ffi (>= 0.2.0) and JRuby 1.1.6.
 
 The API is very much a transliteration of the C API rather than an
 attempt to provide an idiomatic Ruby object-oriented API. The intent
@@ -24,21 +24,22 @@ Load the library with:
 
   require 'ffi-ncurses'
 
-NCurses methods can be called as module methods:
+FFI::NCurses methods can be called as module methods:
 
   begin
-    stdscr = NCurses.initscr
-    NCurses.clear
-    NCurses.addstr("Hello world!")
-    NCurses.refresh
-    NCurses.getch
+    stdscr = FFI::NCurses.initscr
+    FFI::NCurses.clear
+    FFI::NCurses.addstr("Hello world!")
+    FFI::NCurses.refresh
+    FFI::NCurses.getch
   ensure
-    NCurses.endwin
+    FFI::NCurses.endwin
   end
 
 or as included methods:
 
-  include NCurses
+  require 'ffi-ncurses'
+  include FFI::NCurses
   begin
     stdscr = initscr
     start_color
@@ -51,6 +52,8 @@ or as included methods:
     standout
     addstr("Hi!")
     standend
+    refresh
+    getch
   ensure
     endwin
   end
@@ -59,28 +62,28 @@ or as included methods:
 
   require 'ffi-ncurses'
   
-  NCurses.initscr
+  FFI::NCurses.initscr
   begin	
     ...
   ensure
-    NCurses.endwin
+    FFI::NCurses.endwin
   end
 
 == Typical initialization
 
-  stdscr = NCurses.initscr
-  NCurses.start_color
-  NCurses.curs_set 0
-  NCurses.raw
-  NCurses.cbreak
-  NCurses.noecho
-  NCurses.keypad(stdscr, true)
+  stdscr = FFI::NCurses.initscr
+  FFI::NCurses.start_color
+  FFI::NCurses.curs_set 0
+  FFI::NCurses.raw
+  FFI::NCurses.cbreak
+  FFI::NCurses.noecho
+  FFI::NCurses.keypad(stdscr, true)
 
 == Colours
   
   start_color
-  init_pair(1, NCurses::Colour::BLACK, NCurses::Colour::RED)
-  attr_set NCurses::A_NORMAL, 1, nil
+  init_pair(1, FFI::NCurses::COLOR_BLACK, FFI::NCurses::COLOR_RED)
+  attr_set FFI::NCurses::A_NORMAL, 1, nil
   addch(?A)
   addch(?Z | COLOR_PAIR(1))
 
@@ -88,11 +91,11 @@ or as included methods:
 
 === Turn cursor off
 
-  NCurses.curs_set 0
+  FFI::NCurses.curs_set 0
 
 === Turn cursor on
 
-  NCurses.curs_set 1
+  FFI::NCurses.curs_set 1
 
 == Windows
 
@@ -107,10 +110,10 @@ or as included methods:
     ch = wgetch(inner_win)
 
   rescue Object => e
-    NCurses.endwin
+    FFI::NCurses.endwin
     puts e
   ensure
-    NCurses.endwin
+    FFI::NCurses.endwin
   end
 
 == Mouse handling
@@ -121,7 +124,7 @@ The ncurses mouse API is defined in a separate file. To include it use:
 
 You need to specify that you want keypad translation with:
 
-  keypad stdscr, NCurses::TRUE
+  keypad stdscr, FFI::NCurses::TRUE
 
 otherwise your program will receive the raw mouse escape codes,
 instead of KEY_MOUSE mouse event codes.
@@ -132,7 +135,7 @@ Specify which events you want to handle with:
 
 and set up a mouse event structure to receive the returned values:
 
-    mouse_event = NCurses::MEVENT.new
+    mouse_event = FFI::NCurses::MEVENT.new
 
 Receiving mouse events is a two-stage process: first, you are notified
 that a mouse event has taken place through a special key code, then
@@ -140,17 +143,17 @@ you retrieve the event using +getmouse+. For example:
 
       ch = getch
       case ch
-      when NCurses::KEY_MOUSE
-        if getmouse(mouse_event) == NCurses::OK
+      when FFI::NCurses::KEY_MOUSE
+        if getmouse(mouse_event) == FFI::NCurses::OK
 
 The mouse event contains the button state (+bstate+) and x, y
 coordinates. You can test for the button state using:
 
-  if mouse_event[:bstate] & NCurses::BUTTON1_PRESSED
+  if mouse_event[:bstate] & FFI::NCurses::BUTTON1_PRESSED
 
 or
 
-  if NCurses.BUTTON_PRESS(mouse_event[:bstate], 1)
+  if FFI::NCurses.BUTTON_PRESS(mouse_event[:bstate], 1)
 
 The possible button states are: PRESS, RELEASE, CLICK, DOUBLE_CLICK
 and TRIPLE_CLICK.
@@ -171,20 +174,20 @@ yet.
 
 = TO DO
 
-== Turn into a gem
-
-Time to publish as a gem. Need to move files around and make sure it
-works as a gem.
-
 == Complete translation of core functions to Darwin (Mac OS X)
 
-There are many macros in darwin ncurses.h which I haven't
-implemented yet.
+There are some macros in darwin ncurses.h which I haven't
+implemented yet. I'm working on it but if there are any you
+desperately need let me know.
 
-== Work out how to get hold of curscr global variable
+== +curscr+ and +newscr+ for JRuby
 
-There's no way (so far) to access (per process) global variables in
-DLLs (hence the hack to stash +stdscr+).
+These global variables are not often used but are required for certain
+situations (e.g. doing a wrefresh after shelling out and for the
+get/setsyx macros).
+
+This requires the implementation of +find_sym+ in JRuby (expected in
+JRuby 1.1.7).
 
 == Tests
 
@@ -205,11 +208,13 @@ versions. The examples should be more focussed.
 
 I'm not particularly interested in the ncurses extension libraries for
 forms and menus. I would rather spend time implementing similar
-functionality on top of a portable text console library. However, in
-the interests of completeness, I suppose I ought to at least scope it out.
+functionality on top of a portable text console library (or porting
+rbcurses). However, in the interests of completeness, I suppose I
+ought to at least scope it out.
 
 = Trivia
 
 While researching ncurses on Google, I innocently entered "curses
-getsx" as a search term. Not one for "I'm Feeling Lucky".
+getsx" as a search term. NSFW and definitely not one for "I'm Feeling
+Lucky".
 

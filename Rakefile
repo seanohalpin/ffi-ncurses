@@ -38,7 +38,7 @@ PROJ.rdoc.include << /ffi-.*\.rb/
 PROJ.spec.opts << '--color'
 
 # files
-PROJ.exclude = %w(tmp$ bak$ ~$ CVS \.svn ^pkg ^doc \.git)
+PROJ.exclude = %w(tmp$ bak$ ~$ CVS \.svn ^pkg ^doc \.git local notes)
 PROJ.exclude << '^tags$' << "^bug" << "^tools"
 PROJ.exclude << File.read('.gitignore').split(/\n/)
 
