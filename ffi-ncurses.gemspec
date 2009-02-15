@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.description = %q{}
   s.email = %q{sean.ohalpin@gmail.com}
   s.extra_rdoc_files = ["History.txt", "README.rdoc"]
-  s.files = ["History.txt", "README.rdoc", "Rakefile", "examples/doc-eg1.rb", "examples/doc-eg2.rb", "examples/example-attributes.rb", "examples/example-colour.rb", "examples/example-cursor.rb", "examples/example-getsetsyx.rb", "examples/example-hello.rb", "examples/example-jruby.rb", "examples/example-keys.rb", "examples/example-mouse.rb", "examples/example-printw-variadic.rb", "examples/example-softkeys.rb", "examples/example-stdscr.rb", "examples/example-windows.rb", "examples/example.rb", "ffi-ncurses.gemspec", "lib/ffi-ncurses.rb", "lib/ffi-ncurses/darwin.rb", "lib/ffi-ncurses/keydefs.rb", "lib/ffi-ncurses/mouse.rb"]
+  s.files = ["History.txt", "README.rdoc", "Rakefile", "examples/doc-eg1.rb", "examples/doc-eg2.rb", "examples/example-attributes.rb", "examples/example-colour.rb", "examples/example-cursor.rb", "examples/example-getsetsyx.rb", "examples/example-hello.rb", "examples/example-jruby.rb", "examples/example-keys.rb", "examples/example-mouse.rb", "examples/example-printw-variadic.rb", "examples/example-softkeys.rb", "examples/example-stdscr.rb", "examples/example-windows.rb", "examples/example.rb", "ffi-ncurses.gemspec", "lib/ffi-ncurses.rb", "lib/ffi-ncurses/darwin.rb", "lib/ffi-ncurses/keydefs.rb", "lib/ffi-ncurses/mouse.rb", "lib/ffi-ncurses/winstruct.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/seanohalpin/ffi-ncurses}
   s.rdoc_options = ["--main", "README.rdoc"]
@@ -24,11 +24,14 @@ Gem::Specification.new do |s|
     s.specification_version = 2
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<ffi>, [">= 0.2.0"])
       s.add_development_dependency(%q<bones>, [">= 2.4.0"])
     else
+      s.add_dependency(%q<ffi>, [">= 0.2.0"])
       s.add_dependency(%q<bones>, [">= 2.4.0"])
     end
   else
+    s.add_dependency(%q<ffi>, [">= 0.2.0"])
     s.add_dependency(%q<bones>, [">= 2.4.0"])
   end
 end
