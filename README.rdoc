@@ -18,6 +18,16 @@ various macros.
 Below are some very preliminary notes on usage. See the examples
 directory for real working examples.
 
+== Install
+
+ruby 1.8.6:
+
+$ sudo gem install ffi ffi-ncurses
+
+jruby 1.1.6:
+
+$ jruby -S gem install ffi-ncurses
+
 == Usage
 
 Load the library with:

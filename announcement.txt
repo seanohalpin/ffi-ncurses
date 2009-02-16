@@ -15,9 +15,7 @@ library upon which you can build your own abstractions.
 See the examples directory for real working examples.
 
 == CHANGES
+=== 0.3.1 / 2009-02-16
 
-* Features
-  * Use FFI::NCurses rather than NCurses
-  * Removed dependency on rubygems
-  * Reorganised library layout
-
+* Bug fix:
+  * Removed dependency on ffi (so gem will install in JRuby)
