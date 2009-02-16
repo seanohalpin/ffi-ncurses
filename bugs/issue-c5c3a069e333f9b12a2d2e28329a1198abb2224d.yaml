@@ -3,10 +3,10 @@ title: Update docs to use FFI::NCurses instead of NCurses
 desc: ""
 type: :task
 component: docs
-release: 0.2.0
+release: 0.3.0
 reporter: Sean O'Halpin <sean.ohalpin@gmail.com>
-status: :unstarted
-disposition: 
+status: :closed
+disposition: :fixed
 creation_time: 2009-02-15 14:40:35.292996 Z
 references: []
 
@@ -19,4 +19,12 @@ log_events:
 - - 2009-02-15 14:47:30.236981 Z
   - Sean O'Halpin <sean.ohalpin@gmail.com>
   - assigned to release 0.2.0 from unassigned
+  - ""
+- - 2009-02-16 00:35:49.003774 Z
+  - Sean O'Halpin <sean.ohalpin@gmail.com>
+  - assigned to release 0.3.0 from 0.2.0
+  - ""
+- - 2009-02-16 00:36:35.907512 Z
+  - Sean O'Halpin <sean.ohalpin@gmail.com>
+  - closed with disposition fixed
   - ""

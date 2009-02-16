@@ -17,19 +17,36 @@ components:
 releases: 
 - !ditz.rubyforge.org,2008-03-06/release 
   name: 0.2.0
-  status: :unreleased
-  release_time: 
+  status: :released
+  release_time: 2009-02-16 00:36:04.843736 Z
   log_events: 
   - - 2009-02-15 14:45:23.949378 Z
     - Sean O'Halpin <sean.ohalpin@gmail.com>
     - created
     - first gem version
+  - - 2009-02-16 00:36:04.843760 Z
+    - Sean O'Halpin <sean.ohalpin@gmail.com>
+    - released
+    - already released
 - !ditz.rubyforge.org,2008-03-06/release 
   name: 0.3.0
-  status: :unreleased
-  release_time: 
+  status: :released
+  release_time: 2009-02-16 00:36:55.099695 Z
   log_events: 
   - - 2009-02-15 14:46:52.716797 Z
     - Sean O'Halpin <sean.ohalpin@gmail.com>
     - created
     - update to use JRuby 1.1.7 features
+  - - 2009-02-16 00:36:55.099707 Z
+    - Sean O'Halpin <sean.ohalpin@gmail.com>
+    - released
+    - Released to rubyforge as gem
+- !ditz.rubyforge.org,2008-03-06/release 
+  name: 0.4.0
+  status: :unreleased
+  release_time: 
+  log_events: 
+  - - 2009-02-16 00:34:15.187773 Z
+    - Sean O'Halpin <sean.ohalpin@gmail.com>
+    - created
+    - ""

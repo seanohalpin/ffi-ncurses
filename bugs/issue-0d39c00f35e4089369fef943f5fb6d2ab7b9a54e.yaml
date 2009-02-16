@@ -3,10 +3,10 @@ title: Convert to gem
 desc: Reorganize project into gemmable form
 type: :task
 component: ffi-ncurses
-release: 0.2.0
+release: 0.3.0
 reporter: Sean O'Halpin <sean.ohalpin@gmail.com>
-status: :unstarted
-disposition: 
+status: :closed
+disposition: :fixed
 creation_time: 2009-02-15 14:01:48.350769 Z
 references: []
 
@@ -19,4 +19,12 @@ log_events:
 - - 2009-02-15 14:46:04.468917 Z
   - Sean O'Halpin <sean.ohalpin@gmail.com>
   - assigned to release 0.2.0 from unassigned
+  - ""
+- - 2009-02-16 00:35:37.555541 Z
+  - Sean O'Halpin <sean.ohalpin@gmail.com>
+  - assigned to release 0.3.0 from 0.2.0
+  - ""
+- - 2009-02-16 00:36:29.739667 Z
+  - Sean O'Halpin <sean.ohalpin@gmail.com>
+  - closed with disposition fixed
   - ""
