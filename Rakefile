@@ -25,7 +25,7 @@ PROJ.authors = ["Sean O'Halpin"]
 PROJ.email = 'sean.ohalpin@gmail.com'
 PROJ.url = 'http://github.com/seanohalpin/ffi-ncurses'
 PROJ.summary = "FFI wrapper for ncurses"
-PROJ.version = "0.3.0"
+PROJ.version = "0.3.1"
 PROJ.rubyforge.name = 'ffi-ncurses'
 
 PROJ.description = <<EOT
@@ -41,7 +41,7 @@ See the examples directory for real working examples.
 EOT
 
 # gem
-PROJ.gem.dependencies << ["ffi", ">= 0.2.0"]
+# PROJ.gem.dependencies << ["ffi", ">= 0.2.0"]
 
 # rdoc
 PROJ.rdoc.exclude << "^notes"

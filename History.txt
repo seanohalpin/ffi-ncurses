@@ -1,3 +1,8 @@
+== 0.3.1 / 2009-02-16
+
+* Bug fix:
+  * Removed dependency on ffi (so gem will install in JRuby)
+
 == 0.3.0 / 2009-02-15
 
 * Features
