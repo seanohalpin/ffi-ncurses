@@ -28,6 +28,18 @@ PROJ.summary = "FFI wrapper for ncurses"
 PROJ.version = "0.3.0"
 PROJ.rubyforge.name = 'ffi-ncurses'
 
+PROJ.description = <<EOT
+A wrapper for ncurses 5.x. Tested on Mac OS X 10.4 (Tiger) and Ubuntu
+8.04 with ruby 1.8.6 using ruby-ffi (>= 0.2.0) and JRuby 1.1.6.
+
+The API is very much a transliteration of the C API rather than an
+attempt to provide an idiomatic Ruby object-oriented API. The intent
+is to provide a 'close to the metal' wrapper around the ncurses
+library upon which you can build your own abstractions.
+
+See the examples directory for real working examples.
+EOT
+
 # gem
 PROJ.gem.dependencies << ["ffi", ">= 0.2.0"]
 
