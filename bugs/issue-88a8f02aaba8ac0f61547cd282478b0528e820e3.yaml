@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Menu interface
+desc: implement the ncurses menu interface
+type: :feature
+component: ffi-ncurses
+release: 
+reporter: Sean O'Halpin <sean.ohalpin@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-18 00:25:04.311375 Z
+references: []
+
+id: 88a8f02aaba8ac0f61547cd282478b0528e820e3
+log_events: 
+- - 2009-02-18 00:25:05.455332 Z
+  - Sean O'Halpin <sean.ohalpin@gmail.com>
+  - created
+  - ""

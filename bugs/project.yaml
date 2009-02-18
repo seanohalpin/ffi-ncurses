@@ -14,6 +14,8 @@ components:
   name: docs
 - !ditz.rubyforge.org,2008-03-06/component 
   name: jruby
+- !ditz.rubyforge.org,2008-03-06/component 
+  name: ncurses-layer
 releases: 
 - !ditz.rubyforge.org,2008-03-06/release 
   name: 0.2.0

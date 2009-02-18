@@ -1,4 +1,4 @@
-ffi-ncurses version 0.3.0
+ffi-ncurses version 0.3.1
     by Sean O'Halpin
     http://github.com/seanohalpin/ffi-ncurses
 
@@ -15,7 +15,7 @@ library upon which you can build your own abstractions.
 See the examples directory for real working examples.
 
 == CHANGES
-=== 0.3.1 / 2009-02-16
 
 * Bug fix:
   * Removed dependency on ffi (so gem will install in JRuby)
+

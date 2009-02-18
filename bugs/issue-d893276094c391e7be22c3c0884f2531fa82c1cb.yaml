@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Panel interface
+desc: implement the ncurses panel interface
+type: :feature
+component: ffi-ncurses
+release: 
+reporter: Sean O'Halpin <sean.ohalpin@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-18 00:24:32.223871 Z
+references: []
+
+id: d893276094c391e7be22c3c0884f2531fa82c1cb
+log_events: 
+- - 2009-02-18 00:24:34.027887 Z
+  - Sean O'Halpin <sean.ohalpin@gmail.com>
+  - created
+  - ""

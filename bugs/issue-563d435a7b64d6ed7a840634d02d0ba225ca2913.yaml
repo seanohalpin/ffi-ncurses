@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Forms interface
+desc: implement the ncurses form interface
+type: :feature
+component: ffi-ncurses
+release: 
+reporter: Sean O'Halpin <sean.ohalpin@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-18 00:25:27.063351 Z
+references: []
+
+id: 563d435a7b64d6ed7a840634d02d0ba225ca2913
+log_events: 
+- - 2009-02-18 00:25:28.479556 Z
+  - Sean O'Halpin <sean.ohalpin@gmail.com>
+  - created
+  - ""
