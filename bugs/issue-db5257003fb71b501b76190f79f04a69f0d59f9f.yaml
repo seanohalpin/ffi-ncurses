@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: set up proper test harness
+desc: Need to set up some kind of test harness so I can write tests! Can capture output - perhaps something with expect. Also need to test automatically on Mac, Linux, ruby 1.8.6 and JRuby
+type: :task
+component: ffi-ncurses
+release: 0.4.0
+reporter: Sean O'Halpin <sean.ohalpin@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-19 08:30:06.697147 Z
+references: []
+
+id: db5257003fb71b501b76190f79f04a69f0d59f9f
+log_events: 
+- - 2009-02-19 08:30:08.297032 Z
+  - Sean O'Halpin <sean.ohalpin@gmail.com>
+  - created
+  - ""

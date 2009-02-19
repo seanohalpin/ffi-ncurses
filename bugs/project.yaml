@@ -16,6 +16,8 @@ components:
   name: jruby
 - !ditz.rubyforge.org,2008-03-06/component 
   name: ncurses-layer
+- !ditz.rubyforge.org,2008-03-06/component 
+  name: examples
 releases: 
 - !ditz.rubyforge.org,2008-03-06/release 
   name: 0.2.0

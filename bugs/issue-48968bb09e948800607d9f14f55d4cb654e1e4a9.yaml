@@ -1,0 +1,22 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: pad example
+desc: example showing how to use pads
+type: :feature
+component: examples
+release: 0.4.0
+reporter: Sean O'Halpin <sean.ohalpin@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-18 15:55:03.401823 Z
+references: []
+
+id: 48968bb09e948800607d9f14f55d4cb654e1e4a9
+log_events: 
+- - 2009-02-18 15:55:04.977936 Z
+  - Sean O'Halpin <sean.ohalpin@gmail.com>
+  - created
+  - ""
+- - 2009-02-18 15:55:54.161940 Z
+  - Sean O'Halpin <sean.ohalpin@gmail.com>
+  - assigned to component examples from ffi-ncurses
+  - ""
