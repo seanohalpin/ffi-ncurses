@@ -1,6 +1,8 @@
 module FFI
   module NCurses
     module Darwin
+      include FFI::NCurses::WinStruct
+
       # translated from Mac OSX 10.4 ('Tiger') /usr/include/ncurses.h
       def getattrs(win)
         win_st = WinSt.new(win)
