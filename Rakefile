@@ -13,28 +13,6 @@ rescue LoadError
   end
 end
 
-# gem 'rdoc', '= 2.2.1'
-# require 'rdoc'
-# module RDoc
-#   module RDoc
-#     Generator = ::RDoc::Generator
-#   end
-# end
-# Load the generator and tell Rdoc about it
-# gem 'darkfish-rdoc'
-# require 'darkfish-rdoc'
-
-# Rake::RDocTask.new do |rdoc|
-#     rdoc.title    = "ffi-ncurses - an FFI wrapper around ncurses"
-# #     rdoc.rdoc_files.include 'README.rdoc'
-
-#     rdoc.options += [
-#         '-SHN',
-#         '-f', 'darkfish',  # This is the important bit
-#       ]
-# end
-
-
 ensure_in_path 'lib'
 require 'ffi-ncurses'
 
@@ -47,7 +25,7 @@ PROJ.authors = ["Sean O'Halpin"]
 PROJ.email = 'sean.ohalpin@gmail.com'
 PROJ.url = 'http://github.com/seanohalpin/ffi-ncurses'
 PROJ.summary = "FFI wrapper for ncurses"
-PROJ.version = "0.3.1"
+PROJ.version = FFI::NCurses::VERSION
 PROJ.rubyforge.name = 'ffi-ncurses'
 
 PROJ.description = <<EOT
