@@ -1,3 +1,8 @@
+== 0.3.2 / 2009-02-16
+
+* Bug fix:
+  * Reversed regression in 0.3.2 which broke getmaxx, etc. for Mac
+
 == 0.3.1 / 2009-02-16
 
 * Bug fix:
