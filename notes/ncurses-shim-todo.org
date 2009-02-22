@@ -1,2 +1,5 @@
-win pointer as WINDOW class
-COLS
+= Ncurses shim
+- so JRuby can require 'ncurses'
+- win pointer as WINDOW class
+- COLS = getmaxx
+
