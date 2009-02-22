@@ -1,0 +1,2 @@
+win pointer as WINDOW class
+COLS
