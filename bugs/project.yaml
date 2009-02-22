@@ -54,3 +54,12 @@ releases:
     - Sean O'Halpin <sean.ohalpin@gmail.com>
     - created
     - ""
+- !ditz.rubyforge.org,2008-03-06/release 
+  name: 0.3.2
+  status: :unreleased
+  release_time: 
+  log_events: 
+  - - 2009-02-22 14:13:50.115587 Z
+    - Sean O'Halpin <sean.ohalpin@gmail.com>
+    - created
+    - fixes to 0.3.1

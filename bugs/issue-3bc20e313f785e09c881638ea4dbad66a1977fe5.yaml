@@ -1,0 +1,22 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: fix regression causes by not including WinStruct in darwin.rb
+desc: ""
+type: :bugfix
+component: mac
+release: 0.3.2
+reporter: Sean O'Halpin <sean.ohalpin@gmail.com>
+status: :closed
+disposition: :fixed
+creation_time: 2009-02-22 14:14:32.083775 Z
+references: []
+
+id: 3bc20e313f785e09c881638ea4dbad66a1977fe5
+log_events: 
+- - 2009-02-22 14:14:33.315773 Z
+  - Sean O'Halpin <sean.ohalpin@gmail.com>
+  - created
+  - ""
+- - 2009-02-22 14:14:42.483471 Z
+  - Sean O'Halpin <sean.ohalpin@gmail.com>
+  - closed with disposition fixed
+  - ""
