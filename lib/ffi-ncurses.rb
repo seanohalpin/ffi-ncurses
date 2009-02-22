@@ -15,6 +15,7 @@ require 'ffi'
 
 module FFI
   module NCurses
+    VERSION = "0.3.2"
     extend FFI::Library
 
     # use RUBY_FFI_NCURSES_LIB to specify exactly which lib you want, e.g. ncursesw, XCurses (from PDCurses)
