@@ -13,6 +13,10 @@ rescue LoadError
   end
 end
 
+if File.exist?('local/config.rb')
+  load 'local/config.rb'
+end
+
 ensure_in_path 'lib'
 require 'ffi-ncurses'
 
