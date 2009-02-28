@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: make examples 1.9 compatible
+desc: 1.9 does not treat characters as ints any more - need extra steps to convert a char to an int
+type: :bugfix
+component: examples
+release: 0.3.2
+reporter: Sean O'Halpin <sean.ohalpin@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-28 19:47:16.385306 Z
+references: []
+
+id: b53e92584fb1528bdb3b7dedcace479b5cdd67d1
+log_events: 
+- - 2009-02-28 19:47:17.561250 Z
+  - Sean O'Halpin <sean.ohalpin@gmail.com>
+  - created
+  - ""
