@@ -45,7 +45,7 @@ See the examples directory for real working examples.
 EOT
 
 # gem
-# PROJ.gem.dependencies << ["ffi", ">= 0.2.0"]
+PROJ.gem.dependencies << ["ffi", ">= 0.2.0"]
 
 # rdoc
 PROJ.rdoc.exclude << "^notes"
