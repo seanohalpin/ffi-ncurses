@@ -454,7 +454,6 @@ module FFI
     Color = Colour
     include Colour
 
-    # FIXME: put a guard around this code to execute only if JRuby version < 1.2.0
     # this is a fixup for JRuby 1.1.6 which doesn't have find_sym
     # can hack for stdscr but not curscr or newscr (no methods return them)
     module FixupInitscr
