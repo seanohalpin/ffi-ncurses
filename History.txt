@@ -4,6 +4,7 @@
   * Restored dependency on ffi >= 0.2.0
   * Tested with JRuby 1.2.0
   * Added PDat nested struct to winstruct.rb
+  * Examples now ruby 1.9 compatible
 
 * Bug fix:
   * Keydefs now defined under FFI::NCurses

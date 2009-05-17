@@ -12,7 +12,7 @@ begin
 
   # initialize colour
   start_color
-  
+
   # set up colour pairs
   #             Background       Foreground
   init_pair(0,  Colour::BLACK,   Colour::BLACK)
@@ -32,26 +32,30 @@ begin
   init_pair(13, Colour::BLACK,   Colour::MAGENTA)
   init_pair(14, Colour::BLACK,   Colour::CYAN)
   init_pair(15, Colour::BLACK,   Colour::WHITE)
-  
+
+  a_char = "A".unpack("c").first
+  z_char = "Z".unpack("c").first
+
   0.upto(15) do |i|
     attr_set A_NORMAL, i, nil
-    addch(?A + i)
+    addch(a_char + i)
   end
-  
+
   # add character and attribute together
-  addch(?Z | COLOR_PAIR(1)) # red
+  addch(z_char | COLOR_PAIR(1)) # red
 
   # reset attribute and colour to default
   attr_set A_NORMAL, 0, nil
-  
+
   # start new line
   addstr "\n"
-  
+
   # how to add a single space
-  addch(' '[0])
+  space_char = " ".unpack("c").first
+  addch(space_char)
   # or
   addstr(" ")
-  
+
   addstr "Press any key"
 
   # display and pause for key press
