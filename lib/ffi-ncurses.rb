@@ -458,7 +458,8 @@ module FFI
     # FIXME: remove this code when JRuby gets find_sym
     # fixup for JRuby 1.1.6 - doesn't have find_sym
     # can hack for stdscr but not curscr or newscr (no methods return them)
-    # this will all be removed when JRuby 1.1.7 is released
+    #
+    # this is not used for JRuby 1.2.0+
     module FixupInitscr
       if !NCurses.respond_to?(:stdscr)
         def initscr

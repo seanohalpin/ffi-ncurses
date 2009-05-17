@@ -1,3 +1,9 @@
+== 0.3.4 / 2009-05-17
+
+* Changes:
+  * Tested with JRuby 1.2.0
+  * Added PDat nested struct to winstruct.rb
+
 == 0.3.3 / 2009-02-28
 
 * Changes:
