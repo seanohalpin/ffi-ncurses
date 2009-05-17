@@ -1,17 +1,17 @@
-# ruby-ffi wrapper for ncurses
+# ruby-ffi wrapper for ncurses 5.x
 # Sean O'Halpin
 # version 0.1.0 - 2008-12-04
 # version 0.2.0 - 2009-01-18
 # version 0.3.0 - 2009-01-31
+# version 0.3.3 - 2009-05-17
 # - added stdscr, newscr, curscr
-# requires ruby-ffi >= 0.2.0 or jruby >= 1.1.6
-# tested with ruby 1.8.6, 1.9.1, jruby 1.1.6 on Ubuntu 8.04, Mac OS X 10.4
-# ncurses 5.x
+# requires ruby-ffi >= 0.2.0 or jruby >= 1.1.6, preferably > 1.2.0
+# tested with ruby 1.8.6, 1.9.1, jruby 1.1.6, 1.2.0 on Ubuntu 8.04, Mac OS X 10.4
 
 require 'ffi'
 
-# would like to check FFI version here rather than use gem but there
-# doesn't appear to be a version specified in the ffi lib
+# would like to check FFI version here but there doesn't appear to be
+# a version specified in the ffi lib
 
 module FFI
   module NCurses
@@ -48,7 +48,6 @@ module FFI
           end
           module_function sym
         end
-      else
       end
     rescue Object => e
     end
@@ -455,11 +454,9 @@ module FFI
     Color = Colour
     include Colour
 
-    # FIXME: remove this code when JRuby gets find_sym
-    # fixup for JRuby 1.1.6 - doesn't have find_sym
+    # FIXME: put a guard around this code to execute only if JRuby version < 1.2.0
+    # this is a fixup for JRuby 1.1.6 which doesn't have find_sym
     # can hack for stdscr but not curscr or newscr (no methods return them)
-    #
-    # this is not used for JRuby 1.2.0+
     module FixupInitscr
       if !NCurses.respond_to?(:stdscr)
         def initscr
@@ -527,12 +524,15 @@ module FFI
       def getyx(win)
         [NCurses.getcury(win), NCurses.getcurx(win)]
       end
+
       def getbegyx(win)
         [NCurses.getbegy(win), NCurses.getbegx(win)]
       end
+
       def getparyx(win)
         [NCurses.getpary(win), NCurses.getparx(win)]
       end
+
       def getmaxyx(win)
         [NCurses.getmaxy(win), NCurses.getmaxx(win)]
       end
@@ -546,6 +546,7 @@ module FFI
           getyx(newscr)
         end
       end
+
       def setsyx(y, x)
         if y == -1 && x == -1
 			    leaveok(newscr, NCurses::TRUE)
