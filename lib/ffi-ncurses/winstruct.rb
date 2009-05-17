@@ -12,12 +12,12 @@ module FFI
       BOOLEAN = :uchar              # sizeof(bool) == 1
 
       WCHAR_T = :ushort
-      
-      #   class CCharT < FFI::Struct
-      #     layout \
-      #     :attr, NCURSES_ATTR_T,
-      #     :chars, [WCHAR_T, CCHARW_MAX]
-      #   end
+
+      class CCharT < FFI::Struct
+        layout \
+        :attr, NCURSES_ATTR_T,
+        :chars, [WCHAR_T, CCHARW_MAX]
+      end
 
       class PDat < FFI::Struct
         layout \
@@ -57,23 +57,22 @@ module FFI
         :_regtop, NCURSES_SIZE_T,
         :_regbottom, NCURSES_SIZE_T,
 
-        # why x,y when everything else is y,x?
+        # aside: why x,y when everything else is y,x?
         :_parx, :int,
         :_pary, :int,
-        :_parent, :pointer          # WINDOW
+        :_parent, :pointer,          # WINDOW
 
-        # don't know how to include nested Struct yet
-        #     :_pad, PDat,
-        
-        #     :_yoffset, NCURSES_SIZE_T
-        #     :_bkgrnd, CCharT
+        # nested struct (for Pads)
+        :_pad, PDat,
+        :_yoffset, NCURSES_SIZE_T,
+        :_bkgrnd, CCharT
       end
 
       def _win(win, member)
         win && WinSt.new(win)[member]
       end
       private :_win
-      
+
       # extensions - not in X/Open
       def is_cleared(win)
         _win(win, :_clear)
