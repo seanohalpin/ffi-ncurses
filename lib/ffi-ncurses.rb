@@ -15,13 +15,13 @@ require 'ffi'
 
 module FFI
   module NCurses
-    VERSION = "0.3.3"
+    VERSION = "0.3.4"
     extend FFI::Library
 
     # use RUBY_FFI_NCURSES_LIB to specify a colon-separated list of
     # lib you want to try to load, e.g. ncursesw, XCurses (from
     # PDCurses)
-    if ENV["RUBY_FFI_NCURSES_LIB"].strip != ""
+    if ENV["RUBY_FFI_NCURSES_LIB"].to_s.strip != ""
       LIB_HANDLE = ffi_lib(ENV["RUBY_FFI_NCURSES_LIB"].split(/:/)).first
     else
       LIB_HANDLE = ffi_lib(['ncursesw', 'ncurses', 'libncurses.so.5', 'XCurses']).first
