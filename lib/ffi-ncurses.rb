@@ -24,7 +24,7 @@ module FFI
     if ENV["RUBY_FFI_NCURSES_LIB"].to_s.strip != ""
       LIB_HANDLE = ffi_lib(ENV["RUBY_FFI_NCURSES_LIB"].split(/:/)).first
     else
-      LIB_HANDLE = ffi_lib(['ncursesw', 'ncurses', 'libncurses.so.5', 'XCurses']).first
+      LIB_HANDLE = ffi_lib(['ncursesw', 'ncurses', 'libncurses.so.5']).first
     end
 
     begin
@@ -188,6 +188,8 @@ module FFI
        [:keybound, [:int, :int], :string],
        [:keyname, [:int], :string],
        [:keyok, [:int, :int], :int],
+       # TODO:
+       # [:keypad, [:pointer, :bool], :int],
        [:keypad, [:pointer, :int], :int],
        [:killchar, [], :char],
        [:leaveok, [:pointer, :int], :int],
@@ -583,3 +585,6 @@ module FFI
 
   end
 end
+
+# define key constants
+require 'ffi-ncurses/keydefs'
