@@ -1,4 +1,4 @@
-= ffi-ncurses 
+= ffi-ncurses
 
 Author: Sean O'Halpin
 
@@ -18,13 +18,16 @@ various macros.
 Below are some very preliminary notes on usage. See the examples
 directory for real working examples.
 
+You can also find good examples (in C) at
+http://www.faqs.org/docs/Linux-HOWTO/NCURSES-Programming-HOWTO.html.
+
 == Install
 
-ruby 1.8.6:
+ruby:
 
-$ sudo gem install ffi ffi-ncurses
+$ sudo gem install ffi-ncurses
 
-jruby 1.1.6:
+jruby:
 
 $ jruby -S gem install ffi-ncurses
 
@@ -71,9 +74,9 @@ or as included methods:
 == Set up screen
 
   require 'ffi-ncurses'
-  
+
   FFI::NCurses.initscr
-  begin	
+  begin
     ...
   ensure
     FFI::NCurses.endwin
@@ -90,7 +93,7 @@ or as included methods:
   FFI::NCurses.keypad(stdscr, true)
 
 == Colours
-  
+
   start_color
   init_pair(1, FFI::NCurses::COLOR_BLACK, FFI::NCurses::COLOR_RED)
   attr_set FFI::NCurses::A_NORMAL, 1, nil
@@ -179,7 +182,7 @@ You can specify which variant of curses you want to use by setting the
 environment variable +RUBY_FFI_NCURSES_LIB+ to the one you want. For
 example, to use PDCurses X11 curses lib, use:
 
-  RUBY_FFI_NCURSES_LIB=XCurses ruby examples/hello.rb 
+  RUBY_FFI_NCURSES_LIB=XCurses ruby examples/hello.rb
 
 You can use this to specify +ncursesw+ for example. Please note that
 only the bog standard ncurses lib has been in any way tested as of
