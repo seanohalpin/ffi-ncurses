@@ -1,3 +1,12 @@
+== 0.3.4 / 2010-08-16
+
+* Changes:
+  * TODO Added fixes as specified by
+  * Don't search for XCurses lib (PDCurses)
+  * keydefs.rb included by default
+  * Added keydefs for Function and Control keys
+  * Changed dependency on ffi to >= 0.6.3
+
 == 0.3.3 / 2009-05-17
 
 * Changes:
