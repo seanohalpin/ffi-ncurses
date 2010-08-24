@@ -43,6 +43,7 @@ EOT
              "lib/ffi-ncurses/darwin.rb",
              "lib/ffi-ncurses/keydefs.rb",
              "lib/ffi-ncurses/mouse.rb",
+             "lib/ffi-ncurses/ord-shim.rb",
              "lib/ffi-ncurses/winstruct.rb"
             ]
   s.has_rdoc = true
