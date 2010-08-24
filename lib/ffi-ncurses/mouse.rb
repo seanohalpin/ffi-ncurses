@@ -4,7 +4,7 @@ module FFI
 
     NCURSES_MOUSE_VERSION = 1
 
-    # mouse interface 
+    # mouse interface
 
     if NCURSES_MOUSE_VERSION > 1
       def self.NCURSES_MOUSE_MASK(b,m)
@@ -23,7 +23,7 @@ module FFI
     NCURSES_TRIPLE_CLICKED	= 020
     NCURSES_RESERVED_EVENT	= 040
 
-    # event masks 
+    # event masks
     BUTTON1_RELEASED        = NCURSES_MOUSE_MASK(1, NCURSES_BUTTON_RELEASED)
     BUTTON1_PRESSED         = NCURSES_MOUSE_MASK(1, NCURSES_BUTTON_PRESSED)
     BUTTON1_CLICKED         = NCURSES_MOUSE_MASK(1, NCURSES_BUTTON_CLICKED)
@@ -52,7 +52,7 @@ module FFI
     # In 32 bits the version-1 scheme does not provide enough space for a 5th
     # button, unless we choose to change the ABI by omitting the reserved-events.
     #
-    
+
     if NCURSES_MOUSE_VERSION > 1
 
       BUTTON5_RELEASED       = NCURSES_MOUSE_MASK(5, NCURSES_BUTTON_RELEASED)
@@ -60,7 +60,7 @@ module FFI
       BUTTON5_CLICKED        = NCURSES_MOUSE_MASK(5, NCURSES_BUTTON_CLICKED)
       BUTTON5_DOUBLE_CLICKED = NCURSES_MOUSE_MASK(5, NCURSES_DOUBLE_CLICKED)
       BUTTON5_TRIPLE_CLICKED = NCURSES_MOUSE_MASK(5, NCURSES_TRIPLE_CLICKED)
-      
+
       BUTTON_CTRL            = NCURSES_MOUSE_MASK(6, 0001)
       BUTTON_SHIFT					 = NCURSES_MOUSE_MASK(6, 0002)
       BUTTON_ALT						 = NCURSES_MOUSE_MASK(6, 0004)
@@ -83,7 +83,7 @@ module FFI
     ALL_MOUSE_EVENTS = (REPORT_MOUSE_POSITION - 1)
 
     class << self
-      # macros to extract single event-bits from masks 
+      # macros to extract single event-bits from masks
       def	BUTTON_RELEASE(e, x)
         ((e) & (001 << (6 * ((x) - 1))))
       end
@@ -116,8 +116,9 @@ module FFI
 
     #   def mouse_trafo(y, x, to_screen)
     #   end
-    
-    KEY_MOUSE =	0631		# Mouse event has occurred
+
+    # already defined in keydefs.rb
+    # KEY_MOUSE = 0631 # Mouse event has occurred
 
     #FFI.add_typedef :ulong, :mmask_t
     class MEVENT < FFI::Struct
@@ -134,7 +135,7 @@ module FFI
        [:getmouse, [MEVENT], :int],
        [:ungetmouse, [MEVENT], :int],
       ]
-    
+
     functions.each do |function|
       begin
         attach_function(*function)
