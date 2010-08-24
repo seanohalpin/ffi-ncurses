@@ -1,13 +1,23 @@
 == 0.3.3 / 2010-08-24
+
+* Depends on ffi again (>= 0.6.3)
 * Now compatible with ffi-0.6.3
-  - thanks and apologies to all those who requested this change months ago
-* Examples now work with both 1.8.7 and 1.9.x
-  - for 1.8.6 there you can use
-      require "ffi-ncurses/ord-shim"
-    to add Integer#ord
-* Removed dependency on bones
-  - no Rakefile any more - just use gem build ffi-ncurses.gemspec
+  - thanks and apologies to all those who requested this change months
+    ago
 * Included keydefs.rb by default
+* Examples have been tested with:
+  - jruby-1.5.1
+  - ree-1.8.7-2010.02
+  - ruby-1.8.6-p399
+    Note: the examples require "ffi-ncurses/ord-shim" to add
+    Integer#ord
+  - ruby-1.8.7-p302
+  - ruby-1.9.2-p0
+* Sadly not compatible with Rubinius (rbx-1.0.0-20100514)
+* Removed attempt to load XCurses (PDCurses)
+* Removed dependency on bones
+  - no Rakefile any more - just use
+      gem build ffi-ncurses.gemspec
 
 == 0.3.2 / 2009-02-16
 
