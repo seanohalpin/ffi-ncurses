@@ -5,7 +5,7 @@
 # Sean O'Halpin, 2009-01-18
 #
 require 'ffi-ncurses'
-begin	
+begin
   # the methods can be called as module methods
   FFI::NCurses.initscr
   FFI::NCurses.clear
@@ -26,7 +26,7 @@ begin
   move 10, 10
   standout
   # hmmm.. you have to jump through some hoops to avoid temporary variables
-  # 
+  #
   printw("Hi! maxyx %d %d\n", *([:int, :int].zip(getmaxyx(FFI::NCurses.stdscr)).flatten))
   # easier to do this
   #addstr(sprintf("paryx %d %d\n", *getparyx(FFI::NCurses.stdscr)))
@@ -49,15 +49,15 @@ begin
   init_pair(14, FFI::NCurses::Colour::BLACK, FFI::NCurses::Colour::MAGENTA)
   init_pair(15, FFI::NCurses::Colour::BLACK, FFI::NCurses::Colour::CYAN)
   init_pair(16, FFI::NCurses::Colour::BLACK, FFI::NCurses::Colour::WHITE)
-  
+
   1.upto(16) do |i|
     attr_set FFI::NCurses::A_NORMAL, i, nil
-    addch(?A - 1 + i)
+    addch("A"[0].ord - 1 + i)
   end
   attr_set FFI::NCurses::A_HORIZONTAL, 0, nil
-  addch(?Z | COLOR_PAIR(3))
+  addch("Z"[0].ord | COLOR_PAIR(3))
   attr_set A_BOLD, 2, nil
-  addch ?S
+  addch "S"[0].ord
 
   refresh
   ch = getch
@@ -94,15 +94,10 @@ begin
   wrefresh(win)
   ch = wgetch(win)
   delwin(win)
-  
+
 rescue Object => e
   FFI::NCurses.endwin
   raise
 ensure
   FFI::NCurses.endwin
-#   FFI::NCurses.class_eval {
-#     require 'pp'
-#     pp @unattached_functions
-
-#   }
 end

@@ -12,7 +12,7 @@ begin
   curs_set 0
   ch = 0
   name = "none"
-  while ch != 27
+  while ch != 27                # Escape
     clear
     addstr "Press any key (Escape to exit): "
     printw "name: %s dec: %d char: [%c]", :string, name, :int, ch, :int, ch

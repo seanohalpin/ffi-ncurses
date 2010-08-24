@@ -7,23 +7,23 @@ include FFI::NCurses
 initscr
 begin
   attributes = %w[
-    A_BLINK     
-    A_BOLD      
+    A_BLINK
+    A_BOLD
     A_DIM
     A_NORMAL
-    A_REVERSE   
-    A_STANDOUT  
-    A_UNDERLINE 
+    A_REVERSE
+    A_STANDOUT
+    A_UNDERLINE
   ]
   alt_attributes = %w[
     A_ALTCHARSET
     A_HORIZONTAL
-    A_INVIS     
-    A_LEFT      
-    A_LOW       
-    A_PROTECT     
-    A_RIGHT     
-    A_TOP       
+    A_INVIS
+    A_LEFT
+    A_LOW
+    A_PROTECT
+    A_RIGHT
+    A_TOP
     A_VERTICAL
   ]
 

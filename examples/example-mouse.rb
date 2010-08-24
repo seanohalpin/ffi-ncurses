@@ -19,7 +19,7 @@ begin
   mouse_event = MEVENT.new
   ch = 0
   addstr "Click mouse buttons anywhere on the screen. q to quit\n"
-  until ch == ?q do
+  until ch == "q"[0].ord do
     ch = getch
     case ch
     when KEY_MOUSE
@@ -36,7 +36,7 @@ begin
         row = getcury(stdscr) + 1
         move row, 0
         move mouse_event[:y], mouse_event[:x]
-        addch " "[0] | WA_STANDOUT
+        addch " "[0].ord | WA_STANDOUT
         move row, 0
       end
     else
