@@ -23,11 +23,11 @@ directory for real working examples.
 
 ruby 1.8.x:
 
-$ sudo gem install ffi ffi-ncurses
+  $ sudo gem install ffi-ncurses
 
 jruby 1.5.1:
 
-$ jruby -S gem install ffi-ncurses
+  $ jruby -S gem install ffi-ncurses
 
 == Usage
 
