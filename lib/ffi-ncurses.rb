@@ -589,3 +589,4 @@ module FFI
   end
 end
 
+require 'ffi-ncurses/keydefs'
