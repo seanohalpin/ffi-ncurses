@@ -1,9 +1,13 @@
 == 0.3.3 / 2010-08-24
-* Compatible with ffi-0.6.3
+* Now compatible with ffi-0.6.3
   - thanks and apologies to all those who requested this change months ago
 * Examples now work with both 1.8.7 and 1.9.x
+  - for 1.8.6 there you can use
+      require "ffi-ncurses/ord-shim"
+    to add Integer#ord
 * Removed dependency on bones
   - no Rakefile any more - just use gem build ffi-ncurses.gemspec
+* Included keydefs.rb by default
 
 == 0.3.2 / 2009-02-16
 
