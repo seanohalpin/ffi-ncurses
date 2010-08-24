@@ -1,9 +1,10 @@
-= ffi-ncurses 
+= ffi-ncurses
 
 Author: Sean O'Halpin
 
-A wrapper for ncurses 5.x. Tested on Mac OS X 10.4 (Tiger) and Ubuntu
-8.04 with ruby 1.8.6 using ruby-ffi (>= 0.2.0) and JRuby 1.1.6.
+A wrapper for ncurses 5.x. Tested on Ubuntu 8.04 to 10.04 and Mac OS X
+10.4 (Tiger) with ruby 1.8.6, 1.8.7 and 1.9.x using ffi (>= 0.6.3) and
+JRuby 1.5.1.
 
 The API is a transliteration of the C API rather than an attempt to
 provide an idiomatic Ruby object-oriented API. The intent is to
@@ -20,11 +21,11 @@ directory for real working examples.
 
 == Install
 
-ruby 1.8.6:
+ruby 1.8.x:
 
 $ sudo gem install ffi ffi-ncurses
 
-jruby 1.1.6:
+jruby 1.5.1:
 
 $ jruby -S gem install ffi-ncurses
 
@@ -71,9 +72,9 @@ or as included methods:
 == Set up screen
 
   require 'ffi-ncurses'
-  
+
   FFI::NCurses.initscr
-  begin	
+  begin
     ...
   ensure
     FFI::NCurses.endwin
@@ -90,12 +91,12 @@ or as included methods:
   FFI::NCurses.keypad(stdscr, true)
 
 == Colours
-  
+
   start_color
   init_pair(1, FFI::NCurses::COLOR_BLACK, FFI::NCurses::COLOR_RED)
   attr_set FFI::NCurses::A_NORMAL, 1, nil
-  addch(?A)
-  addch(?Z | COLOR_PAIR(1))
+  addch("A"[0].ord) # works in both 1.8.x and 1.9.x
+  addch("Z"[0].ord | COLOR_PAIR(1))
 
 == Cursor
 
@@ -179,7 +180,7 @@ You can specify which variant of curses you want to use by setting the
 environment variable +RUBY_FFI_NCURSES_LIB+ to the one you want. For
 example, to use PDCurses X11 curses lib, use:
 
-  RUBY_FFI_NCURSES_LIB=XCurses ruby examples/hello.rb 
+  RUBY_FFI_NCURSES_LIB=XCurses ruby examples/hello.rb
 
 You can use this to specify +ncursesw+ for example. Please note that
 only the bog standard ncurses lib has been in any way tested as of
@@ -192,15 +193,6 @@ yet.
 There are some macros in darwin ncurses.h which I haven't
 implemented yet. I'm working on it but if there are any you
 desperately need let me know.
-
-== +curscr+ and +newscr+ for JRuby
-
-These global variables are not often used but are required for certain
-situations (e.g. doing a wrefresh after shelling out and for the
-get/setsyx macros).
-
-This requires the implementation of +find_sym+ in JRuby (expected in
-JRuby 1.1.7).
 
 == Tests
 

@@ -1,3 +1,10 @@
+== 0.3.3 / 2010-08-24
+* Compatible with ffi-0.6.3
+  - thanks and apologies to all those who requested this change months ago
+* Examples now work with both 1.8.7 and 1.9.x
+* Removed dependency on bones
+  - no Rakefile any more - just use gem build ffi-ncurses.gemspec
+
 == 0.3.2 / 2009-02-16
 
 * Bug fix:
