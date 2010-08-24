@@ -5,6 +5,8 @@
 # Sean O'Halpin, 2009-01-18
 #
 require 'ffi-ncurses'
+require 'ffi-ncurses/ord-shim'  # for 1.8.6 compatibility
+
 begin
   # the methods can be called as module methods
   FFI::NCurses.initscr

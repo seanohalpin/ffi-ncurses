@@ -6,8 +6,8 @@
 # Copyright (C) 2002 Tobias Peters <t-peters@users.berlios.de>
 #
 # The following license applys only to this file. It is less restrictive
-# than the license for the rest of the ncurses-ruby distribution. 
-# I've adapted this file from someone else, see below. 
+# than the license for the rest of the ncurses-ruby distribution.
+# I've adapted this file from someone else, see below.
 #
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this file
@@ -16,10 +16,10 @@
 # publish, distribute, sublicense, and/or sell copies of the Software,
 # and to permit persons to whom the Software is furnished to do so,
 # subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be
 # included in all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 # EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -36,7 +36,7 @@
 # statement:
 
 # Copyright (c) 2000 by Harry Henry Gebel
-# 
+#
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this software and associated documentation files
 # (the "Software"), to deal in the Software without restriction,
@@ -44,10 +44,10 @@
 # publish, distribute, sublicense, and/or sell copies of the Software,
 # and to permit persons to whom the Software is furnished to do so,
 # subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be
 # included in all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 # EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -57,9 +57,8 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
-
 require "ffi-ncurses"
+require 'ffi-ncurses/ord-shim'  # for 1.8.6 compatibility
 
 module NcursesExtension
   def method_missing(method, *args, &block)

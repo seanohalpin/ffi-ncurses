@@ -3,6 +3,7 @@
 # Sean O'Halpin, 2009-02-15
 #
 require 'ffi-ncurses'
+require 'ffi-ncurses/ord-shim'  # for 1.8.6 compatibility
 include FFI::NCurses
 
 initscr
