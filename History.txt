@@ -1,3 +1,6 @@
+== 0.3.4
+* Added MIT licence (License.txt, COPYING)
+
 == 0.3.3 / 2010-08-24
 
 * Depends on ffi again (>= 0.6.3)
