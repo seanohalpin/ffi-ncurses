@@ -30,39 +30,57 @@ module FFI
     end
 
     begin
-      # These three global variables are defined in `ncurses.h`:
-      #<table>
-      # <tr><td><tt>stdscr</tt></td><td>represents the whole screen</td></tr>
-      # <tr><td><tt>curscr</tt></td><td>used in some low-level routines</td></tr>
-      # <tr><td><tt>newscr</tt></td><td>used in the <tt>[gs]etsyx</tt> routines</td></tr>
-      # </table>
+      # These global variables are defined in `ncurses.h`:
       #
-      symbols = [ "stdscr", "curscr", "newscr" ]
+      #     chtype acs_map[];
+      #     WINDOW * curscr;
+      #     WINDOW * newscr;
+      #     WINDOW * stdscr;
+      #     char ttytype[];
+      #     int COLORS;
+      #     int COLOR_PAIRS;
+      #     int COLS;
+      #     int ESCDELAY;
+      #     int LINES;
+      #     int TABSIZE;
+      #
+      # Note that the symbol table entry in a shared lib for an
+      # exported variable contains a *pointer to the address* of
+      # the variable which will be initialized in the process's
+      # bss (uninitialized) data segment when the process is
+      # initialized.
+
+      # This is unlike methods, where the symbol table entry points to
+      # the entry point of the method itself.
+
+      # Variables need another level of indirection because they are
+      # *not* shared between process instances - only code is shared.
+
+      # So we define convenience methods to perform the lookup for
+      # us. We can't just stash the value returned by
+      # `read_pointer` at load time because it's not initialized
+      # until after `initscr` has been called.
+      symbols = [
+                 ["acs_map", :pointer],
+                 ["curscr", :pointer],
+                 ["newscr", :pointer],
+                 ["stdscr", :pointer],
+                 ["ttytype", :string],
+                 ["COLORS", :int],
+                 ["COLOR_PAIRS", :int],
+                 ["COLS", :int],
+                 ["ESCDELAY", :int],
+                 ["LINES", :int],
+                 ["TABSIZE", :int],
+                ]
       if LIB_HANDLE.respond_to?(:find_symbol)
-        SYMBOLS = Hash[*symbols.map { |sym|
-                         [sym, LIB_HANDLE.find_symbol(sym)]}.compact.flatten
-                      ]
-        SYMBOLS.keys.each do |sym|
-          # Note that the symbol table entry in a shared lib for an
-          # exported variable contains a *pointer to the address* of
-          # the variable which will be initialized in the process's
-          # bss (uninitialized) data segment when the process is
-          # initialized.
-
-          # This is unlike methods, where the symbol table entry points to
-          # the entry point of the method itself.
-
-          # Variables need another level of indirection because they are
-          # *not* shared between process instances - only code is shared.
-
-          # So we define convenience methods to perform the lookup for
-          # us. We can't just stash the value returned by
-          # `read_pointer` at load time because it's not initialized
-          # until after `initscr` has been called.
-          define_method sym do
-            SYMBOLS[sym].read_pointer
+        symbols.each do |sym, type|
+          if handle = LIB_HANDLE.find_symbol(sym)
+            define_method sym do
+              handle.send("read_#{type}")
+            end
+            module_function sym
           end
-          module_function sym
         end
       else
         warn "#find_symbol not available - #{symbols.inspect} not defined"
