@@ -103,9 +103,10 @@ module Ncurses
     def respond_to?(name)
       name = name.to_s
       if (name[0,2] == "mv" && FFI::NCurses.respond_to?("mvw" + name[2..-1]))
-        return true
+        true
+      else
+        FFI::NCurses.respond_to?("w" + name) || FFI::NCurses.respond_to?(name)
       end
-      FFI::NCurses.respond_to?("w" + name) || FFI::NCurses.respond_to?(name)
     end
     def del
       FFI::NCurses.delwin(@win)
@@ -175,10 +176,14 @@ begin
   Ncurses.cbreak           # provide unbuffered input
   Ncurses.noecho           # turn off input echoing
   Ncurses.nonl             # turn off newline translation
-#   Ncurses.stdscr.intrflush(false) # turn off flush-on-interrupt
-#   Ncurses.stdscr.keypad(true)     # turn on keypad mode
-#   Ncurses.stdscr.addstr("Press a key to continue") # output string
-#   Ncurses.stdscr.getch                             # get a charachter
+
+  # Need bool branch to fix this
+
+  #   Ncurses.stdscr.intrflush(false) # turn off flush-on-interrupt
+  #   Ncurses.stdscr.keypad(true)     # turn on keypad mode
+  #   Ncurses.stdscr.addstr("Press a key to continue") # output string
+  #   Ncurses.stdscr.getch                             # get a charachter
+
   Ncurses.stdscr.intrflush(Ncurses::FALSE) # turn off flush-on-interrupt
   Ncurses.stdscr.keypad(Ncurses::TRUE)     # turn on keypad mode
   Ncurses.addstr("Press a key to continue") # output string

@@ -1,5 +1,6 @@
-= Ncurses shim
+* Ncurses shim
 - so JRuby can require 'ncurses'
 - win pointer as WINDOW class
 - COLS = getmaxx
 
+  See [[../examples/ncurses-example.rb]] for a first stab.
