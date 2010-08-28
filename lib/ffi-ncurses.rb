@@ -1,28 +1,16 @@
 # ruby-ffi wrapper for ncurses
-# Sean O'Halpin
+# Sean O'Halpin http://github.com/seanohalpin/ffi-ncurses
 # version 0.1.0 - 2008-12-04
 # version 0.2.0 - 2009-01-18
 # version 0.3.0 - 2009-01-31
-# - added stdscr, newscr, curscr
 # version 0.3.3 - 2010-08-24
-# - compatible with ffi-0.6.3
-# - example working with ruby 1.9.x (using "q"[0].ord instead of ?q)
-# requires ruby-ffi >= 0.6.3 or jruby >= 1.1.6
-# tested with
-# - ruby 1.8.7, 1.9.x
-# - jruby 1.5.1
-# on
-# - Ubuntu 8.04, 9.04, 9.10, 10.04 (ncurses 5.7)
-# - Mac OS X 10.4 (ncurses 5.4)
+# version 0.3.4 - 2010-08-28
 
 require 'ffi'
 
-# would like to check FFI version here rather than use gem but there
-# doesn't appear to be a version specified in the ffi lib
-
 module FFI
   module NCurses
-    VERSION = "0.3.3"
+    VERSION = "0.3.4"
     extend FFI::Library
 
     # use RUBY_FFI_NCURSES_LIB to specify exactly which lib you want, e.g. ncursesw, XCurses (from PDCurses)

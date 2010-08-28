@@ -1,5 +1,8 @@
-== 0.3.4
+== 0.3.4 / 2010-08-28
+
 * Added MIT licence (License.txt, COPYING)
+* Bumped version
+* Added nested PDat struct to WinStruct
 
 == 0.3.3 / 2010-08-24
 
