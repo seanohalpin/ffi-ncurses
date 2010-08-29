@@ -14,3 +14,6 @@ Generate FFI signatures:
 
 : ruby gentypes.rb output-stripped.h > cpp-gen1.rb 2>cpp-unmapped1.rb
 
+* wchar_t vs wint_t
+
+http://stackoverflow.com/questions/1081456/wchar-t-vs-wint-t
