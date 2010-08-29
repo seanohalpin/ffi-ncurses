@@ -110,7 +110,6 @@ begin
   init_pair(15, Colour::BLACK,   Colour::WHITE)
 
   # init
-
   win = stdscr
   box(win, 0, 0)
   wrefresh(win)
