@@ -1,5 +1,9 @@
 module FFI
   module NCurses
+    KEY_TAB       =  9
+    KEY_RETURN    = 10
+    KEY_ESCAPE    = 27
+
     KEY_CODE_YES  = 0400 # A wchar_t contains a key code
     KEY_MIN       = 0401 # Minimum curses key
     KEY_BREAK     = 0401 # Break key (unreliable)
@@ -13,11 +17,6 @@ module FFI
     KEY_HOME      = 0406 # home key
     KEY_BACKSPACE = 0407 # backspace key
     KEY_F0        = 0410 # Function keys.  Space for 64
-
-    # Value of function key n
-    def KEY_F(n)
-      (KEY_F0+(n))
-    end
 
     KEY_DL        = 0510 # delete-line key
     KEY_IL        = 0511 # insert-line key
@@ -103,6 +102,35 @@ module FFI
     KEY_EVENT     = 0633 # We were interrupted by an event
 
     KEY_MAX       = 0777 # Maximum key value is 0633 [SOH: sic in ncurses.h]
+
+
+    # Ctrl+letter
+    if ?A == "A"
+      def KEY_CTRL(letter)
+        (letter.ord & ~0b0100000) - ?A.ord + 1
+      end
+    else
+      def KEY_CTRL(letter)
+        (letter[0] & ~0b0100000) - ?A + 1
+      end
+    end
+
+    # Value of function key n
+    def KEY_F(n)
+      (KEY_F0+(n))
+    end
+
+    # For convenience
+
+    # Control keys
+    ('A'..'Z').each do |c|
+      const_set "KEY_CTRL_#{c}", KEY_CTRL(c)
+    end
+
+    # Function keys
+    (1..64).each do |c|
+      const_set "KEY_F#{c}", KEY_F(c)
+    end
 
   end
 end
