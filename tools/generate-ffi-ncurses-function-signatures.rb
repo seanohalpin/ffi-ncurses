@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby -w
-# quick and dirty hack to generate function signatures for ruby-ffi from ncurses.h
+
+# quick and dirty hack to generate function signatures for ruby-ffi
+# from ncurses.h
+
 require 'rubygems'
 require 'pp'
 require 'ffi'
@@ -35,6 +38,7 @@ BOOLEAN = :int
   "attr_t" => ATTR_T,
   "attr_t*" => ATTR_T_P,       #
   "bool" => BOOLEAN,
+  "_Bool" => BOOLEAN,
   "cchar_t*" => CCHAR_T_P,     # wide character support? - cchar_t is a struct
   "char" => :char,
   "char*" => :string,
