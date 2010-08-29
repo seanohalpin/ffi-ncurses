@@ -16,4 +16,7 @@ Generate FFI signatures:
 
 * wchar_t vs wint_t
 
+wchar_t usually narrower than wint_t (which has to hold values outside
+the character range, e.g. WEOF - cf. char type and EOF in int)
+
 http://stackoverflow.com/questions/1081456/wchar-t-vs-wint-t
