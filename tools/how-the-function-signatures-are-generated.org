@@ -1,0 +1,16 @@
+Preprocess =ncurses.h=:
+
+: cpp -DNCURSES_NOMACROS -imacros stdio.h /usr/include/ncurses.h > output2.h
+
+For =ncursesw=:
+
+: cpp -DNCURSES_NOMACROS -imacros stdio.h /usr/include/ncursesw/ncurses.h > output2.h
+
+Strip out =#line= numbers and blank lines:
+
+: egrep -v "^\s*$" output2.h | grep -v "^#" > output-stripped.h
+
+Generate FFI signatures:
+
+: ruby gentypes.rb output-stripped.h > cpp-gen1.rb 2>cpp-unmapped1.rb
+
