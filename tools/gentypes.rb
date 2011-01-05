@@ -8,10 +8,10 @@ require 'pp'
 # require 'ffi'
 
 signatures = []
+base_types = ARGV.delete("--base")
 filename = ARGV[0] || '/usr/include/ncurses.h'
 
 # the abstract _p types can be changed to :pointer (= void *)
-base_types = true
 if base_types
   # ATTR_T         = :uint
   ATTR_T         = :ulong
