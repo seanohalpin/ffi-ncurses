@@ -63,9 +63,10 @@ module FFI
         :_parent, :pointer,          # WINDOW
 
         # nested struct (for Pads)
-        :_pad, PDat,
+        #:_pad, FFI::NCurses::WinStruct::PDat,
+        :_pad, :pointer,
         :_yoffset, NCURSES_SIZE_T,
-        :_bkgrnd, CCharT
+        :_bkgrnd, :pointer #CCharT
       end
 
       def _win(win, member)
