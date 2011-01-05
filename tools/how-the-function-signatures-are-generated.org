@@ -1,18 +1,29 @@
+* How the function signatures are generated
+
+: $ tools/gensigs.sh
+
+This takes the file =/usr/include/ncursesw/ncurses.h=, runs it through
+the C preprocessor (with some judiciously chosen =#defines=) then
+processes the output with =gentypes.rb=. The output file
+=functions.rb= is then copied to =lib/ffi-ncurses/functions.rb= which
+is =require=d at the top of =lib/ffi-ncurses.rb=.
+
+** Step by step
 Preprocess =ncurses.h=:
 
 : cpp -DNCURSES_NOMACROS -imacros stdio.h /usr/include/ncurses.h > output2.h
 
 For =ncursesw=:
 
-: cpp -DNCURSES_NOMACROS -imacros stdio.h /usr/include/ncursesw/ncurses.h > output2.h
+: cpp -DNCURSES_NOMACROS -DNCURSES_OPAQUE -D_XOPEN_SOURCE_EXTENDED -imacros stdio.h -imacros wchar.h $INPUT_FILE \
 
 Strip out =#line= numbers and blank lines:
 
-: egrep -v "^\s*$" output2.h | grep -v "^#" > output-stripped.h
+: | egrep -v "^\s*$" | grep -v "^#" > stage1.h
 
 Generate FFI signatures:
 
-: ruby gentypes.rb output-stripped.h > cpp-gen1.rb 2>cpp-unmapped1.rb
+: ruby gentypes.rb stage1.h > functions.rb 2>unmapped-functions.rb
 
 * wchar_t vs wint_t
 
