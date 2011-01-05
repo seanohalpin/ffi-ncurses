@@ -13,7 +13,7 @@ begin
   clear
   noecho
   cbreak
-  keypad stdscr, FFI::NCurses::TRUE
+  keypad stdscr, true
 
   # Get all the mouse events
   mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, nil)

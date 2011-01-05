@@ -30,7 +30,7 @@ begin
   refresh
   getch
 
-  leaveok(win, FFI::NCurses::TRUE)
+  leaveok(win, true)
   wrefresh(win)
   winy, winx = getyx(win)
   vy, vx = getsyx
@@ -46,7 +46,7 @@ begin
   printw("virtual: %d, %d\n", :int, vy, :int, vx)
   refresh
   getch
-  
+
 rescue Object => e
   FFI::NCurses.endwin
   raise

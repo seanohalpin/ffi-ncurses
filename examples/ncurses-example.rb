@@ -67,8 +67,6 @@ module NcursesExtension
 end
 
 module Ncurses
-  FALSE = 0
-  TRUE = 1
   module NCX
     def COLS
       FFI::NCurses.getmaxx(FFI::NCurses.stdscr)
@@ -184,8 +182,8 @@ begin
   #   Ncurses.stdscr.addstr("Press a key to continue") # output string
   #   Ncurses.stdscr.getch                             # get a charachter
 
-  Ncurses.stdscr.intrflush(Ncurses::FALSE) # turn off flush-on-interrupt
-  Ncurses.stdscr.keypad(Ncurses::TRUE)     # turn on keypad mode
+  Ncurses.stdscr.intrflush(false) # turn off flush-on-interrupt
+  Ncurses.stdscr.keypad(true)     # turn on keypad mode
   Ncurses.addstr("Press a key to continue") # output string
   Ncurses.getch()                             # get a charachter
 
