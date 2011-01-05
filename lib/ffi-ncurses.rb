@@ -27,7 +27,7 @@ module FFI
     if ENV["RUBY_FFI_NCURSES_LIB"].to_s != ""
       LIB_HANDLE = ffi_lib(ENV["RUBY_FFI_NCURSES_LIB"].split(/:/)).first
     else
-      LIB_HANDLE = ffi_lib(['ncursesw', 'ncurses']).first
+      LIB_HANDLE = ffi_lib(['ncursesw', 'libncursesw', 'ncurses']).first
     end
 
     begin
@@ -81,6 +81,8 @@ module FFI
               handle.send("read_#{type}")
             end
             module_function sym
+          else
+            warn "{sym.inspect} not defined"
           end
         end
       else
@@ -669,7 +671,7 @@ module FFI
 
     # Include fixes for Mac OS X (mostly macros directly referencing
     # the `WINDOW` struct).
-    if ::FFI::Platform::OS == "darwin"
+    if defined?(::FFI::Platform::OS) && ::FFI::Platform::OS == "darwin"
       require 'ffi-ncurses/darwin'
       include NCurses::Darwin
     end
