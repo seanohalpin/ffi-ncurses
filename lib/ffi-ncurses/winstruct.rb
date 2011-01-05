@@ -94,7 +94,7 @@ module FFI
         _win(win, :_leaveok) || ERR
       end
       def is_nodelay(win)
-        _win(win, :_delay) == 0 ? FFI::NCurses::TRUE : FFI::NCurses::FALSE
+        _win(win, :_delay) == 0
       end
       def is_notimeout(win)
         _win(win, :_notimeout)
