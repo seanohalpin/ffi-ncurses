@@ -174,14 +174,6 @@ begin
   Ncurses.cbreak           # provide unbuffered input
   Ncurses.noecho           # turn off input echoing
   Ncurses.nonl             # turn off newline translation
-
-  # Need bool branch to fix this
-
-  #   Ncurses.stdscr.intrflush(false) # turn off flush-on-interrupt
-  #   Ncurses.stdscr.keypad(true)     # turn on keypad mode
-  #   Ncurses.stdscr.addstr("Press a key to continue") # output string
-  #   Ncurses.stdscr.getch                             # get a charachter
-
   Ncurses.stdscr.intrflush(false) # turn off flush-on-interrupt
   Ncurses.stdscr.keypad(true)     # turn on keypad mode
   Ncurses.addstr("Press a key to continue") # output string
