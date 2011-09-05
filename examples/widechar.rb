@@ -80,7 +80,7 @@ begin
   # standard preamble
   initscr
   raw
-  keypad stdscr, 1
+  keypad stdscr, true
   noecho
   curs_set 0
 
@@ -123,7 +123,7 @@ begin
   # end
 
   while ch != KEY_CTRL_Q
-    # how to read a Unicode character
+    # read a Unicode character
     rv = wget_wch(win, buffer)
     ch = buffer.read_int
     # log "rv=#{rv} ch=#{ch}"
