@@ -42,7 +42,7 @@ def main
     getch
   rescue => e
     endwin
-    p e
+    raise
   ensure
     endwin
   end

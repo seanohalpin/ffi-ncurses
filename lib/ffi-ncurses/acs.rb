@@ -1,3 +1,5 @@
+require 'ffi-ncurses/ord_shim'
+
 module FFI
   module NCurses
     module ACS
@@ -39,7 +41,7 @@ module FFI
         # The ACS_names may not match AT&T's, our source didn't know them.
 
         define_acs :ACS_S3       ,'p' # scan line 3
-        define_acs :ACS_S7       ,'r' # scan line 7
+        define_acs :ACS_S7       ,'r' # scan line 7 - SOH: seems to be same as ACS_HLINE
         define_acs :ACS_LEQUAL   ,'y' # less/equal
         define_acs :ACS_GEQUAL   ,'z' # greater/equal
         define_acs :ACS_PI       ,'{' # Pi
