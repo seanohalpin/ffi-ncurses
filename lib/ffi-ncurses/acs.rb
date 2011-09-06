@@ -64,5 +64,45 @@ module FFI
       end
     end
     extend ACS
+
+    # Wide character versions. These are Unicode definitions so
+    # don't need to be defined dynamically.
+    #
+    # From http://invisible-island.net/ncurses/man/curs_add_wch.3x.html
+    #
+    # Name            Unicode    Default   Description
+    # ----------------------------------------------------------------
+    WACS_BLOCK      = 0x25ae  #  #         solid square block
+    WACS_BOARD      = 0x2592  #  #         board of squares
+    WACS_BTEE       = 0x2534  #  +         bottom tee
+    WACS_BULLET     = 0x00b7  #  o         bullet
+    WACS_CKBOARD    = 0x2592  #  :         checker board (stipple)
+    WACS_DARROW     = 0x2193  #  v         arrow pointing down
+    WACS_DEGREE     = 0x00b0  #  '         degree symbol
+    WACS_DIAMOND    = 0x25c6  #  +         diamond
+    WACS_GEQUAL     = 0x2265  #  >         greater-than-or-equal-to
+    WACS_HLINE      = 0x2500  #  -         horizontal line
+    WACS_LANTERN    = 0x2603  #  #         lantern symbol
+    WACS_LARROW     = 0x2190  #  <         arrow pointing left
+    WACS_LEQUAL     = 0x2264  #  <         less-than-or-equal-to
+    WACS_LLCORNER   = 0x2514  #  +         lower left-hand corner
+    WACS_LRCORNER   = 0x2518  #  +         lower right-hand corner
+    WACS_LTEE       = 0x2524  #  +         left tee
+    WACS_NEQUAL     = 0x2260  #  !         not-equal
+    WACS_PI         = 0x03c0  #  *         greek pi
+    WACS_PLMINUS    = 0x00b1  #  #         plus/minus
+    WACS_PLUS       = 0x253c  #  +         plus
+    WACS_RARROW     = 0x2192  #  >         arrow pointing right
+    WACS_RTEE       = 0x251c  #  +         right tee
+    WACS_S1         = 0x23ba  #  -         scan line 1
+    WACS_S3         = 0x23bb  #  -         scan line 3
+    WACS_S7         = 0x23bc  #  -         scan line 7
+    WACS_S9         = 0x23bd  #  _         scan line 9
+    WACS_STERLING   = 0x00a3  #  f         pound-sterling symbol
+    WACS_TTEE       = 0x252c  #  +         top tee
+    WACS_UARROW     = 0x2191  #  ^         arrow pointing up
+    WACS_ULCORNER   = 0x250c  #  +         upper left-hand corner
+    WACS_URCORNER   = 0x2510  #  +         upper right-hand corner
+    WACS_VLINE      = 0x2502  #  |         vertical line
   end
 end
