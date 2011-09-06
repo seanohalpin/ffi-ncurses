@@ -129,7 +129,6 @@ begin
     # log "rv=#{rv} ch=#{ch}"
 
     case ch
-      # orthogonal movement
     when KEY_CTRL("Q")
       break
     else
