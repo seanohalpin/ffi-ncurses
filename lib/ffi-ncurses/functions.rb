@@ -117,7 +117,7 @@ module FFI
        [:inchstr, [:chtype_p], :int],
        [:init_color, [:short, :short, :short, :short], :int],
        [:init_pair, [:short, :short, :short], :int],
-       [:initscr, [], :window_p],
+       [:_initscr, :initscr, [], :window_p], # we need to add some extra processing to init ACS character set
        [:innstr, [:string, :int], :int],
        [:innwstr, [:wchar_t_p, :int], :int],
        [:ins_nwstr, [:wchar_t_p, :int], :int],
