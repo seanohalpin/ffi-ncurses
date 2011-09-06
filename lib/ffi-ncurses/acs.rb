@@ -104,5 +104,33 @@ module FFI
     WACS_ULCORNER   = 0x250c  #  +         upper left-hand corner
     WACS_URCORNER   = 0x2510  #  +         upper right-hand corner
     WACS_VLINE      = 0x2502  #  |         vertical line
+
+    # The wide-character configuration of ncurses also defines symbols
+    # for thick- and double-lines:
+
+    # Name              Unicode   Default   Description
+    # ---------------------------------------------------------------------
+    WACS_T_ULCORNER = 0x250f  #  +         thick upper left corner
+    WACS_T_LLCORNER = 0x2517  #  +         thick lower left corner
+    WACS_T_URCORNER = 0x2513  #  +         thick upper right corner
+    WACS_T_LRCORNER = 0x251b  #  +         thick lower right corner
+    WACS_T_LTEE     = 0x252b  #  +         thick tee pointing right
+    WACS_T_RTEE     = 0x2523  #  +         thick tee pointing left
+    WACS_T_BTEE     = 0x253b  #  +         thick tee pointing up
+    WACS_T_TTEE     = 0x2533  #  +         thick tee pointing down
+    WACS_T_HLINE    = 0x2501  #  -         thick horizontal line
+    WACS_T_VLINE    = 0x2503  #  |         thick vertical line
+    WACS_T_PLUS     = 0x254b  #  +         thick large plus or crossover
+    WACS_D_ULCORNER = 0x2554  #  +         double upper left corner
+    WACS_D_LLCORNER = 0x255a  #  +         double lower left corner
+    WACS_D_URCORNER = 0x2557  #  +         double upper right corner
+    WACS_D_LRCORNER = 0x255d  #  +         double lower right corner
+    WACS_D_RTEE     = 0x2563  #  +         double tee pointing left
+    WACS_D_LTEE     = 0x2560  #  +         double tee pointing right
+    WACS_D_BTEE     = 0x2569  #  +         double tee pointing up
+    WACS_D_TTEE     = 0x2566  #  +         double tee pointing down
+    WACS_D_HLINE    = 0x2550  #  -         double horizontal line
+    WACS_D_VLINE    = 0x2551  #  |         double vertical line
+    WACS_D_PLUS     = 0x256c  #  +         double large plus or crossover
   end
 end
