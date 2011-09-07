@@ -8,7 +8,7 @@ begin
   greeting = ARGV.shift || "World"
   stdscr = initscr
   raw
-  keypad stdscr, 1
+  keypad stdscr, true
   noecho
   curs_set 0
   #  printw "Hello %s", :string, greeting # doesn't work in rbx

@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ffi-ncurses}
-  s.version = "0.3.4"
+  s.version = "0.4.0.pre"
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sean O'Halpin"]
   s.date = %q{2009-02-24}
@@ -24,26 +24,28 @@ EOT
              "examples/doc-eg1.rb",
              "examples/doc-eg2.rb",
              "examples/doc-eg3.rb",
-             "examples/example-attributes.rb",
-             "examples/example-colour.rb",
-             "examples/example-cursor.rb",
-             "examples/example-getsetsyx.rb",
-             "examples/example-hello.rb",
-             "examples/example-jruby.rb",
-             "examples/example-keys.rb",
-             "examples/example-mouse.rb",
-             "examples/example-printw-variadic.rb",
-             "examples/example-softkeys.rb",
-             "examples/example-stdscr.rb",
-             "examples/example-windows.rb",
+             "examples/attributes.rb",
+             "examples/color.rb",
+             "examples/cursor.rb",
+             "examples/getsetsyx.rb",
+             "examples/hello.rb",
+             "examples/keys.rb",
+             "examples/mouse.rb",
+             "examples/printw-variadic.rb",
+             "examples/softkeys.rb",
+             "examples/stdscr.rb",
+             "examples/windows.rb",
              "examples/example.rb",
              "examples/ncurses-example.rb",
              "ffi-ncurses.gemspec",
              "lib/ffi-ncurses.rb",
+             "lib/ffi-ncurses/acs.rb",
              "lib/ffi-ncurses/darwin.rb",
+             "lib/ffi-ncurses/functions.rb",
              "lib/ffi-ncurses/keydefs.rb",
              "lib/ffi-ncurses/mouse.rb",
-             "lib/ffi-ncurses/ord-shim.rb",
+             "lib/ffi-ncurses/ord_shim.rb",
+             "lib/ffi-ncurses/typedefs.rb",
              "lib/ffi-ncurses/winstruct.rb"
             ]
   s.has_rdoc = true

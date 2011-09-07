@@ -17,7 +17,7 @@ begin
     clear
     addstr "Press any key (Escape to exit): "
     #printw "name: %s dec: %d char: [%c]", :string, name, :int, ch, :int, ch
-    addstr sprintf("name: %s dec: %d char: [%c]", name, ch, ch)
+    addstr sprintf("name: %s dec: %d char: [%s]", name, ch, ch > 0 ? ch.chr : " ")
     refresh
     ch = getch
     name = keyname(ch)
