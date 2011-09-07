@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby -w
+# -*- coding: utf-8; -*-
 # ruby-ffi wrapper for ncurses
 #
 # Sean O'Halpin
@@ -29,7 +29,7 @@ module FFI
     # Make all instance methods module methods too.
     extend self
 
-    VERSION = "0.3.4"
+    VERSION = "0.4.0"
     extend FFI::Library
 
     # Use `RUBY_FFI_NCURSES_LIB` to specify a colon-separated list of
@@ -110,6 +110,7 @@ module FFI
     rescue => e
     end
 
+    # This is used for debugging.
     @unattached_functions = []
     class << self
       def unattached_functions
@@ -122,12 +123,11 @@ module FFI
       begin
         attach_function(*func)
       rescue Object => e
-        # This is used for debugging.
         unattached_functions << func[0]
       end
     end
 
-    module Colour
+    module Color
       COLOR_BLACK   = BLACK   = 0
       COLOR_RED     = RED     = 1
       COLOR_GREEN   = GREEN   = 2
@@ -137,8 +137,7 @@ module FFI
       COLOR_CYAN    = CYAN    = 6
       COLOR_WHITE   = WHITE   = 7
     end
-    Color = Colour
-    include Colour
+    include Color
 
     module Attributes
       # The following definitions have been copied (almost verbatim)
@@ -206,7 +205,7 @@ module FFI
       #
       # FIXME: convert to use :bool type.
       def getsyx
-        if (is_leaveok(newscr))
+        if is_leaveok(newscr)
           [-1, -1]
         else
           getyx(newscr)
@@ -215,10 +214,10 @@ module FFI
 
       def setsyx(y, x)
         if y == -1 && x == -1
-			    leaveok(newscr, true)
+          leaveok(newscr, true)
         else
-			    leaveok(newscr, false)
-			    wmove(newscr, y, x)
+          leaveok(newscr, false)
+	  wmove(newscr, y, x)
         end
       end
 
@@ -236,19 +235,25 @@ module FFI
       end
     end
     include EmulatedFunctions
+    extend EmulatedFunctions
 
     # Include fixes for Mac OS X (mostly macros directly referencing
     # the `WINDOW` struct).
+    #
+    # FIXME: Might need these for BSD too.
     if defined?(::FFI::Platform::OS) && ::FFI::Platform::OS == "darwin"
       require 'ffi-ncurses/darwin'
       include NCurses::Darwin
     end
 
+    # We need to define our own `initscr` so we can add the ACS
+    # constants dynamically.
     private :_initscr
 
     def initscr
-      _initscr
+      res = _initscr
       NCurses.define_acs_constants
+      res
     end
   end
 end

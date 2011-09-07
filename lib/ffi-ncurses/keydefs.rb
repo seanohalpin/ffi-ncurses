@@ -1,9 +1,11 @@
+# -*- coding: utf-8; -*-
 module FFI
   module NCurses
     KEY_TAB       =  9
     KEY_RETURN    = 10
     KEY_ESCAPE    = 27
 
+    # Note: these are octal numbers.
     KEY_CODE_YES  = 0400 # A wchar_t contains a key code
     KEY_MIN       = 0401 # Minimum curses key
     KEY_BREAK     = 0401 # Break key (unreliable)
@@ -103,22 +105,27 @@ module FFI
 
     KEY_MAX       = 0777 # Maximum key value is 0633 [SOH: sic in ncurses.h]
 
-
-    # Ctrl+letter
-    if ?A == "A"
-      def KEY_CTRL(letter)
-        (letter.ord & ~0b0100000) - ?A.ord + 1
+    module KeyHelper
+      # Ctrl + letter
+      if ?A == "A"
+        # 1.9+
+        def KEY_CTRL(letter)
+          (letter.ord & ~0b0100000) - ?A.ord + 1
+        end
+      else
+        # 1.8.x
+        def KEY_CTRL(letter)
+          (letter[0] & ~0b0100000) - ?A + 1
+        end
       end
-    else
-      def KEY_CTRL(letter)
-        (letter[0] & ~0b0100000) - ?A + 1
+
+      # Value of function key n
+      def KEY_F(n)
+        KEY_F0 + n
       end
     end
-
-    # Value of function key n
-    def KEY_F(n)
-      (KEY_F0+(n))
-    end
+    include KeyHelper
+    extend KeyHelper
 
     # For convenience
 

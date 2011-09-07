@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8; -*-
 require 'ffi-ncurses'
 
 include FFI::NCurses
@@ -6,10 +8,14 @@ def main
   begin
     initscr
 
+    # FIXME: This isn't working in 1.8.x
     def addwch(ch)
       cchar = WinStruct::CCharT.new
       cchar[:chars][0] = ch
-      # cchar[:attr] = WA_BOLD
+      # cchar[:attr] = WA_REVERSE
+      # chars = [ch].pack('S')
+      # padding = 5 - chars.size
+      # cchar = [WA_REVERSE].pack('L') + chars + ([0] * padding).pack('S')
       wadd_wch(stdscr, cchar)
     end
 

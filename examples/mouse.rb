@@ -4,7 +4,7 @@
 #
 require 'ffi-ncurses'
 require 'ffi-ncurses/mouse'
-require 'ffi-ncurses/ord-shim'  # for 1.8.6 compatibility
+require 'ffi-ncurses/ord_shim'  # for 1.8.6 compatibility
 
 include FFI::NCurses
 

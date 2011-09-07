@@ -1,17 +1,14 @@
 module FFI
   module NCurses
     module WinStruct
-      NCURSES_SIZE_T = :short
-      NCURSES_ATTR_T = :int
+      NCURSES_SIZE_T  = :short
+      NCURSES_ATTR_T  = :int
       NCURSES_COLOR_T = :short
-      NCURSES_CH_T = :short
-
-      CHTYPE = :ulong
-      CCHARW_MAX = 5
-
-      BOOLEAN = :uchar              # sizeof(bool) == 1
-
-      WCHAR_T = :ushort
+      NCURSES_CH_T    = :short
+      BOOLEAN         = :uchar              # sizeof(bool) = = 1
+      WCHAR_T         = :ushort
+      CHTYPE          = :ulong
+      CCHARW_MAX      = 5
 
       class CCharT < FFI::Struct
         layout \
@@ -63,51 +60,76 @@ module FFI
         :_parent, :pointer,          # WINDOW
 
         # nested struct (for Pads)
-        #:_pad, FFI::NCurses::WinStruct::PDat,
-        :_pad, :pointer,
+        :_pad, PDat,
+        #:_pad, :pointer,
         :_yoffset, NCURSES_SIZE_T,
         :_bkgrnd, :pointer #CCharT
       end
 
       def _win(win, member)
+        # TODO: raise exception if win.nil?
         win && WinSt.new(win)[member]
       end
       private :_win
 
       # extensions - not in X/Open
+
+      # consider all data in the window invalid?
       def is_cleared(win)
-        _win(win, :_clear)
+        _win(win, :_clear) != 0
       end
+
+      # OK to use insert/delete char?
       def is_idcok(win)
-        _win(win, :_idcok)
+        _win(win, :_idcok) != 0
       end
+
+      # OK to use insert/delete line?
       def is_idlok(win)
-        _win(:win, :_idlok)
+        _win(:win, :_idlok) != 0
       end
+
+      # window in immed mode? (not yet used)
       def is_immedok(win)
-        _win(win, :_immed)
+        _win(win, :_immed) != 0
       end
+
+      # process function keys into KEY_ symbols?
       def is_keypad(win)
-        _win(win, :_use_keypad)
+        _win(win, :_use_keypad) != 0
       end
+
+      # OK to not reset cursor on exit?
       def is_leaveok(win)
-        _win(win, :_leaveok) || ERR
+        # I've changed this to return true or false - ncurses returns ERR if not true
+        # (_win(win, :_leaveok) != 0) || ERR # why ERR - why not false?
+        _win(win, :_leaveok) != 0
       end
+
+      # 0 = nodelay, <0 = blocking, >0 = delay
       def is_nodelay(win)
         _win(win, :_delay) == 0
       end
+
+      # no time out on function-key entry?
       def is_notimeout(win)
-        _win(win, :_notimeout)
+        _win(win, :_notimeout) != 0
       end
+
+      # OK to scroll this window?
       def is_scrollok(win)
-        _win(win, :_scroll)
+        _win(win, :_scroll) != 0
       end
+
+      # window in sync mode?
       def is_syncok(win)
-        _win(win, :_sync)
+        _win(win, :_sync) != 0
       end
+
       def wgetparent(win)
         _win(win, :_parent)
       end
+
       def wgetscrreg(win, t, b)
         # ((win) ? (*(t) = (win)->_regtop, *(b) = (win)->_regbottom, OK) : ERR)
         # not entirely satisfactory - no error return

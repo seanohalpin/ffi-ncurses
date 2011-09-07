@@ -58,7 +58,7 @@
 # SOFTWARE.
 
 require "ffi-ncurses"
-require 'ffi-ncurses/ord-shim'  # for 1.8.6 compatibility
+require 'ffi-ncurses/ord_shim'  # for 1.8.6 compatibility
 
 module NcursesExtension
   def method_missing(method, *args, &block)
