@@ -4,8 +4,14 @@ require 'ffi-ncurses/ord_shim'
 module FFI
   module NCurses
     module ACS
+      def maybe_const_set(name, value)
+        if !const_defined?(name)
+          const_set name, value
+        end
+      end
+
       def define_acs(name, char)
-        const_set name, acs_map[char[0].ord]
+        maybe_const_set name, acs_map[char[0].ord]
       end
 
       # We have to define these dynamically as =acs_map= is not initialized until =init_scr= has been called
@@ -58,17 +64,17 @@ module FFI
         #
         # See the WACS_x_trbl constants below for the full set.
 
-        const_set :ACS_BSSB, ACS_ULCORNER
-        const_set :ACS_SSBB, ACS_LLCORNER
-        const_set :ACS_BBSS, ACS_URCORNER
-        const_set :ACS_SBBS, ACS_LRCORNER
-        const_set :ACS_SBSS, ACS_RTEE
-        const_set :ACS_SSSB, ACS_LTEE
-        const_set :ACS_SSBS, ACS_BTEE
-        const_set :ACS_BSSS, ACS_TTEE
-        const_set :ACS_BSBS, ACS_HLINE
-        const_set :ACS_SBSB, ACS_VLINE
-        const_set :ACS_SSSS, ACS_PLUS
+        maybe_const_set :ACS_BSSB, ACS_ULCORNER
+        maybe_const_set :ACS_SSBB, ACS_LLCORNER
+        maybe_const_set :ACS_BBSS, ACS_URCORNER
+        maybe_const_set :ACS_SBBS, ACS_LRCORNER
+        maybe_const_set :ACS_SBSS, ACS_RTEE
+        maybe_const_set :ACS_SSSB, ACS_LTEE
+        maybe_const_set :ACS_SSBS, ACS_BTEE
+        maybe_const_set :ACS_BSSS, ACS_TTEE
+        maybe_const_set :ACS_BSBS, ACS_HLINE
+        maybe_const_set :ACS_SBSB, ACS_VLINE
+        maybe_const_set :ACS_SSSS, ACS_PLUS
       end
     end
     include ACS
