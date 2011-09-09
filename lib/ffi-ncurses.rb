@@ -1,5 +1,5 @@
 # -*- coding: utf-8; -*-
-# ruby-ffi wrapper for ncurses
+# ruby-ffi wrapper for ncurses.
 #
 # Sean O'Halpin
 #
@@ -197,13 +197,16 @@ module FFI
         [NCurses.getpary(win), NCurses.getparx(win)]
       end
 
-      def getmaxyx(win)
-        [NCurses.getmaxy(win), NCurses.getmaxx(win)]
+      def getmaxyx(win, y = nil, x = nil)
+        res = [NCurses.getmaxy(win), NCurses.getmaxx(win)]
+        if y.kind_of?(Array) && x.kind_of?(Array)
+          y.replace([res[0]])
+          x.replace([res[1]])
+        end
+        res
       end
 
       # These have been transliterated from `ncurses.h`.
-      #
-      # FIXME: convert to use :bool type.
       def getsyx
         if is_leaveok(newscr)
           [-1, -1]
@@ -251,9 +254,9 @@ module FFI
     private :_initscr
 
     def initscr
-      res = _initscr
+      _initscr
       NCurses.define_acs_constants
-      res
+      stdscr
     end
   end
 end
