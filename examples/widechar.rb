@@ -90,24 +90,24 @@ begin
   # set up colour pairs
   # TODO: check that these are standard combinations
   # TODO: extend to 256 colours
-  #             Background       Foreground
-  init_pair(0,  Colour::BLACK,   Colour::BLACK)
-  init_pair(1,  Colour::RED,     Colour::BLACK)
-  init_pair(2,  Colour::GREEN,   Colour::BLACK)
-  init_pair(3,  Colour::YELLOW,  Colour::BLACK)
-  init_pair(4,  Colour::BLUE,    Colour::BLACK)
-  init_pair(5,  Colour::MAGENTA, Colour::BLACK)
-  init_pair(6,  Colour::CYAN,    Colour::BLACK)
-  init_pair(7,  Colour::WHITE,   Colour::BLACK)
+  #             Background      Foreground
+  init_pair(0,  Color::BLACK,   Color::BLACK)
+  init_pair(1,  Color::RED,     Color::BLACK)
+  init_pair(2,  Color::GREEN,   Color::BLACK)
+  init_pair(3,  Color::YELLOW,  Color::BLACK)
+  init_pair(4,  Color::BLUE,    Color::BLACK)
+  init_pair(5,  Color::MAGENTA, Color::BLACK)
+  init_pair(6,  Color::CYAN,    Color::BLACK)
+  init_pair(7,  Color::WHITE,   Color::BLACK)
 
-  init_pair(8,  Colour::BLACK,   Colour::BLACK)
-  init_pair(9,  Colour::BLACK,   Colour::RED)
-  init_pair(10, Colour::BLACK,   Colour::GREEN)
-  init_pair(11, Colour::BLACK,   Colour::YELLOW)
-  init_pair(12, Colour::BLACK,   Colour::BLUE)
-  init_pair(13, Colour::BLACK,   Colour::MAGENTA)
-  init_pair(14, Colour::BLACK,   Colour::CYAN)
-  init_pair(15, Colour::BLACK,   Colour::WHITE)
+  init_pair(8,  Color::BLACK,   Color::BLACK)
+  init_pair(9,  Color::BLACK,   Color::RED)
+  init_pair(10, Color::BLACK,   Color::GREEN)
+  init_pair(11, Color::BLACK,   Color::YELLOW)
+  init_pair(12, Color::BLACK,   Color::BLUE)
+  init_pair(13, Color::BLACK,   Color::MAGENTA)
+  init_pair(14, Color::BLACK,   Color::CYAN)
+  init_pair(15, Color::BLACK,   Color::WHITE)
 
   # init
   win = stdscr
