@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ffi-ncurses}
-  s.version = "0.4.0.pre"
+  s.version = "0.4.0.pre.1"
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sean O'Halpin"]
   s.date = %q{2009-02-24}
@@ -36,7 +36,12 @@ EOT
              "examples/stdscr.rb",
              "examples/windows.rb",
              "examples/example.rb",
-             "examples/ncurses-example.rb",
+             "examples/ncurses/example.rb",
+             "examples/ncurses/hello_ncurses.rb",
+             "examples/ncurses/LICENSES_for_examples",
+             "examples/ncurses/rain.rb",
+             "examples/ncurses/read_line.rb",
+             "examples/ncurses/tclock.rb",
              "ffi-ncurses.gemspec",
              "lib/ffi-ncurses.rb",
              "lib/ffi-ncurses/acs.rb",
@@ -44,6 +49,7 @@ EOT
              "lib/ffi-ncurses/functions.rb",
              "lib/ffi-ncurses/keydefs.rb",
              "lib/ffi-ncurses/mouse.rb",
+             "lib/ffi-ncurses/ncurses.rb",
              "lib/ffi-ncurses/ord_shim.rb",
              "lib/ffi-ncurses/typedefs.rb",
              "lib/ffi-ncurses/winstruct.rb"
