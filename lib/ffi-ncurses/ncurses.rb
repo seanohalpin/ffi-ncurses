@@ -22,7 +22,11 @@ module FFI
         signature[1].zip(args).map{ |sig, arg|
           case sig
           when :window_p
-            arg.win
+            if arg.respond_to?(:win)
+              arg.win
+            else
+              arg
+            end
           when :chtype
             arg.ord
           else
@@ -67,19 +71,27 @@ module Ncurses
 
     # Lifted from Ncurses.
     def method_missing(name, *args)
+      # log(:mm, 1, name)
       name = name.to_s
       if name[0,2] == "mv"
+        # log(:mm, 2, "mv")
         test_name = name.dup
         test_name[2,0] = "w" # insert "w" after"mv"
         if FFI::NCurses.respond_to?(test_name)
-          FFI::NCurses.send(test_name, @win, *args)
+          # log(:mm, 2.1, test_name)
+          Ncurses.send(test_name, @win, *args)
+        else
+          super
         end
       else
+        # log(:mm, 3, "w")
         test_name = "w" + name
         if FFI::NCurses.respond_to?(test_name)
-          FFI::NCurses.send(test_name, @win, *args)
+          # log(:mm, 4, test_name)
+          Ncurses.send(test_name, @win, *args)
         else
-          FFI::NCurses.send(name, @win, *args)
+          # log(:mm, 5, name)
+          Ncurses.send(name, @win, *args)
         end
       end
     end
@@ -121,7 +133,13 @@ module Ncurses
       if FFI::NCurses.respond_to?(method)
         signature = FFI::NCurses::Compatibility.lookup_signature(method)
         args = FFI::NCurses::Compatibility.unbox_args(signature, args)
-        FFI::NCurses.send(method, *args, &block)
+        res = FFI::NCurses.send(method, *args, &block)
+        log(:MM, signature, res)
+        if signature.last == :window_p && res.kind_of?(FFI::Pointer)
+          Ncurses::WINDOW.new(res) { }
+        else
+          res
+        end
       else
         super
       end

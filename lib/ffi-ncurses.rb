@@ -11,7 +11,7 @@
 # - version 0.3.3 - 2010-08-24
 # - version 0.3.4 - 2010-08-28
 # - version 0.3.5 - 2011-01-05
-# - version 0.4.0 - 2011-09-06 - boolean types, ACS definitions
+# - version 0.4.0 - 2011-09-06 - boolean types, ACS definitions, Ncurses compatibility
 require 'ffi'
 
 # Load typedefs.
