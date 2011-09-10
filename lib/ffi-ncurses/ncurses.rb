@@ -1,15 +1,36 @@
+# Ncurses compatiblity layer.
 require "ffi-ncurses"
 require 'ffi-ncurses/ord_shim'  # for 1.8.6 compatibility
-
-# module NcursesExtension
-#   def method_missing(method, *args, &block)
-#     FFI::NCurses.send(method, self.win, *args, &block)
-#   end
-# end
 
 def log(*a)
   File.open("ncurses.log", "a") do |file|
     file.puts(a.inspect)
+  end
+end
+
+module FFI
+  module NCurses
+    # Methods to help wrap FFI::NCurses methods to be compatible with Ncurses.
+    module Compatibility
+      extend self
+
+      def lookup_signature(method)
+        FFI::NCurses::FUNCTION_SIGNATURES.assoc(method)
+      end
+
+      def unbox_args(signature, args)
+        signature[1].zip(args).map{ |sig, arg|
+          case sig
+          when :window_p
+            arg.win
+          when :chtype
+            arg.ord
+          else
+            arg
+          end
+        }
+      end
+    end
   end
 end
 
@@ -18,70 +39,88 @@ module Ncurses
     def COLS
       FFI::NCurses.getmaxx(FFI::NCurses.stdscr)
     end
+
+    def LINES
+      FFI::NCurses.getmaxy(FFI::NCurses.stdscr)
+    end
+
+    def has_colors?
+      FFI::NCurses.has_colors
+    end
   end
   include NCX
   extend NCX
+
   class WINDOW
     attr_accessor :win
+
     def initialize(*args, &block)
+      # SOH: Lifted from Ncurses. One example of how truly horrible
+      # that interface is (using the existence of an otherwise useless
+      # block as a flag).
       if block_given?
         @win = args.first
       else
         @win = FFI::NCurses.newwin(*args)
       end
     end
+
+    # Lifted from Ncurses.
     def method_missing(name, *args)
       name = name.to_s
-      if (name[0,2] == "mv")
+      if name[0,2] == "mv"
         test_name = name.dup
         test_name[2,0] = "w" # insert "w" after"mv"
-        if (FFI::NCurses.respond_to?(test_name))
-          return FFI::NCurses.send(test_name, @win, *args)
+        if FFI::NCurses.respond_to?(test_name)
+          FFI::NCurses.send(test_name, @win, *args)
+        end
+      else
+        test_name = "w" + name
+        if FFI::NCurses.respond_to?(test_name)
+          FFI::NCurses.send(test_name, @win, *args)
+        else
+          FFI::NCurses.send(name, @win, *args)
         end
       end
-      test_name = "w" + name
-      if (FFI::NCurses.respond_to?(test_name))
-        return FFI::NCurses.send(test_name, @win, *args)
-      end
-      FFI::NCurses.send(name, @win, *args)
     end
+
     def respond_to?(name)
       name = name.to_s
-      if (name[0,2] == "mv" && FFI::NCurses.respond_to?("mvw" + name[2..-1]))
+      if name[0,2] == "mv" && FFI::NCurses.respond_to?("mvw" + name[2..-1])
         true
       else
         FFI::NCurses.respond_to?("w" + name) || FFI::NCurses.respond_to?(name)
       end
     end
+
     def del
       FFI::NCurses.delwin(@win)
     end
     alias delete del
+
   end
+
   def self.initscr
     @stdscr = Ncurses::WINDOW.new(FFI::NCurses.initscr) { }
   end
+
+  def initscr
+    Ncurses.initscr
+  end
+
   def self.stdscr
     @stdscr
   end
 
-  include FFI::NCurses::Color
-  include FFI::NCurses::Attributes
-
-  module Compatibility
-    def has_colors?
-      FFI::NCurses.has_colors
-    end
+  def stdscr
+    Ncurses.stdscr
   end
-  extend Compatibility
 
   module MM
     def method_missing(method, *args, &block)
       if FFI::NCurses.respond_to?(method)
-      #log :mm, method
-        if args.size > 0 && args.first.kind_of?(WINDOW)
-          args = [args.first.win, *args[1..-1]].compact
-        end
+        signature = FFI::NCurses::Compatibility.lookup_signature(method)
+        args = FFI::NCurses::Compatibility.unbox_args(signature, args)
         FFI::NCurses.send(method, *args, &block)
       else
         super
@@ -95,9 +134,12 @@ module Ncurses
   include MM
   extend MM
 
-  include FFI::NCurses::KeyDefs
-
-  TRUE = true
+  TRUE  = true
   FALSE = false
+
+  include FFI::NCurses::Color
+  include FFI::NCurses::Attributes
+  include FFI::NCurses::KeyDefs
   include FFI::NCurses::Constants
+  include FFI::NCurses::Mouse
 end
