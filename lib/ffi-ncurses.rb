@@ -289,3 +289,5 @@ end
 # Include key definitions.
 require 'ffi-ncurses/keydefs'
 
+# Include mouse functions and key definitions.
+require 'ffi-ncurses/mouse'
