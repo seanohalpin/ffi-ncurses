@@ -185,21 +185,36 @@ module FFI
       # these methods have been implemented as macros to make them
       # easy to use in *C*. We have multiple return values in Ruby, so
       # let's use them.
-      def getyx(win)
-        [NCurses.getcury(win), NCurses.getcurx(win)]
+      def getyx(win, y = nil, x = nil)
+        res = [NCurses.getcury(win), NCurses.getcurx(win)]
+        if y && y.kind_of?(Array) && x.kind_of?(Array)
+          y.replace([res[0]])
+          x.replace([res[1]])
+        end
+        res
       end
 
       def getbegyx(win)
-        [NCurses.getbegy(win), NCurses.getbegx(win)]
+        res = [NCurses.getbegy(win), NCurses.getbegx(win)]
+        if y && y.kind_of?(Array) && x.kind_of?(Array)
+          y.replace([res[0]])
+          x.replace([res[1]])
+        end
+        res
       end
 
       def getparyx(win)
-        [NCurses.getpary(win), NCurses.getparx(win)]
+        res = [NCurses.getpary(win), NCurses.getparx(win)]
+        if y && y.kind_of?(Array) && x.kind_of?(Array)
+          y.replace([res[0]])
+          x.replace([res[1]])
+        end
+        res
       end
 
       def getmaxyx(win, y = nil, x = nil)
         res = [NCurses.getmaxy(win), NCurses.getmaxx(win)]
-        if y.kind_of?(Array) && x.kind_of?(Array)
+        if y && y.kind_of?(Array) && x.kind_of?(Array)
           y.replace([res[0]])
           x.replace([res[1]])
         end
@@ -207,12 +222,17 @@ module FFI
       end
 
       # These have been transliterated from `ncurses.h`.
-      def getsyx
+      def getsyx(y = nil, x = nil)
         if is_leaveok(newscr)
-          [-1, -1]
+          res = [-1, -1]
         else
-          getyx(newscr)
+          res = getyx(newscr)
         end
+        if y && y.kind_of?(Array) && x.kind_of?(Array)
+          y.replace([res[0]])
+          x.replace([res[1]])
+        end
+        res
       end
 
       def setsyx(y, x)
