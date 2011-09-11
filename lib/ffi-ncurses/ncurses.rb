@@ -22,9 +22,12 @@ module FFI
         signature[1].zip(args).map{ |sig, arg|
           case sig
           when :window_p
+            #log :unbox_args, signature, arg, arg.respond_to?(:win)
             if arg.respond_to?(:win)
+              #log :unbox_args, :win, arg.win
               arg.win
             else
+              #log :unbox_args, :nowin, arg
               arg
             end
           when :chtype
@@ -97,11 +100,15 @@ module Ncurses
     end
 
     def respond_to?(name)
-      name = name.to_s
-      if name[0,2] == "mv" && FFI::NCurses.respond_to?("mvw" + name[2..-1])
+      if super
         true
       else
-        FFI::NCurses.respond_to?("w" + name) || FFI::NCurses.respond_to?(name)
+        name = name.to_s
+        if name[0,2] == "mv" && FFI::NCurses.respond_to?("mvw" + name[2..-1])
+          true
+        else
+          FFI::NCurses.respond_to?("w" + name) || FFI::NCurses.respond_to?(name)
+        end
       end
     end
 
@@ -134,7 +141,7 @@ module Ncurses
         signature = FFI::NCurses::Compatibility.lookup_signature(method)
         args = FFI::NCurses::Compatibility.unbox_args(signature, args)
         res = FFI::NCurses.send(method, *args, &block)
-        log(:MM, signature, res)
+        # log :MM, signature, res
         if signature.last == :window_p && res.kind_of?(FFI::Pointer)
           Ncurses::WINDOW.new(res) { }
         else
