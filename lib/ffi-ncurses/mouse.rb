@@ -83,37 +83,35 @@ module FFI
 
       ALL_MOUSE_EVENTS = (REPORT_MOUSE_POSITION - 1)
 
-      class << self
-        # macros to extract single event-bits from masks
-        def BUTTON_RELEASE(e, x)
-          ((e) & (001 << (6 * ((x) - 1))))
-        end
-        def BUTTON_PRESS(e, x)
-          ((e) & (002 << (6 * ((x) - 1))))
-        end
-        def BUTTON_CLICK(e, x)
-          ((e) & (004 << (6 * ((x) - 1))))
-        end
-        def BUTTON_DOUBLE_CLICK(e, x)
-          ((e) & (010 << (6 * ((x) - 1))))
-        end
-        def BUTTON_TRIPLE_CLICK(e, x)
-          ((e) & (020 << (6 * ((x) - 1))))
-        end
-        def BUTTON_RESERVED_EVENT(e, x)
-          ((e) & (040 << (6 * ((x) - 1))))
-        end
-
-        #     if NCURSES_MOUSE_VERSION > 1
-        #       def NCURSES_MOUSE_MASK(b,m)
-        #         ((m) << (((b) - 1) * 5))
-        #       end
-        #     else
-        #       def NCURSES_MOUSE_MASK(b,m)
-        #         ((m) << (((b) - 1) * 6))
-        #       end
-        #     end
+      # macros to extract single event-bits from masks
+      def BUTTON_RELEASE(e, x)
+        ((e) & (001 << (6 * ((x) - 1))))
       end
+      def BUTTON_PRESS(e, x)
+        ((e) & (002 << (6 * ((x) - 1))))
+      end
+      def BUTTON_CLICK(e, x)
+        ((e) & (004 << (6 * ((x) - 1))))
+      end
+      def BUTTON_DOUBLE_CLICK(e, x)
+        ((e) & (010 << (6 * ((x) - 1))))
+      end
+      def BUTTON_TRIPLE_CLICK(e, x)
+        ((e) & (020 << (6 * ((x) - 1))))
+      end
+      def BUTTON_RESERVED_EVENT(e, x)
+        ((e) & (040 << (6 * ((x) - 1))))
+      end
+
+      #     if NCURSES_MOUSE_VERSION > 1
+      #       def NCURSES_MOUSE_MASK(b,m)
+      #         ((m) << (((b) - 1) * 5))
+      #       end
+      #     else
+      #       def NCURSES_MOUSE_MASK(b,m)
+      #         ((m) << (((b) - 1) * 6))
+      #       end
+      #     end
 
       #   def mouse_trafo(y, x, to_screen)
       #   end
