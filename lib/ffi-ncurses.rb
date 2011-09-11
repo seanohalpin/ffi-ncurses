@@ -199,7 +199,7 @@ module FFI
         res
       end
 
-      def getbegyx(win)
+      def getbegyx(win, y = nil, x = nil)
         res = [NCurses.getbegy(win), NCurses.getbegx(win)]
         if y && y.kind_of?(Array) && x.kind_of?(Array)
           y.replace([res[0]])
@@ -208,7 +208,7 @@ module FFI
         res
       end
 
-      def getparyx(win)
+      def getparyx(win, y = nil, x = nil)
         res = [NCurses.getpary(win), NCurses.getparx(win)]
         if y && y.kind_of?(Array) && x.kind_of?(Array)
           y.replace([res[0]])
