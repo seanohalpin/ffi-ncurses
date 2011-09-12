@@ -1,4 +1,3 @@
-require 'ffi-ncurses'
 module FFI
   module NCurses
     module Mouse
