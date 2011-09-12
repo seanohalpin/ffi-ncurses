@@ -2,8 +2,13 @@
 /tools/host-os.rb
 /tools/test-button-press.rb
 /tools/ncurses-generated-sigs.rb
+/tools/local
+/tools/unmapped-functions.rb
 /doc/
 /local/
 /notes/description.txt
 announcement.txt
 *.rbc
+log.log
+*.gem
+.ditz-config
