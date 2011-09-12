@@ -55,9 +55,9 @@ else
   MMASK_T           = :mmask_t
   MMASK_T_P         = :mmask_t_p
   NCURSES_ATTR_T    = :attr_t
-  NCURSES_OUTC      = :putc_callback     # typedef int (*NCURSES_OUTC)(int);
-  NCURSES_SCREEN_CB = :screen_callback   # typedef int (*NCURSES_SCREEN_CB)(SCREEN *, void *);
-  NCURSES_WINDOW_CB = :window_callback   # typedef int (*NCURSES_WINDOW_CB)(WINDOW *, void *);
+  NCURSES_OUTC      = :pointer # :putc_callback     # typedef int (*NCURSES_OUTC)(int);
+  NCURSES_SCREEN_CB = :pointer # :screen_callback   # typedef int (*NCURSES_SCREEN_CB)(SCREEN *, void *);
+  NCURSES_WINDOW_CB = :pointer # :window_callback   # typedef int (*NCURSES_WINDOW_CB)(WINDOW *, void *);
   PANEL_P           = :panel_p
   SCREEN_P          = :screen_p
   SHORT_P           = :short_p
