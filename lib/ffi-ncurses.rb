@@ -183,6 +183,9 @@ module FFI
     require 'ffi-ncurses/winstruct'
     include WinStruct
 
+    require 'ffi-ncurses/panel'
+    include PanelStruct
+
     # These following 'functions' are implemented as macros in ncurses.
     module EmulatedFunctions
       # Note that I'm departing from the NCurses API here - it makes
