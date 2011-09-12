@@ -19,11 +19,11 @@ module FFI
     typedef :pointer, :mevent_p
     typedef :ulong,   :mmask_t
     typedef :pointer, :mmask_t_p
+    typedef :pointer, :panel_p
     typedef :pointer, :screen_p
     typedef :pointer, :short_p
     typedef :ushort,  :wchar_t
     typedef :pointer, :wchar_t_p
-    typedef :pointer, :window_p
     typedef :pointer, :window_p
     typedef :pointer, :wint_t_p
 

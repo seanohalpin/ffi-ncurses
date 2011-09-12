@@ -43,11 +43,13 @@ module FFI
     #     RUBY_FFI_NCURSES_LIB=XCurses:ncurses
     #
     # to try to load XCurses (from PDCurses) first, then ncurses.
+    LIB_HANDLE = { }
     if ENV["RUBY_FFI_NCURSES_LIB"].to_s != ""
-      LIB_HANDLE = ffi_lib(ENV["RUBY_FFI_NCURSES_LIB"].split(/:/)).first
+      LIB_HANDLE[:ncurses] = ffi_lib(ENV["RUBY_FFI_NCURSES_LIB"].split(/:/)).first
     else
-      LIB_HANDLE = ffi_lib(['ncursesw', 'libncursesw', 'ncurses']).first
+      LIB_HANDLE[:ncurses] = ffi_lib(['ncursesw', 'libncursesw', 'ncurses', 'libcurses']).first
     end
+    LIB_HANDLE[:panel] = ffi_lib(['panelw', 'libpanelw', 'panel', 'libpanel']).first
 
     begin
       # These global variables are defined in `ncurses.h`:
@@ -92,9 +94,9 @@ module FFI
                  ["LINES", :int],
                  ["TABSIZE", :int],
                 ]
-      if LIB_HANDLE.respond_to?(:find_symbol)
+      if LIB_HANDLE[:ncurses].respond_to?(:find_symbol)
         symbols.each do |sym, type|
-          if handle = LIB_HANDLE.find_symbol(sym)
+          if handle = LIB_HANDLE[:ncurses].find_symbol(sym)
             define_method sym do
               handle.send("read_#{type}")
             end
@@ -104,7 +106,7 @@ module FFI
           end
         end
         # `acs_map` is a special case
-        if handle = LIB_HANDLE.find_symbol("acs_map")
+        if handle = LIB_HANDLE[:ncurses].find_symbol("acs_map")
           define_method :acs_map do
             handle.get_array_of_uint(0, 128)
           end
