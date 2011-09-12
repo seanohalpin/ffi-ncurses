@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 require 'ffi-ncurses'
 
 include FFI::NCurses
