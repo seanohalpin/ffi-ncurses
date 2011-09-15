@@ -25,7 +25,11 @@ module FFI
     typedef :ushort,  :wchar_t
     typedef :pointer, :wchar_t_p
     typedef :pointer, :window_p
+    typedef :int,     :wint_t    # An integral type capable of storing any valid value of wchar_t, or WEOF
     typedef :pointer, :wint_t_p
 
   end
 end
+
+# Refs:
+# http://pubs.opengroup.org/onlinepubs/007908799/xsh/wchar.h.html
