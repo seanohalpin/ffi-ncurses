@@ -26,16 +26,17 @@ require 'ffi-ncurses/acs'
 # Declare module.
 module FFI
   module NCurses
+    extend FFI::Library
     # FFI overwrites the signatures when you call =attach_function= so
     # I keep an untouched deep copy here (used in the Ncurses
     # compatibility layer).
+
     FUNCTION_SIGNATURES = Marshal.load(Marshal.dump(FUNCTIONS))
 
     # Make all instance methods module methods too.
     extend self
 
     VERSION = "0.4.0"
-    extend FFI::Library
 
     # Use `RUBY_FFI_NCURSES_LIB` to specify a colon-separated list of
     # libs you want to try to load, e.g.
