@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+# -*- mode: ruby; coding: utf-8; -*-
 require 'ffi-ncurses'
 
 include FFI::NCurses

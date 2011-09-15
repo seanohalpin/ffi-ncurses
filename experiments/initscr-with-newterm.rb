@@ -11,7 +11,7 @@ end
 
 module CLib
   extend FFI::Library
-  LIB_HANDLE = ffi_lib("c")
+  ffi_lib FFI::Library::LIBC
   # FILE* open and close
   typedef :pointer, :FILEP
   attach_function :fdopen, [:int, :string], :FILEP

@@ -6,7 +6,8 @@ require 'ffi-ncurses'
 begin
   scr = FFI::NCurses.initscr
   FFI::NCurses.box(FFI::NCurses.stdscr, 0, 0)
-  FFI::NCurses.mvaddstr 1, 1, "#{[scr, FFI::NCurses.stdscr].inspect}"
+  FFI::NCurses.mvaddstr 1, 1, "initscr: #{scr.inspect}"
+  FFI::NCurses.mvaddstr 2, 1, "stdscr:  #{FFI::NCurses.stdscr.inspect}"
   FFI::NCurses.refresh
   FFI::NCurses.getch
 

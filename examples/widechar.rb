@@ -115,7 +115,8 @@ begin
   wrefresh(win)
 
   ch = 0
-  buffer = FFI::MemoryPointer.new(:pointer, 2)
+  # buffer = FFI::MemoryPointer.new(:pointer, 2)
+  buffer = FFI::Buffer.new(FFI::NCurses.find_type(:wint_t))
   cchar = WinStruct::CCharT.new
   cchar[:attr] = 0
   # 0.upto(cchar[:chars].size - 1) do |i|
