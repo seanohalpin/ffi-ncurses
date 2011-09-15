@@ -19,6 +19,7 @@ module FFI
       end
 
       def unbox_args(signature, args)
+        if signature
         signature[1].zip(args).map{ |sig, arg|
           case sig
           when :window_p
@@ -36,6 +37,9 @@ module FFI
             arg
           end
         }
+        else
+          args
+        end
       end
     end
   end
@@ -142,7 +146,7 @@ module Ncurses
         args = FFI::NCurses::Compatibility.unbox_args(signature, args)
         res = FFI::NCurses.send(method, *args, &block)
         # log :MM, signature, res
-        if signature.last == :window_p && res.kind_of?(FFI::Pointer)
+        if signature && signature.last == :window_p && res.kind_of?(FFI::Pointer)
           Ncurses::WINDOW.new(res) { }
         else
           res
