@@ -6,7 +6,7 @@
 # Sean O'Halpin, 2011-09-16
 #
 # Possible features to add:
-# - show line, col numbers
+# - search
 # - hex view
 #
 require 'ffi-ncurses'
@@ -33,20 +33,43 @@ def redraw_background_frame
   clear
   touchwin(stdscr)
   box(stdscr, 0, 0)
-  title = "[ F1 for help ]"
+  title = "[ F1 or ? for help ]"
   wmove(stdscr, 0, (COLS() - title.size)/2)
   waddstr(stdscr, title)
-  refresh
+  wnoutrefresh(stdscr)
 end
 
-def show_text_window(title, text)
+def std_colors
+  init_pair(0,  Color::BLACK,   Color::BLACK)
+  init_pair(1,  Color::RED,     Color::BLACK)
+  init_pair(2,  Color::GREEN,   Color::BLACK)
+  init_pair(3,  Color::YELLOW,  Color::BLACK)
+  init_pair(4,  Color::BLUE,    Color::BLACK)
+  init_pair(5,  Color::MAGENTA, Color::BLACK)
+  init_pair(6,  Color::CYAN,    Color::BLACK)
+  init_pair(7,  Color::WHITE,   Color::BLACK)
+
+  init_pair(8,  Color::BLACK,   Color::BLACK)
+  init_pair(9,  Color::BLACK,   Color::RED)
+  init_pair(10, Color::BLACK,   Color::GREEN)
+  init_pair(11, Color::BLACK,   Color::YELLOW)
+  init_pair(12, Color::BLACK,   Color::BLUE)
+  init_pair(13, Color::BLACK,   Color::MAGENTA)
+  init_pair(14, Color::BLACK,   Color::CYAN)
+  init_pair(15, Color::BLACK,   Color::WHITE)
+end
+
+def show_text_window(win, title, text)
   text_width = text.lines.map{ |x| x.size }.max
   text_height = text.lines.to_a.size
 
-  width = text_width + 2
-  height = text_height + 2
-  col = (COLS() - width)/2
-  row = (LINES() - height)/2
+  width = text_width + 4
+  height = text_height + 4
+
+  rows, cols = getmaxyx(win)
+
+  col = (cols - width)/2
+  row = (rows - height)/2
 
   frame = newwin(height, width, row, col)
   keypad frame, true
@@ -56,20 +79,28 @@ def show_text_window(title, text)
   wmove(frame, 0, (width - title.size)/2)
   waddstr(frame, title)
 
-  win = derwin(frame, text_height, text_width, 1, 1)
+  win = derwin(frame, text_height, text_width, 2, 2)
   wmove(win, 0, 0)
   waddstr(win, text)
-  wrefresh(win)
+  wnoutrefresh(win)
   wgetch(frame)
   flushinp
   delwin(win)
   delwin(frame)
 end
 
+def update_row_col(border, row, col)
+  move(0, border)
+  addstr("%03d:%003d" % [row + 1, col + 1])
+  wnoutrefresh(stdscr)
+end
+
 def view(text)
+  border = 2
+  set_escdelay(10)
   lines = text.lines.to_a
-  maxx = lines.map{|x| x.size }.max + 1
-  maxy = lines.size + 1
+  maxx = lines.map{|x| x.size }.max + border
+  maxy = lines.size + border
 
   # We need to open /dev/tty so we can read from STDIN without borking
   # ncurses
@@ -78,7 +109,7 @@ def view(text)
   old_screen = set_term(screen)
 
   help_text = <<EOT
-F1          - Help
+F1, ?       - Help
 Home        - Beginning of file
 End         - End of file
 PgDn, space - Scroll down one page
@@ -96,20 +127,56 @@ EOT
     noecho
     curs_set 0
     pad = newpad(maxy, maxx)
+    if has_colors
+      start_color
+      std_colors
+    end
     keypad pad, true
+
+    # just a bit of fun - format RDoc headers, comments and org-mode
+    # header lines
+    flag = false
+    bg_flag = false
+    attribute = 0
     lines.each do |line|
+      if line =~ /^\s*[=*#]+/
+        case line
+        when /^\s*#/
+          attribute = COLOR_PAIR(4)
+        when /^\s*=+/
+          # attribute = A_UNDERLINE
+          wbkgdset(pad, A_REVERSE)
+          wclrtoeol(pad)
+          bg_flag = true
+        when /^\s*\*/
+          attribute = COLOR_PAIR(1)
+        end
+        # wchgat(pad, -1, A_REVERSE, COLOR_WHITE, nil)
+        flag = true
+        # wattron(pad, A_BOLD)
+        wattron(pad, attribute)
+      end
       rv = waddstr(pad, line)
+      if flag
+        flag = false
+        wattroff(pad, attribute)
+        if bg_flag
+          wbkgdset(pad, A_NORMAL)
+          wattroff(pad, A_BOLD)
+        end
+      end
       log :adding, line, :rv, rv
     end
 
     current_line = 0
     current_col  = 0
 
-    border = 2
     redraw_background_frame
+    update_row_col(border, current_line, current_col)
 
-    rv = prefresh(pad, current_line, current_col, border, border, LINES() - border - 1, COLS() - border - 1)
+    rv = pnoutrefresh(pad, current_line, current_col, border, border, LINES() - border - 1, COLS() - border - 1)
     log :prefresh1, :rv, rv
+    doupdate
 
     # main loop
     while ch = wgetch(pad)
@@ -117,36 +184,44 @@ EOT
       case ch
       when KEY_HOME
         current_line = 0
+        current_col  = 0
       when KEY_END
         current_line = maxy - LINES() + border
+        current_col  = 0
       when KEY_NPAGE, ' '[0].ord
-        current_line = [current_line + LINES(), maxy - LINES() + border].min
+        current_line = [current_line + LINES(), [maxy - LINES() + border, 0].max].min
       when KEY_PPAGE
         current_line = [current_line - LINES() + border, 0].max
       when KEY_DOWN
-        current_line = [current_line + 1, maxy - LINES() + border].min
+        current_line = [current_line + 1, [maxy - LINES() + border, 0].max].min
       when KEY_UP
         current_line = [current_line - 1, 0].max
       when KEY_RIGHT
-        current_col = [current_col + 1, maxx - COLS() + border].min
+        current_col = [current_col + 1, [maxx - COLS() + border, 0].max].min
       when KEY_LEFT
         current_col = [current_col - 1, 0].max
-      when KEY_F1
+      when KEY_F1, '?'[0].ord
         # Help
-        show_text_window "Help", help_text
+        show_text_window stdscr, "Help", help_text
         redraw_background_frame
+
       when KEY_CTRL_Q, 'q'[0].ord, 27 # 27 == Esc
         # Quit
         delwin(pad)
         break
       when KEY_CTRL_C
-        # for JRuby - Ctrl-C in cbreak mode is not trapped in rescue below for some reason
+        # for JRuby - Ctrl-C in cbreak mode is not trapped in rescue
+        # below for some reason and so leaves the terminal in raw mode
         raise Interrupt
-      when KEY_RESIZE
+      when KEY_RESIZE, KEY_CTRL_L
+        log :redraw2
         redraw_background_frame
       end
-      rv = prefresh(pad, current_line, current_col, border, border, LINES() - border - 1, COLS() - border - 1)
-      log :prefresh2, :rv, rv
+
+      update_row_col(border, current_line, current_col)
+      rv = pnoutrefresh(pad, current_line, current_col, border, border, LINES() - border - 1, COLS() - border - 1)
+      log :prefresh2, :rv, rv, :line, current_line, :col, current_col
+      doupdate
     end
   rescue Object => e
     saved_exception = e
@@ -161,4 +236,6 @@ EOT
   end
 end
 
-view(ARGF.read) # simplistic but works for demo
+if __FILE__ == $0
+  view(ARGF.read) # simplistic but works for demo
+end
