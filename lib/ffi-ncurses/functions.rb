@@ -253,7 +253,7 @@ module FFI
        [:napms, [:int], :int],
        [:new_panel, [:window_p], :panel_p],
        [:newpad, [:int, :int], :window_p],
-       [:newterm, [:string, :file_p, :file_p], :screen_p],
+       [:_newterm, :newterm, [:string, :file_p, :file_p], :screen_p], # see initscr above
        [:newwin, [:int, :int, :int, :int], :window_p],
        [:nl, [], :int],
        [:nocbreak, [], :int],

@@ -289,6 +289,12 @@ module FFI
       NCurses.define_acs_constants
       stdscr
     end
+
+    def newterm(name, out_filep, in_filep)
+      rv = _newterm(name, out_filep, in_filep)
+      NCurses.define_acs_constants
+      rv
+    end
   end
 end
 
