@@ -2,32 +2,56 @@
 
 Author: Sean O'Halpin
 
-A wrapper for ncurses 5.x. Tested on Ubuntu 8.04 to 10.04 and Mac OS X
-10.4 (Tiger) with ruby 1.8.6, 1.8.7 and 1.9.x using ffi (>= 0.6.3) and
-JRuby 1.5.1.
+A pure-ruby wrapper for ncursesw 5.x using the ffi library.
+
+All of the core ncursesw functions are supported along with the Panel
+library. The main things left to do are support for the Menu and Form
+libraries.
 
 The API is a transliteration of the C API rather than an attempt to
 provide an idiomatic Ruby object-oriented API. The intent is to
 provide a 'close to the metal' wrapper around the ncurses library upon
 which you can build your own abstractions.
 
-This is still very much a work-in-progress, so expect some rough
-edges. Having said that, you can do quite a lot with it as it is. The
-main things left to be done are tests, access to global variables and
-various macros.
+Having said that, this release also includes a wrapper that emulates
+the existing Ncurses API. To use it, substitute
 
-Below are some very preliminary notes on usage. See the examples
-directory for real working examples.
+  require 'ffi-ncurses/ncurses'
+
+for
+
+  require 'ncurses'
+
+or create a file called 'ncurses.rb' on your load path ($:) that
+requires +ffi-ncurses/ncurses.rb+.
+
+One benefit of this approach is that you can use existing examples and
+man pages to find out how to use the library. Start with
+
+  $ man ncurses
+
+Below you'll find some very preliminary notes on usage. See the
+examples directory for real working examples, which among other things
+show how to input and output UTF-8, deal with pointers and handle wide
+characters.
+
+This version of ffi-ncurses defaults to loading ncursesw, the 'wide
+character' version which supports UTF-8 and double width characters.
+
+Tested on Ubuntu 10.04 with ruby1.8.7 and 1.9.2 using ffi (>= 0.6.3)
+and JRuby 1.6.4 (head). A previous version of the library was tested
+on Mac OS X 10.04. Please let me know if anything has stopped working.
+
+Rubinius is not supported as its FFI does not provide the required
+API, especially for dealing with buffers and pointers.
+
+This is still very much a work-in-progress, so expect some rough edges
+(and please report them). Having said that, you can do quite a lot
+with it as it is.
 
 == Install
 
-ruby 1.8.x:
-
-  $ sudo gem install ffi-ncurses
-
-jruby 1.5.1:
-
-  $ jruby -S gem install ffi-ncurses
+  $ [sudo] gem install ffi-ncurses
 
 == Usage
 
@@ -52,12 +76,10 @@ or as included methods:
   require 'ffi-ncurses'
   include FFI::NCurses
   begin
-    stdscr = initscr
-    start_color
-    curs_set 0
-    raw
+    initscr
     cbreak
     noecho
+    curs_set 0
     clear
     move 10, 10
     standout
@@ -86,7 +108,6 @@ or as included methods:
   FFI::NCurses.start_color
   FFI::NCurses.curs_set 0
   FFI::NCurses.raw
-  FFI::NCurses.cbreak
   FFI::NCurses.noecho
   FFI::NCurses.keypad(stdscr, true)
 
@@ -95,7 +116,7 @@ or as included methods:
   start_color
   init_pair(1, FFI::NCurses::COLOR_BLACK, FFI::NCurses::COLOR_RED)
   attr_set FFI::NCurses::A_NORMAL, 1, nil
-  addch("A"[0].ord) # works in both 1.8.x and 1.9.x
+  addch("A"[0].ord) # works in both 1.8.7 and 1.9.x
   addch("Z"[0].ord | COLOR_PAIR(1))
 
 == Cursor
@@ -123,25 +144,25 @@ or as included methods:
     ch = wgetch(inner_win)
     delwin(win)
 
-  rescue Object => e
+  rescue => e
     FFI::NCurses.endwin
-    puts e
+    raise
   ensure
     FFI::NCurses.endwin
   end
 
 == Mouse handling
 
-The ncurses mouse API is defined in a separate file. To include it use:
+NOTE: In previous versions of ffi-ncurses, the ncurses mouse API was
+included separately. You now no longer need to +require 'ffi-ncurses/mouse'+ to get mouse support.
 
-  require 'ffi-ncurses/mouse'
+To use the mouse with ffi-ncurses, you first need to specify that you
+want keypad translation with:
 
-You need to specify that you want keypad translation with:
-
-  keypad stdscr, FFI::NCurses::TRUE
+  keypad stdscr, true
 
 otherwise your program will receive the raw mouse escape codes,
-instead of KEY_MOUSE mouse event codes.
+instead of +KEY_MOUSE+ mouse event codes.
 
 Specify which events you want to handle with:
 
@@ -172,27 +193,18 @@ or
 The possible button states are: PRESS, RELEASE, CLICK, DOUBLE_CLICK
 and TRIPLE_CLICK.
 
-= Experimental stuff
-
 == Specifying which curses library to use
 
 You can specify which variant of curses you want to use by setting the
 environment variable +RUBY_FFI_NCURSES_LIB+ to the one you want. For
-example, to use PDCurses X11 curses lib, use:
+example, to use the PDCurses X11 curses lib, use:
 
-  RUBY_FFI_NCURSES_LIB=XCurses ruby examples/hello.rb
+  RUBY_FFI_NCURSES_LIB=XCurses ruby examples/example.rb
 
-You can use this to specify +ncursesw+ for example. Please note that
-only the bog standard ncurses lib has been in any way tested as of
-yet.
+You could also use this to specify +ncursesw-dbg+ for example to get
+access to the +trace+ functions.
 
 = TO DO
-
-== Complete translation of core functions to Darwin (Mac OS X)
-
-There are some macros in darwin ncurses.h which I haven't
-implemented yet. I'm working on it but if there are any you
-desperately need let me know.
 
 == Tests
 
@@ -209,17 +221,14 @@ the output. However, this is not really ready for prime time yet.
 Things got a bit messy as I switched between the Linux and Mac
 versions. The examples should be more focussed.
 
-== Scope implementation of Menu and Form interface wrappers
-
-I'm not particularly interested in the ncurses extension libraries for
-forms and menus. I would rather spend time implementing similar
-functionality on top of a portable text console library (or porting
-rbcurses). However, in the interests of completeness, I suppose I
-ought to at least scope it out.
-
 = Trivia
 
 While researching ncurses on Google, I innocently entered "curses
 getsx" as a search term. NSFW and definitely not one for "I'm Feeling
 Lucky".
+
+= Credits
+
+Thanks to rahul and manveru for their support!
+
 
