@@ -138,6 +138,13 @@ begin
       waddch win, char
       waddch win, 32
 
+      # convert to UTF-8 then output using non-widechar routines
+      attr_on(COLOR_PAIR(5) | A_BOLD, nil)
+      str = [ch].pack("U")
+      waddstr win, str
+      waddch win, 32
+      attr_off(COLOR_PAIR(5) | A_BOLD, nil)
+
       # output a wide character (i.e. Unicode)
       cchar[:attr] = COLOR_PAIR(6) | A_BOLD
       cchar[:chars][0] = ch
@@ -148,7 +155,7 @@ begin
 
       # output skull (how to output a Unicode character)
       cchar[:attr] = COLOR_PAIR(7) | A_BOLD
-      cchar[:chars][0] = 0x2620 # ☠
+      cchar[:chars][0] = 0x2620 # ☠ skull
       wadd_wch win, cchar
       waddch win, 32
 
