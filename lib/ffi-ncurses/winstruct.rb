@@ -5,7 +5,7 @@ module FFI
       NCURSES_ATTR_T  = :int
       NCURSES_COLOR_T = :short
       NCURSES_CH_T    = :short
-      BOOLEAN         = :uchar              # sizeof(bool) = = 1
+      BOOLEAN         = :uchar              # sizeof(bool) == 1
       WCHAR_T         = :ushort
       CHTYPE          = :ulong
       CCHARW_MAX      = 5
@@ -60,7 +60,7 @@ module FFI
         :_parent, :pointer,          # WINDOW
 
         # nested struct (for Pads)
-        :_pad, PDat,
+        :_pad, PDat,  # NB. Rubinius doesn't like this (but Rubinius FFI is very far behind...)
         #:_pad, :pointer,
         :_yoffset, NCURSES_SIZE_T,
         :_bkgrnd, :pointer #CCharT
