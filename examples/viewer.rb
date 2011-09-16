@@ -95,7 +95,23 @@ def update_row_col(border, row, col)
   wnoutrefresh(stdscr)
 end
 
-def view(text)
+@maximized = false
+def toggle_maximize
+  # Maximize terminal window (xterm only).
+  #
+  # You can do the same with Alt-F10 in Gnome (and it seems more
+  # reliable).
+  if @maximized
+    print("\e[9;0t")
+  else
+    print("\e[9;1t")
+  end
+  STDOUT.flush
+  @maximized = !@maximized
+  # redraw_background_frame
+end
+
+def view(text, arg_rows = nil, arg_cols = nil)
   border = 2
   set_escdelay(10)
   lines = text.lines.to_a
@@ -107,6 +123,19 @@ def view(text)
   term = CLib.fopen("/dev/tty", "rb+")
   screen = newterm(nil, term, term)
   old_screen = set_term(screen)
+
+  # save original window size
+  orig_rows, orig_cols = getmaxyx(stdscr)
+  if arg_rows.nil?
+    arg_rows = orig_rows
+  end
+  if arg_cols.nil?
+    arg_cols = orig_cols
+  end
+  if arg_rows != orig_rows || arg_cols != orig_cols
+    print("\e[8;#{arg_rows};#{arg_cols};t") # set window size to 40x120 rows;cols
+    resizeterm(arg_rows, arg_cols)          # note: you need to tell ncurses that you've resized the terminal
+  end
 
   help_text = <<EOT
 F1, ?       - Help
@@ -205,6 +234,9 @@ EOT
         show_text_window stdscr, "Help", help_text
         redraw_background_frame
 
+      when 'f'[0].ord
+        toggle_maximize
+
       when KEY_CTRL_Q, 'q'[0].ord, 27 # 27 == Esc
         # Quit
         delwin(pad)
@@ -222,6 +254,7 @@ EOT
       rv = pnoutrefresh(pad, current_line, current_col, border, border, LINES() - border - 1, COLS() - border - 1)
       log :prefresh2, :rv, rv, :line, current_line, :col, current_col
       doupdate
+      flushinp
     end
   rescue Object => e
     saved_exception = e
@@ -230,12 +263,39 @@ EOT
     flushinp
     endwin
     delscreen(screen)
+
+    if arg_rows != orig_rows || arg_cols != orig_cols
+      resizeterm(orig_rows, orig_cols)
+      print("\e[8;#{orig_rows};#{orig_cols};t") # restore window
+    end
+
   end
   if saved_exception
     raise saved_exception
   end
 end
 
+def main
+  require 'ostruct'
+  require 'optparse'
+
+  options = OpenStruct.new
+
+  xopts = OptionParser.new do |opts|
+    opts.on("-c", "--c COLS", Integer, "Resize screen to COLS width") do |cols|
+      options.columns = cols
+    end
+    opts.on("-r", "--r ROWS", Integer, "Resize screen to ROWS height") do |rows|
+      options.rows = rows
+    end
+  end
+
+  xopts.parse!(ARGV)
+  view(ARGF.read, options.rows, options.columns) # simplistic but works for demo
+
+end
+
 if __FILE__ == $0
-  view(ARGF.read) # simplistic but works for demo
+  # TODO: get args from command line
+  main
 end
