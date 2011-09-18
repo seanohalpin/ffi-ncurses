@@ -71,7 +71,6 @@ def main
 
     getch
 
-
   rescue => e
     endwin
     raise
