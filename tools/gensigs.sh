@@ -11,7 +11,7 @@ INPUT_FILE=ncurses-all.h
 cpp -DNCURSES_NOMACROS -DNCURSES_OPAQUE -D_XOPEN_SOURCE_EXTENDED -imacros stdio.h -imacros wchar.h $INPUT_FILE | egrep -v "^\s*$" | grep -v "^#" > stage1.h
 # Generate FFI signatures:
 ruby gentypes.rb $* stage1.h > functions.rb 2>unmapped-functions.rb
+ruby wrap_bools.rb > bool_wrappers.rb
 # fixup
-sed -i 's/\[:initscr, \[\], :window_p\],/\[:_initscr, :initscr, \[\], :window_p\], # we need to add some extra processing to init ACS character set/' functions.rb
-cp functions.rb ../lib/ffi-ncurses/functions.rb
+cp functions.rb bool_wrappers.rb ../lib/ffi-ncurses/
 

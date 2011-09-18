@@ -282,21 +282,25 @@ module FFI
 
     # We need to define our own `initscr` so we can add the ACS
     # constants dynamically.
-    private :_initscr
+    private :_wrapped_initscr
+    private :_wrapped_newterm
 
     def initscr
-      _initscr
+      _wrapped_initscr
       NCurses.define_acs_constants
       stdscr
     end
 
     def newterm(name, out_filep, in_filep)
-      rv = _newterm(name, out_filep, in_filep)
+      rv = _wrapped_newterm(name, out_filep, in_filep)
       NCurses.define_acs_constants
       rv
     end
   end
 end
+
+# Include wrappers for functions with bool arguments.
+require 'ffi-ncurses/bool_wrappers'
 
 # Include key definitions.
 require 'ffi-ncurses/keydefs'
