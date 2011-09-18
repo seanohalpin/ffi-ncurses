@@ -96,9 +96,11 @@ module Ncurses
         if FFI::NCurses.respond_to?(test_name)
           # log(:mm, 4, test_name)
           Ncurses.send(test_name, @win, *args)
-        else
+        elsif FFI::NCurses.respond_to?(name)
           # log(:mm, 5, name)
           Ncurses.send(name, @win, *args)
+        else
+          super
         end
       end
     end

@@ -15,7 +15,7 @@ begin
   # while ch != 27                # Escape
   while ch != KEY_CTRL_Q
     clear
-    addstr "Press any key (Escape to exit): "
+    addstr "Press any key (Ctrl-Q to exit): "
     #printw "name: %s dec: %d char: [%c]", :string, name, :int, ch, :int, ch
     addstr sprintf("name: %s dec: %d char: [%s]", name, ch, (1..127).include?(ch) ? ch.chr : " ")
     refresh

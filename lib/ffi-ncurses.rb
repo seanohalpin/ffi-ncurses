@@ -32,6 +32,11 @@ module FFI
     # compatibility layer).
 
     FUNCTION_SIGNATURES = Marshal.load(Marshal.dump(FUNCTIONS))
+    FUNCTION_SIGNATURES.each do |fsig|
+      if fsig[0].to_s == "_wrapped_#{fsig[1]}"
+        fsig.shift
+      end
+    end
 
     # Make all instance methods module methods too.
     extend self
