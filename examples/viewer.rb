@@ -115,9 +115,29 @@ def toggle_maximize(term)
   @maximized = !@maximized
 end
 
+# Helper function to match charcodes or (single character) strings
+# against keycodes returned by ncursesw.
+#
+# Note that this won't work for characters outside Latin-1 as they overlap numerically with
+# ncurses's KEY_ codes. Should return new class for KEY_ codes.
+#
+def KEY(s)
+  case s
+  when String
+    s.unpack("U")[0]
+  else
+    s
+  end
+end
+
+def resize_terminal_window(rows, cols)
+  print("\e[8;#{rows};#{cols};t") # set window size to rows x cols
+  resizeterm(rows, cols)              # note: you need to tell ncurses that you've resized the terminal
+end
+
 def view(text, arg_rows = nil, arg_cols = nil)
   border = 2
-  set_escdelay(10)
+  # set_escdelay(10)
   lines = text.lines.to_a
   maxx = lines.map{|x| x.size }.max + border
   maxy = lines.size + border
@@ -137,8 +157,7 @@ def view(text, arg_rows = nil, arg_cols = nil)
     arg_cols = orig_cols
   end
   if arg_rows != orig_rows || arg_cols != orig_cols
-    print("\e[8;#{arg_rows};#{arg_cols};t") # set window size to 40x120 rows;cols
-    resizeterm(arg_rows, arg_cols)          # note: you need to tell ncurses that you've resized the terminal
+    resize_terminal_window(arg_rows, arg_cols)
   end
 
   help_text = <<EOT
@@ -151,6 +170,7 @@ Down arrow  - Scroll down one line
 Up arrow    - Scroll up one line
 Right arrow - Scroll right one column
 Left arrow  - Scroll left one column
++/-         - Increase/decrease window size
 ^q, q, Esc  - Quit
 EOT
 
@@ -221,7 +241,7 @@ EOT
       when KEY_END
         current_line = maxy - LINES() + border
         current_col  = 0
-      when KEY_NPAGE, ' '[0].ord
+      when KEY_NPAGE, KEY(' ')
         current_line = [current_line + LINES(), [maxy - LINES() + border, 0].max].min
       when KEY_PPAGE
         current_line = [current_line - LINES() + border, 0].max
@@ -233,14 +253,24 @@ EOT
         current_col = [current_col + 1, [maxx - COLS() + border, 0].max].min
       when KEY_LEFT
         current_col = [current_col - 1, 0].max
-      when KEY_F1, '?'[0].ord
+      when KEY_F1, KEY('?')
         # Help
         show_text_window stdscr, "Help", help_text
         redraw_background_frame
-
-      when 'f'[0].ord
+      when KEY('f')
         toggle_maximize(term)
-
+      when KEY('+')
+        rows, cols = getmaxyx(stdscr)
+        rows += 1
+        cols += 1
+        resize_terminal_window(rows, cols)
+        redraw_background_frame
+      when KEY('-')
+        rows, cols = getmaxyx(stdscr)
+        rows -= 1
+        cols -= 1
+        resize_terminal_window(rows, cols)
+        redraw_background_frame
       when KEY_CTRL_Q, 'q'[0].ord, 27 # 27 == Esc
         # Quit
         delwin(pad)
