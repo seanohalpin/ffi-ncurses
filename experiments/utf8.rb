@@ -10,9 +10,20 @@ require 'ffi-ncurses'
 
 include FFI::NCurses
 
-# this isn't right - won't work with wgetch (because getting sent a utf-8 sequence)
+# Helper function to match charcodes or (single character) strings
+# against keycodes returned by ncursesw.
+#
+# Note that this won't work for characters outside Latin-1 as they overlap numerically with
+# ncurses's KEY_ codes. Should return new class for KEY_ codes.
+#
+
 def KEY(s)
-  s.unpack("U")[0]
+  case s
+  when String
+    s.unpack("U")[0]
+  else
+    s
+  end
 end
 
 begin
