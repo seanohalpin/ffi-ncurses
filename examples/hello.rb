@@ -4,23 +4,11 @@
 # Sean O'Halpin, 2009-02-15
 #
 require 'ffi-ncurses'
-require 'ffi-ncurses/widechars'
 
 def centre(text)
   col = (COLS() - text.strip.size)/2
   y, x = getyx(stdscr)
   mvaddstr y, col, text
-end
-
-def fullwidth(txt)
-  txt.codepoints.map{ |x|
-    case x
-    when 0x30..0x7F
-      x + 0xFEE0
-    else
-      x
-    end
-  }.pack("U*")
 end
 
 include FFI::NCurses
