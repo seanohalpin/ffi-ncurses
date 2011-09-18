@@ -22,6 +22,8 @@ module CLib
   attach_function :fopen, [:string, :string], :FILEP
   attach_function :fclose, [:FILEP], :int
   attach_function :feof, [:FILEP], :int
+  attach_function :fflush, [:FILEP], :int
+  attach_function :fputs, [:string, :FILEP], :int
 end
 
 $APP_DEBUG = ARGV.delete("--debug")
@@ -96,19 +98,21 @@ def update_row_col(border, row, col)
 end
 
 @maximized = false
-def toggle_maximize
+def toggle_maximize(term)
   # Maximize terminal window (xterm only).
   #
   # You can do the same with Alt-F10 in Gnome (and it seems more
   # reliable).
-  if @maximized
-    print("\e[9;0t")
-  else
-    print("\e[9;1t")
-  end
-  STDOUT.flush
+
+  # File.open("/dev/tty", "wb+") do |file|
+  #   file.print("\e[9;#{@maximized ? 0 : 1}t")
+  # end
+
+  CLib.fflush(term)
+  CLib.fputs("\e[9;#{@maximized ? 0 : 1}t", term)
+  CLib.fflush(term)
+
   @maximized = !@maximized
-  # redraw_background_frame
 end
 
 def view(text, arg_rows = nil, arg_cols = nil)
@@ -235,7 +239,7 @@ EOT
         redraw_background_frame
 
       when 'f'[0].ord
-        toggle_maximize
+        toggle_maximize(term)
 
       when KEY_CTRL_Q, 'q'[0].ord, 27 # 27 == Esc
         # Quit
@@ -256,19 +260,21 @@ EOT
       doupdate
       flushinp
     end
-  rescue Object => e
-    saved_exception = e
+  rescue Object => saved_exception
   ensure
     CLib.fclose(term) if !CLib.feof(term)
     flushinp
+    end_rows, end_cols = getmaxyx(stdscr)
     endwin
     delscreen(screen)
 
-    if arg_rows != orig_rows || arg_cols != orig_cols
+    # restore terminal size at launch
+    if end_rows != orig_rows || end_cols != orig_cols
       resizeterm(orig_rows, orig_cols)
-      print("\e[8;#{orig_rows};#{orig_cols};t") # restore window
+      File.open("/dev/tty", "wb+") do |file|
+        file.print("\e[8;#{orig_rows};#{orig_cols};t") # restore window
+      end
     end
-
   end
   if saved_exception
     raise saved_exception
