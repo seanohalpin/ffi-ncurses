@@ -14,6 +14,18 @@
 # - version 0.4.0 - 2011-09-06 - boolean types, ACS definitions, Ncurses compatibility
 require 'ffi'
 
+module Setlocale
+  extend FFI::Library
+  ffi_lib FFI::Library::LIBC
+  LC_ALL = 0
+  attach_function :setlocale, [:int, :string], :uint
+end
+
+if RUBY_VERSION < '1.9.0'
+  # 1.8.x doesn't set the locale - we need this to handle UTF-8 input
+  Setlocale.setlocale(Setlocale::LC_ALL, "")
+end
+
 # Load typedefs.
 require 'ffi-ncurses/typedefs'
 
