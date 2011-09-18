@@ -26,6 +26,14 @@ def KEY(s)
   end
 end
 
+if !"".respond_to?(:ord)
+  class String
+    def ord
+      self[0].ord
+    end
+  end
+end
+
 begin
   # standard preamble
   initscr
