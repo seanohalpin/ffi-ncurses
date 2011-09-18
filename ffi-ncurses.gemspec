@@ -21,11 +21,12 @@ EOT
   s.files = [
              "History.txt",
              "README.rdoc",
-             *Dir["examples/**/*"],
              "ffi-ncurses.gemspec",
              "lib/ffi-ncurses.rb",
-             *Dir["lib/**/*.rb"],
-            ]
+            ] +
+    Dir["examples/**/*"] +
+    Dir["lib/**/*.rb"]
+
   s.has_rdoc = true
   s.homepage = %q{http://github.com/seanohalpin/ffi-ncurses}
   s.rdoc_options = ["--main", "README.rdoc"]
