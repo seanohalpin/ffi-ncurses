@@ -88,6 +88,9 @@ begin
   raw
   keypad stdscr, true
   set_escdelay(100)
+  # turn on meta - ncurses default = true - but here to remind me that you can
+  # detect Alt keys using keyname (e.g. Alt-q == "M-q")
+  meta(stdscr, ARGV.delete("--no-meta") ? false : true)
   noecho
 
   # initialize colour
