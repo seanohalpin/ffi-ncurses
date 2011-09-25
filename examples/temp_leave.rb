@@ -25,7 +25,7 @@ def do_cmd(cmd)
 end
 
 # This is the version from ncurses examples filter.c
-def do_cmd(cmd)
+def do_cmdx(cmd)
   reset_shell_mode           # Restore terminal mode
   STDOUT.flush
   system(cmd)                # Do whatever you like in cooked mode
@@ -33,6 +33,36 @@ def do_cmd(cmd)
   touchwin(stdscr)
   # erase
   refresh
+end
+
+def show_text_window(win, title, text)
+  text_width = text.lines.map{ |x| x.size }.max
+  text_height = text.lines.to_a.size
+
+  width = text_width + 4
+  height = text_height + 4
+
+  rows, cols = getmaxyx(win)
+
+  col = (cols - width)/2
+  row = (rows - height)/2
+
+  frame = newwin(height, width, row, col)
+  keypad frame, true
+  box(frame, 0, 0)
+
+  title = "[ #{title} ]"
+  wmove(frame, 0, (width - title.size)/2)
+  waddstr(frame, title)
+
+  win = derwin(frame, text_height, text_width, 2, 2)
+  wmove(win, 0, 0)
+  waddstr(win, text)
+  wnoutrefresh(win)
+  wgetch(frame)
+  flushinp
+  delwin(win)
+  delwin(frame)
 end
 
 def main
@@ -44,17 +74,21 @@ def main
 
     initscr
     keypad stdscr, true
+    noecho
 
     addstr("Hello from ncurses\n")
+    refresh
+    addstr("Press any key to enter shell\n")
+    getch
     addstr("Now entering shell - enter 'exit' or press Ctrl-D to exit\n")
     refresh
+    sleep 0.2
 
-    do_cmd("/bin/sh")
+    cmd = ARGV[0] || "/bin/sh"
+    do_cmd(cmd)
     flushinp
-    addstr("Back to ncurses\n")
-    addstr("Press any key to quit\n")
+    show_text_window(stdscr, "Message", "Back to ncurses\nPress any key to quit")
     refresh
-    getch                             # Pause so we see the string added
   ensure
     flushinp
     endwin
