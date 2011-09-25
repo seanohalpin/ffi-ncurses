@@ -18,8 +18,9 @@ describe "attached functions" do
       FFI::NCurses.respond_to?(name).must_equal true
     end
 
+    # map to_s to handle the change in method names between 1.8.7 and 1.9.x
     it "should provide an instance level function #{name}" do
-      FFI::NCurses.instance_methods.include?(name).must_equal true
+      FFI::NCurses.instance_methods.map{ |x| x.to_s }.include?(name).must_equal true
     end
 
   end
