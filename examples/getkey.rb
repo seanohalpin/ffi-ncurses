@@ -40,6 +40,8 @@ def use_widechars?
   $APP_USE_WIDECHARS
 end
 
+@last_keys = []
+
 def getkey(win, input_buffer)
   if use_widechars?
     log :wget_wch
@@ -67,18 +69,22 @@ def getkey(win, input_buffer)
   end
   # convert char code to UTF-8 string
   char = [ch].pack("U")
+  log :getkey, :fkey, fkey, :ch, ch, :char, char
+  @last_keys.unshift(ch)
+  while @last_keys.size > 10
+    @last_keys.pop
+  end
   [fkey, ch, char]
 end
 
 def header
   clear
   line 1, "Press any key to display codes in various interpretations"
-  line 2, "Press Ctrl-Q to quit"
-  if !use_widechars?
-    attr_on(A_REVERSE, nil)
-    line 3, "widechar input turned off"
-    attr_off(A_REVERSE, nil)
-  end
+  line 2, "Press Ctrl-Q to quit."
+  line 3, "widechar input %s. Press w to toggle" % [use_widechars? ? "on" : "off"]
+  line 4, "keypad %s. Press k to toggle" % [@keypad_toggle ? "on" : "off"]
+  line 5, "meta %s. Press m to toggle (only makes a difference in non-widechar mode)" % [@meta_toggle ? "on" : "off"]
+  line 6, "meta works only on terminal emulators that allow 8-bit input - use xterm to see effect"
 end
 
 begin
@@ -86,15 +92,30 @@ begin
   win = initscr
   curs_set 0
   raw
-  keypad stdscr, true
-  set_escdelay(100)
+  set_escdelay(1000) if respond_to?(:set_escdelay)
   # turn on meta - ncurses default = true - but here to remind me that you can
   # detect Alt keys using keyname (e.g. Alt-q == "M-q")
-  meta(stdscr, ARGV.delete("--no-meta") ? false : true)
+  @meta_toggle = ARGV.delete("--no-meta") ? false : true
+  @keypad_toggle = ARGV.delete("--no-keypad") ? false : true
+  meta(stdscr, @meta_toggle)
+  keypad stdscr, @keypad_toggle
   noecho
 
   # initialize colour
   start_color
+
+  # Define a couple of custom keys. The easiest way to find out the sequences is to type
+  #
+  #   $ cat -v
+  #
+  # at the command line then press the key combination you want.
+  #
+  # Note that these key definitions may not be portable.
+  define_key("\e[1;5C", KEY_MAX - 1) # C-Right
+  define_key("\e[1;5D", KEY_MAX - 2) # C-Left
+  define_key("\e[1;5A", KEY_MAX - 3) # C-Up
+  define_key("\e[1;5B", KEY_MAX - 3) # C-Down
+
 
   # set up colour pairs
   #             Background      Foreground
@@ -127,13 +148,25 @@ begin
   char_col = 55
 
   header
-  row = 5
+  row = 8
   loop do
     # read a key
     fkey, ch, char = getkey(win, buffer)
     break if ch == KEY_CTRL_Q
 
+    case char
+    when "k"
+      @keypad_toggle = !@keypad_toggle
+      keypad stdscr, @keypad_toggle # NB. win arg ignored
+    when "m"
+      @meta_toggle = !@meta_toggle
+      meta stdscr, @meta_toggle # NB. win arg ignored
+    when "w"
+      $APP_USE_WIDECHARS = !$APP_USE_WIDECHARS
+    end
+
     header
+    mvwaddstr(win, 20, 2, @last_keys.inspect)
 
     attr_on(A_BOLD, nil) if fkey
     line row + 1, "#{fkey ? "Function" : "Normal"} key"
