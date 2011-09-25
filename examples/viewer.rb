@@ -91,8 +91,8 @@ def show_text_window(win, title, text)
   delwin(frame)
 end
 
-def update_row_col(border, row, col)
-  move(0, border)
+def update_row_col(left_border, row, col)
+  move(0, left_border)
   addstr("%03d:%003d" % [row + 1, col + 1])
   wnoutrefresh(stdscr)
 end
@@ -103,12 +103,9 @@ def toggle_maximize(term)
   #
   # You can do the same with Alt-F10 in Gnome (and it seems more
   # reliable).
-
-  # File.open("/dev/tty", "wb+") do |file|
-  #   file.print("\e[9;#{@maximized ? 0 : 1}t")
-  # end
-
   CLib.fflush(term)
+
+  # maximize
   CLib.fputs("\e[9;#{@maximized ? 0 : 1}t", term)
   CLib.fflush(term)
 
@@ -135,12 +132,29 @@ def resize_terminal_window(rows, cols)
   resizeterm(rows, cols)              # note: you need to tell ncurses that you've resized the terminal
 end
 
+def page_height
+  LINES() - total_tb_border
+end
+
+def page_width
+  COLS() - total_lr_border
+end
+
+def total_lr_border
+  @left_border + @right_border
+end
+
+def total_tb_border
+  @top_border + @bottom_border
+end
+
 def view(text, arg_rows = nil, arg_cols = nil)
-  border = 2
-  # set_escdelay(10)
+  @top_border = @bottom_border = 1
+  @left_border = @right_border = 1
+  # set_escdelay(10) if respond_to?(:set_escdelay) # Centos 5.1 :S
   lines = text.lines.to_a
-  maxx = lines.map{|x| x.size }.max + border
-  maxy = lines.size + border
+  maxx = lines.map{|x| x.size }.max + total_lr_border
+  maxy = lines.size + total_tb_border
 
   # We need to open /dev/tty so we can read from STDIN without borking
   # ncurses
@@ -225,9 +239,9 @@ EOT
     current_col  = 0
 
     redraw_background_frame
-    update_row_col(border, current_line, current_col)
+    update_row_col(@left_border, current_line, current_col)
 
-    rv = pnoutrefresh(pad, current_line, current_col, border, border, LINES() - border - 1, COLS() - border - 1)
+    rv = pnoutrefresh(pad, current_line, current_col, @top_border, @left_border, page_height, page_width)
     log :prefresh1, :rv, rv
     doupdate
 
@@ -239,18 +253,18 @@ EOT
         current_line = 0
         current_col  = 0
       when KEY_END
-        current_line = maxy - LINES() + border
+        current_line = maxy - LINES() + total_lr_border
         current_col  = 0
       when KEY_NPAGE, KEY(' ')
-        current_line = [current_line + LINES(), [maxy - LINES() + border, 0].max].min
+        current_line = [current_line + page_height, [maxy - page_height, 0].max].min
       when KEY_PPAGE
-        current_line = [current_line - LINES() + border, 0].max
+        current_line = [current_line - page_height, 0].max
       when KEY_DOWN
-        current_line = [current_line + 1, [maxy - LINES() + border, 0].max].min
+        current_line = [current_line + 1, [maxy - page_height, 0].max].min
       when KEY_UP
         current_line = [current_line - 1, 0].max
       when KEY_RIGHT
-        current_col = [current_col + 1, [maxx - COLS() + border, 0].max].min
+        current_col = [current_col + 1, [maxx - page_width, 0].max].min
       when KEY_LEFT
         current_col = [current_col - 1, 0].max
       when KEY_F1, KEY('?')
@@ -284,8 +298,8 @@ EOT
         redraw_background_frame
       end
 
-      update_row_col(border, current_line, current_col)
-      rv = pnoutrefresh(pad, current_line, current_col, border, border, LINES() - border - 1, COLS() - border - 1)
+      update_row_col(@left_border, current_line, current_col)
+      rv = pnoutrefresh(pad, current_line, current_col, @top_border, @left_border, page_height, page_width)
       log :prefresh2, :rv, rv, :line, current_line, :col, current_col
       doupdate
       flushinp
