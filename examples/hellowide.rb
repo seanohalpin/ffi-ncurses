@@ -12,15 +12,28 @@ def centre(text)
   mvaddstr y, col, text
 end
 
-def fullwidth(txt)
-  txt.encode("UTF-32BE").codepoints.map{ |x|
-    case x
-    when 0x30..0x7F
-      x + 0xFEE0
-    else
-      x
-    end
-  }.pack("U*")
+if RUBY_VERSION >= '1.9.0'
+  def fullwidth(txt)
+    txt.encode("UTF-32BE").codepoints.map{ |x|
+      case x
+      when 0x30..0x7F
+        x + 0xFEE0
+      else
+        x
+      end
+    }.pack("U*")
+  end
+else
+  def fullwidth(txt)
+    txt.unpack("U*").map { |x|
+      case x
+      when 0x30..0x7F
+        x + 0xFEE0
+      else
+        x
+      end
+    }.pack("U*")
+  end
 end
 
 include FFI::NCurses
@@ -40,10 +53,7 @@ begin
   centre "Press any key to continue"
   refresh
   ch = getch
-  flushinp
-  addstr sprintf("\nYou pressed %c (%d)", ch, ch)
-  refresh
-  sleep 1
 ensure
+  flushinp
   endwin
 end
