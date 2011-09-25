@@ -1,38 +1,44 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
+$LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
+
+require 'ffi-ncurses/version'
+
+date         = "2011-09-25"
+authors      = ["Sean O'Halpin"]
+email        = "sean.ohalpin@gmail.com"
+project      = FFI::NCurses
+description  = "An FFI wrapper around ncursesw 5.x for MRI Ruby 1.8.x, 1.9.x and JRuby."
+dependencies = [
+                ["ffi", ">= 1.0.9"],
+                ["ffi-locale", ">= 1.0.0"],
+               ]
 
 Gem::Specification.new do |s|
-  s.name = %q{ffi-ncurses}
-  s.version = "0.4.0.pre.8"
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Sean O'Halpin"]
-  s.date = %q{2009-02-24}
-  s.description = <<-EOT
-An ffi wrapper for ncurses 5.x. Tested on Ubuntu 10.04
-with ruby 1.8.6, 1.8.7 and 1.9.x using ffi 1.0.9 and
-jruby-head (1.7).
-
-The API is a transliteration of the C API rather than an attempt to
-provide an idiomatic Ruby object-oriented API.
-
-See the examples directory for real working examples.
-EOT
-  s.email = %q{sean.ohalpin@gmail.com}
-  s.extra_rdoc_files = ["History.txt", "README.rdoc"]
-  s.files = [
-             "History.txt",
-             "README.rdoc",
-             "ffi-ncurses.gemspec",
-             "lib/ffi-ncurses.rb",
-            ] +
+  s.authors     = authors
+  s.email       = email
+  s.date        = date
+  s.description = description
+  dependencies.each do |dep|
+    s.add_dependency *dep
+  end
+  s.files =
+    [
+     "#{project::NAME}.gemspec",
+     "lib/#{project::NAME}.rb",
+     "COPYING",
+     "History.txt",
+     "README.rdoc",
+     "Rakefile",
+     "Gemfile",
+     "Gemfile.lock",
+    ] +
     Dir["examples/**/*"] +
-    Dir["lib/**/*.rb"]
+    Dir["lib/**/*.rb"] +
+    Dir["spec/**/*.rb"]
 
-  s.has_rdoc = true
-  s.homepage = %q{http://github.com/seanohalpin/ffi-ncurses}
-  s.rdoc_options = ["--main", "README.rdoc"]
+  s.name          = project::NAME
+  s.version       = project::VERSION
+  s.homepage      = "http://github.com/seanohalpin/#{project::NAME}"
+  s.summary       = s.description
   s.require_paths = ["lib"]
-  s.rubyforge_project = %q{ffi-ncurses}
-  s.rubygems_version = %q{1.3.7}
-  s.summary = %q{FFI wrapper for ncurses}
-  s.add_dependency("ffi", ">= 1.0.9")
 end

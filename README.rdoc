@@ -2,7 +2,8 @@
 
 Author: Sean O'Halpin
 
-A pure-ruby wrapper for ncursesw 5.x using the ffi library.
+A pure-ruby wrapper for {http://invisible-island.net/ncurses/ ncursesw
+5.x} using the {https://github.com/ffi/ffi ffi} library.
 
 All of the core ncursesw functions are supported along with the Panel
 library. The main things left to do are support for the Menu and Form
@@ -13,8 +14,21 @@ provide an idiomatic Ruby object-oriented API. The intent is to
 provide a 'close to the metal' wrapper around the ncurses library upon
 which you can build your own abstractions.
 
+Please note that this documentation does not cover individual
+ncursesw methods. For that you'll need to refer to existing
+ncursesw documentation. For example, to find out about +addstr+,
+use:
+
+  $ man addstr
+
+One benefit of using a minimal wrapper approach is that you can use
+existing examples and man pages to find out how to use the library. To
+get an overview of ncurses, use:
+
+  $ man ncurses
+
 Having said that, this release also includes a wrapper that emulates
-the existing Ncurses API. To use it, substitute
+the existing Ncurses library API. To use it, substitute
 
   require 'ffi-ncurses/ncurses'
 
@@ -22,13 +36,8 @@ for
 
   require 'ncurses'
 
-or create a file called 'ncurses.rb' on your load path ($:) that
+or create a file called 'ncurses.rb' on your +$LOAD_PATH+ ($:) that
 requires +ffi-ncurses/ncurses.rb+.
-
-One benefit of this approach is that you can use existing examples and
-man pages to find out how to use the library. Start with
-
-  $ man ncurses
 
 Below you'll find some very preliminary notes on usage. See the
 examples directory for real working examples, which among other things
@@ -46,14 +55,14 @@ Rubinius is not supported as its FFI does not provide the required
 API, especially for dealing with buffers and pointers.
 
 This is still very much a work-in-progress, so expect some rough edges
-(and please report them). Having said that, you can do quite a lot
-with it as it is.
+(and please {https://github.com/seanohalpin/ffi-ncurses/issues report
+them}). Having said that, you can do quite a lot with it as it is.
 
-== Install
+= Install
 
   $ [sudo] gem install ffi-ncurses
 
-== Usage
+= Usage
 
 Load the library with:
 
@@ -62,7 +71,7 @@ Load the library with:
 FFI::NCurses methods can be called as module methods:
 
   begin
-    stdscr = FFI::NCurses.initscr
+    FFI::NCurses.initscr
     FFI::NCurses.clear
     FFI::NCurses.addstr("Hello world!")
     FFI::NCurses.refresh
@@ -73,8 +82,8 @@ FFI::NCurses methods can be called as module methods:
 
 or as included methods:
 
-  require 'ffi-ncurses'
   include FFI::NCurses
+
   begin
     initscr
     cbreak
@@ -104,12 +113,12 @@ or as included methods:
 
 == Typical initialization
 
-  stdscr = FFI::NCurses.initscr
+  FFI::NCurses.initscr
   FFI::NCurses.start_color
   FFI::NCurses.curs_set 0
   FFI::NCurses.raw
   FFI::NCurses.noecho
-  FFI::NCurses.keypad(stdscr, true)
+  FFI::NCurses.keypad(FFI::NCurses.stdscr, true)
 
 == Colours
 
@@ -118,6 +127,8 @@ or as included methods:
   attr_set FFI::NCurses::A_NORMAL, 1, nil
   addch("A"[0].ord) # works in both 1.8.7 and 1.9.x
   addch("Z"[0].ord | COLOR_PAIR(1))
+
+See +examples/color.rb+ for an example of use.
 
 == Cursor
 
@@ -151,10 +162,15 @@ or as included methods:
     FFI::NCurses.endwin
   end
 
+== Panels
+
+See +examples/panel_simple.rb+ for how to use panels.
+
 == Mouse handling
 
 NOTE: In previous versions of ffi-ncurses, the ncurses mouse API was
-included separately. You now no longer need to +require 'ffi-ncurses/mouse'+ to get mouse support.
+included separately. You now no longer need to <tt>require
+'ffi-ncurses/mouse'</tt> to get mouse support.
 
 To use the mouse with ffi-ncurses, you first need to specify that you
 want keypad translation with:
@@ -190,8 +206,10 @@ or
 
   if FFI::NCurses.BUTTON_PRESS(mouse_event[:bstate], 1)
 
-The possible button states are: PRESS, RELEASE, CLICK, DOUBLE_CLICK
-and TRIPLE_CLICK.
+The possible button states are: +PRESS+, +RELEASE+, +CLICK+,
++DOUBLE_CLICK+ and +TRIPLE_CLICK+.
+
+See +examples/mouse.rb+ for a complete example.
 
 == Specifying which curses library to use
 
@@ -201,8 +219,47 @@ example, to use the PDCurses X11 curses lib, use:
 
   RUBY_FFI_NCURSES_LIB=XCurses ruby examples/example.rb
 
-You could also use this to specify +ncursesw-dbg+ for example to get
+You could also use this to specify ncursesw-dbg for example to get
 access to the +trace+ functions.
+
+= Examples
+
++examples/acs_chars.rb+      :: How to display box drawing characters
++examples/attributes.rb+     :: How to set attributes
++examples/color.rb+          :: How to initialize and use colour
++examples/cursor.rb+         :: How to turn the cursor on and off
++examples/doc-eg1.rb+        :: Example 1 from the documentation
++examples/doc-eg2.rb+        :: Example 2 from the documentation
++examples/doc-eg3.rb+        :: Example 3 from the documentation
++examples/example.rb+        :: An example showing off the main features of ncurses
++examples/getkey.rb+         :: How to get Unicode input
++examples/getsetsyx.rb+      :: Shows how to use the getsetyx function
++examples/globals.rb+        :: Display ncurses global variables
++examples/hello.rb+          :: Hello world
++examples/hellowide.rb+      :: Hello world using wide characters
++examples/keys.rb+           :: How to use the getch function. See getkey for a more general solution
++examples/mouse.rb+          :: How to use the mouse
++examples/multiterm.rb+      :: How to display on more than one tty
++examples/newterm.rb+        :: How to use +newterm+ so you can pipe stdin into an ncurses program
++examples/panel_simple.rb+   :: How to use panels
++examples/printw-variadic.rb+:: How to call the +printw+ method
++examples/ripoffline.rb+     :: An example of the +ripoffline+ method
++examples/softkeys.rb+       :: How to set up soft keys (function key labels)
++examples/stdscr.rb+         :: Shows that +initscr+ returns same value as +stdscr+
++examples/temp_leave.rb+     :: How to temporarily shell out from an ncurses program
++examples/viewer.rb+         :: A simple file viewer (lesser than less) that shows how to use pads and pop up windows
++examples/wacs_chars.rb+     :: How to display wide (Unicode) box drawing characters
++examples/windows.rb+        :: Move a window about the screen
+
+= Issues
+
+Please report any issues on the {https://github.com/seanohalpin/ffi-ncurses/issues github issues} page.
+
+= Trivia
+
+While researching ncurses on Google, I innocently entered "curses
+getsx" as a search term. NSFW and definitely not one for "I'm Feeling
+Lucky".
 
 = TO DO
 
@@ -220,12 +277,6 @@ the output. However, this is not really ready for prime time yet.
 
 Things got a bit messy as I switched between the Linux and Mac
 versions. The examples should be more focussed.
-
-= Trivia
-
-While researching ncurses on Google, I innocently entered "curses
-getsx" as a search term. NSFW and definitely not one for "I'm Feeling
-Lucky".
 
 = Credits
 

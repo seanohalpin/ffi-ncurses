@@ -1,5 +1,24 @@
 = Changelog for ffi-ncurses
 
+== 0.4.0 / 2011-09-25
+
+* Supports all functions in ncursesw except the =vwprintw/vwscanw=
+  family.
+* Added =ACS= constants (box characters). See =examples/acs.rb= and
+  =examples/wacs.rb=.
+* Added support for =libpanelw=. See =examples/panel_simple.rb=.
+* Better examples. See =examples/viewer.rb= for a simple but complete
+  file viewing application.
+* Methods with boolean arguments now =true= or =false= as well as 1 or
+  0.
+* Start of a compatibility layer for the existing C extension-based
+  Ncurses Ruby libraries - require 'ffi-ncurses/ncurses'.  Runs all
+  the examples from ncurses-ruby without changes (except those relying
+  on menus and forms). See =examples/ncurses/*.rb=.
+* Sets the locale (using FFI::Locale.setlocale(LC_ALL, "")) in ruby
+  1.8.x to enable UTF-8 input. See =examples/getkey.rb= to see how to
+  distinguish between function keys and Unicode characters.
+
 == 0.3.4 / 2010-08-28
 
 * Added MIT licence (License.txt, COPYING)

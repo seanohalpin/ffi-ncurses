@@ -1,7 +1,7 @@
 # -*- coding: utf-8; -*-
 # ruby-ffi wrapper for ncurses.
 #
-# Sean O'Halpin
+# Sean O'Halpin, 2008-2011
 #
 # repo & docs: http://github.com/seanohalpin/ffi-ncurses
 #
@@ -11,20 +11,18 @@
 # - version 0.3.3 - 2010-08-24
 # - version 0.3.4 - 2010-08-28
 # - version 0.3.5 - 2011-01-05
-# - version 0.4.0 - 2011-09-06 - boolean types, ACS definitions, Ncurses compatibility
+# - version 0.4.0 - 2011-09-25
+#
 require 'ffi'
-
-module Setlocale
-  extend FFI::Library
-  ffi_lib FFI::Library::LIBC
-  LC_ALL = 0
-  attach_function :setlocale, [:int, :string], :uint
-end
+require 'ffi-locale'
 
 if RUBY_VERSION < '1.9.0'
   # 1.8.x doesn't set the locale - we need this to handle UTF-8 input
-  Setlocale.setlocale(Setlocale::LC_ALL, "")
+  FFI::Locale.setlocale(FFI::Locale::LC_ALL, "")
 end
+
+# Load version.
+require 'ffi-ncurses/version'
 
 # Load typedefs.
 require 'ffi-ncurses/typedefs'
@@ -52,8 +50,6 @@ module FFI
 
     # Make all instance methods module methods too.
     extend self
-
-    VERSION = "0.4.0"
 
     # Use `RUBY_FFI_NCURSES_LIB` to specify a colon-separated list of
     # libs you want to try to load, e.g.
@@ -206,13 +202,23 @@ module FFI
     require 'ffi-ncurses/panel'
     include PanelStruct
 
-    # These following 'functions' are implemented as macros in ncurses.
+    # These following functions are implemented as macros in ncurses.
     module EmulatedFunctions
       # Note that I'm departing from the NCurses API here - it makes
       # no sense to force people to use pointer return values when
       # these methods have been implemented as macros to make them
       # easy to use in *C*. We have multiple return values in Ruby, so
-      # let's use them.
+      # let's use them. Call like this:
+      #
+      #     y, x = getyx(win)
+      #
+      # For compatibility with the existing Ncurses lib, you can also
+      # call these functions like so:
+      #
+      #     y = [nil]
+      #     x = [nil]
+      #     getyx(win, y, x)
+      #
       def getyx(win, y = nil, x = nil)
         res = [NCurses.getcury(win), NCurses.getcurx(win)]
         if y && y.kind_of?(Array) && x.kind_of?(Array)
