@@ -3,7 +3,6 @@
 # Sean O'Halpin, 2009-02-15
 #
 require 'ffi-ncurses'
-require 'ffi-ncurses/widechars'
 include FFI::NCurses
 
 def log(*a)
