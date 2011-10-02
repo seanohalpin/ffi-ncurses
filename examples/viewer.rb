@@ -8,10 +8,13 @@
 # Possible features to add:
 # - search
 # - hex view
+# - show continuation symbol (e.g. $) for lines longer than width
 #
 require 'ffi-ncurses'
 
 include FFI::NCurses
+
+$ARG_DVTM_HACK = ARGV.delete("--dvtm")
 
 # some helper methods for working with stdlib FILE pointers
 module CLib
@@ -263,6 +266,8 @@ EOT
         current_line = [current_line + 1, [maxy - page_height, 0].max].min
       when KEY_UP
         current_line = [current_line - 1, 0].max
+        redraw_background_frame # for dvtm (rxvt)
+
       when KEY_RIGHT
         current_col = [current_col + 1, [maxx - page_width, 0].max].min
       when KEY_LEFT
@@ -295,6 +300,14 @@ EOT
         raise Interrupt
       when KEY_RESIZE, KEY_CTRL_L
         log :redraw2
+        redraw_background_frame
+      end
+
+      if $ARG_DVTM_HACK
+        # I seem to be encountering some update issues when running
+        # under dvtm after up arrow, pageup, etc.  For example, scroll
+        # down one line, then press PgUp - it will fail to update the
+        # lines below the top line. Not sure if this is me or dvtm...
         redraw_background_frame
       end
 
