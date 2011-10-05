@@ -14,7 +14,7 @@ require 'ffi-ncurses'
 
 include FFI::NCurses
 
-$ARG_DVTM_HACK = ARGV.delete("--dvtm")
+$ARG_DVTM_HACK = ARGV.delete("--dvtm") # || ENV["TERM"] =~ /^rxvt/ # Not fair on rxvt but dvtm emulates it
 
 # some helper methods for working with stdlib FILE pointers
 module CLib
@@ -290,7 +290,7 @@ EOT
         cols -= 1
         resize_terminal_window(rows, cols)
         redraw_background_frame
-      when KEY_CTRL_Q, 'q'[0].ord, 27 # 27 == Esc
+      when KEY_CTRL_Q, KEY('q'), KEY_ESCAPE
         # Quit
         delwin(pad)
         break
