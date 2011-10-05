@@ -5,6 +5,11 @@
 #     LANG=en_GB.utf8
 #
 # Sean O'Halpin, 2010-08-29
+#
+# TODO:
+# - translate unrecognised escape sequences into strings
+#   (shouldn't send them uninterpreted to terminal - can put terminal into odd state)
+#
 
 require 'ffi-ncurses'
 
