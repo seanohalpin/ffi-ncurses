@@ -1,4 +1,4 @@
-# -*- coding: utf-8; -*-
+# -*- coding: utf-8 -*-
 # ruby-ffi wrapper for ncurses.
 #
 # Sean O'Halpin, 2008-2011

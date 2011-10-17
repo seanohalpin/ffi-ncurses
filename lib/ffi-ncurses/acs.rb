@@ -1,4 +1,4 @@
-# -*- coding: utf-8; -*-
+# -*- coding: utf-8 -*-
 require 'ffi-ncurses/ord_shim'
 
 module FFI
