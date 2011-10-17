@@ -2,8 +2,10 @@ GEM
   remote: http://rubygems.org/
   specs:
     ffi (1.0.9)
-    ffi-locale (1.0.0)
+    ffi-locale (1.0.1)
       ffi (>= 1.0.9)
+    rake (0.9.2)
+    yard (0.7.3)
 
 PLATFORMS
   ruby
@@ -11,3 +13,5 @@ PLATFORMS
 DEPENDENCIES
   ffi
   ffi-locale
+  rake
+  yard
